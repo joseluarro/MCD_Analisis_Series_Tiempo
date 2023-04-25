@@ -9,22 +9,16 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## R Markdown
+## Prediccion del precio de la Maracuya para el Valle del Cauca
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+Uno de los mayores desafios para los agricultores es saber en que momento vender los productos cosechados para así obtener una mayor rentabilidad y poder "jugar" con los diferentes costos y gastos en los que se incurren.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+## Motivación
 
-```{r cars}
-summary(cars)
-```
+Actualmente hago parte como socio de una empresa dedicada al cultivo y venta de maracuya, por lo que obtener y aportar información como estimaciones de precios sería para mi más satisfactorio que simplemente ser un socio capitalista.
 
-## Including Plots
+![](images/Foto%20Maracuya.jpg)
 
-You can also embed plots, for example:
+Para lograr mi objetivo de prediccion de precios, se cuenta con una base historica desde aproximadamente 5 años atras, junto datos propios de la compañia como lo son los costos y gastos, tambien se cuenta con la experiencia del lider del proyecto quien es Ingeniero Agronomo y puede orientar sobre los costos externos como lo pueden ser el precio de la gasolina, precios de insumos, fertilizantes así como también impacto en las lluvias, cantidad de empresas de la competencia y las zonas. Diferentes datos que pueden ser obtenidos ya que son publicos.
 
-```{r pressure, echo=FALSE}
-plot(pressure)
-```
-
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+Adicional a lo anterior, me encuentro abierto a los diferentes metodos ya que no hace parte de mi trabajo de grado y lo veo mas como una aplicacion al proyecto personal.
