@@ -2,14 +2,25 @@
 title: "Propuesta Bookdown"
 author: "Jose Luis Arroyave Capera"
 date: "2023-04-21"
-output: html_document
+output:
+  bookdown::gitbook:
+  css: styles.css
+  output:
+    bookdown::gitbook:
+      config:
+        toc:
+          before: |
+            <br><br><br>
+          after: |
+            <br><br><br>
+          scroll_highlight: yes
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Prediccion del precio de la Maracuya para el Valle del Cauca
+# Prediccion del precio de la Maracuya para el Valle del Cauca
 
 Uno de los mayores desafios para los agricultores es saber en que momento vender los productos cosechados para así obtener una mayor rentabilidad y poder "jugar" con los diferentes costos y gastos en los que se incurren.
 
