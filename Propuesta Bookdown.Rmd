@@ -82,3 +82,105 @@ df_precios_passion.plot(x="FECHA", y="VALOR KILO")
 df_precios_media.plot(y="VALOR KILO", ax=plt.gca(), color='red')
 plt.show()
 ```
+
+# Analisis de la dinamica de los datos
+
+## Estructura de los datos en series de tiempo (precios Valle)
+
+```{python}
+import seaborn as sns
+from statsmodels.tsa.seasonal import seasonal_decompose
+import statsmodels.api as sm
+from statsmodels.graphics.tsaplots import plot_acf
+
+
+# Eliminar valores faltantes
+df_precios_historicos.fillna(df_precios_historicos.mean(), inplace=True)
+
+# Calcular promedio móvil
+df_precios_historicos['promedio_movil'] = df_precios_historicos['prom_valle'].rolling(window=3).mean()
+
+# Gráfico de la serie de tiempo con el promedio móvil
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.lineplot(data=df_precios_historicos, x='fecha', y='prom_valle', color='blue', ax=ax)
+sns.lineplot(data=df_precios_historicos, x='fecha', y='promedio_movil', color='red', ax=ax)
+ax.set(title='Precio promedio de la Maracuya', xlabel='Fecha', ylabel='Precio promedio')
+plt.show()
+
+# Gráfico de rezagos
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.scatterplot(data=df_precios_historicos, x='prom_valle', y=df_precios_historicos['prom_valle'].shift(1), color='blue')
+ax.plot(ax.get_xlim(), ax.get_ylim(), ls="--", c=".3") # Agregar línea diagonal
+ax.set(title='Rezagos de la serie de tiempo', xlabel='Valor en t', ylabel='Valor en t-1')
+plt.show()
+
+# Obtener la serie de tiempo
+serie = df_precios_historicos['prom_valle']
+
+# Gráfico de autocorrelación
+fig, ax = plt.subplots(figsize=(10, 6))
+plot_acf(serie, ax=ax, lags=50)
+plt.show()
+```
+
+## Estructura de los datos en series de tiempo (precios Passion)
+
+```{python}
+import seaborn as sns
+from statsmodels.tsa.seasonal import seasonal_decompose
+import statsmodels.api as sm
+from statsmodels.graphics.tsaplots import plot_acf
+
+
+# Eliminar valores faltantes
+df_precios_passion.fillna(df_precios_passion.mean(), inplace=True)
+
+# Calcular promedio móvil
+df_precios_passion['promedio_movil'] = df_precios_passion['VALOR KILO'].rolling(window=3).mean()
+
+# Gráfico de la serie de tiempo con el promedio móvil
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.lineplot(data=df_precios_passion, x='FECHA', y='VALOR KILO', color='blue', ax=ax)
+sns.lineplot(data=df_precios_passion, x='FECHA', y='promedio_movil', color='red', ax=ax)
+ax.set(title='Precio promedio de la Maracuya', xlabel='Fecha', ylabel='Precio promedio')
+plt.show()
+
+# Gráfico de rezagos
+fig, ax = plt.subplots(figsize=(10, 6))
+sns.scatterplot(data=df_precios_passion, x='VALOR KILO', y=df_precios_passion['VALOR KILO'].shift(1), color='blue')
+ax.plot(ax.get_xlim(), ax.get_ylim(), ls="--", c=".3") # Agregar línea diagonal
+ax.set(title='Rezagos de la serie de tiempo', xlabel='Valor en t', ylabel='Valor en t-1')
+plt.show()
+
+# Obtener la serie de tiempo
+serie = df_precios_passion['VALOR KILO']
+
+# Gráfico de autocorrelación
+fig, ax = plt.subplots(figsize=(10, 6))
+plot_acf(serie, ax=ax, lags=50)
+plt.show()
+```
+
+# Preprocesamiento y visualización
+
+```{python}
+from statsmodels.tsa.seasonal import seasonal_decompose
+
+# cargar los datos de la serie de tiempo en un DataFrame de pandas
+#df_precios_historicos = pd.read_excel("historico_precios_maracuya.xlsx")
+
+# hacer la descomposición
+#decomposition = seasonal_decompose(df_precios_historicos)
+
+# mostrar las componentes
+#fig, axes = plt.subplots(nrows=4, ncols=1, figsize=(8, 10), sharex=True)
+#axes[0].set(title='Serie de tiempo original')
+#df_precios_historicos.plot(ax=axes[0])
+#axes[1].set(title='Tendencia')
+#decomposition.trend.plot(ax=axes[1])
+#axes[2].set(title='Estacionalidad')
+#decomposition.seasonal.plot(ax=axes[2])
+#axes[3].set(title='Residuos')
+#decomposition.resid.plot(ax=axes[3])
+#plt.show()
+```

@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Propuesta Bookdown</title>
-  <meta name="description" content="Propuesta Bookdown" />
+  <title>4 Preprocesamiento y visualización | Propuesta Bookdown</title>
+  <meta name="description" content="4 Preprocesamiento y visualización | Propuesta Bookdown" />
   <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Propuesta Bookdown" />
+  <meta property="og:title" content="4 Preprocesamiento y visualización | Propuesta Bookdown" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Propuesta Bookdown" />
+  <meta name="twitter:title" content="4 Preprocesamiento y visualización | Propuesta Bookdown" />
   
   
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
+<link rel="prev" href="analisis-de-la-dinamica-de-los-datos.html"/>
 
-<link rel="next" href="historico-de-precios-del-maracuya.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -164,29 +164,35 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Propuesta Bookdown</h1>
-<p class="author"><em>Jose Luis Arroyave Capera</em></p>
-<p class="date"><em>2023-04-21</em></p>
-</div>
-<div id="prediccion-del-precio-de-la-maracuya-para-el-valle-del-cauca" class="section level1 hasAnchor" number="1">
-<h1><span class="header-section-number">1</span> Prediccion del precio de la Maracuya para el Valle del Cauca<a href="prediccion-del-precio-de-la-maracuya-para-el-valle-del-cauca.html#prediccion-del-precio-de-la-maracuya-para-el-valle-del-cauca" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Uno de los mayores desafios para los agricultores es saber en que momento vender los productos cosechados para así obtener una mayor rentabilidad y poder “jugar” con los diferentes costos y gastos en los que se incurren.</p>
-<div id="motivación" class="section level2 hasAnchor" number="1.1">
-<h2><span class="header-section-number">1.1</span> Motivación<a href="prediccion-del-precio-de-la-maracuya-para-el-valle-del-cauca.html#motivación" class="anchor-section" aria-label="Anchor link to header"></a></h2>
-<p>Actualmente hago parte como socio de una empresa dedicada al cultivo y venta de maracuya, por lo que obtener y aportar información como estimaciones de precios sería para mi más satisfactorio que simplemente ser un socio capitalista.</p>
-<p><img src="images/Foto%20Maracuya.jpg" /></p>
-<p>Para lograr mi objetivo de prediccion de precios, se cuenta con una base historica desde aproximadamente 5 años atras, junto datos propios de la compañia como lo son los costos y gastos, tambien se cuenta con la experiencia del lider del proyecto quien es Ingeniero Agronomo y puede orientar sobre los costos externos como lo pueden ser el precio de la gasolina, precios de insumos, fertilizantes así como también impacto en las lluvias, cantidad de empresas de la competencia y las zonas. Diferentes datos que pueden ser obtenidos ya que son publicos.</p>
-<p>Adicional a lo anterior, me encuentro abierto a los diferentes metodos ya que no hace parte de mi trabajo de grado y lo veo mas como una aplicacion al proyecto personal.</p>
-</div>
+<div id="preprocesamiento-y-visualización" class="section level1 hasAnchor" number="4">
+<h1><span class="header-section-number">4</span> Preprocesamiento y visualización<a href="preprocesamiento-y-visualización.html#preprocesamiento-y-visualización" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div class="sourceCode" id="cb29"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb29-1"><a href="preprocesamiento-y-visualización.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.seasonal <span class="im">import</span> seasonal_decompose</span>
+<span id="cb29-2"><a href="preprocesamiento-y-visualización.html#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="preprocesamiento-y-visualización.html#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co"># cargar los datos de la serie de tiempo en un DataFrame de pandas</span></span>
+<span id="cb29-4"><a href="preprocesamiento-y-visualización.html#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co">#df_precios_historicos = pd.read_excel(&quot;historico_precios_maracuya.xlsx&quot;)</span></span>
+<span id="cb29-5"><a href="preprocesamiento-y-visualización.html#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-6"><a href="preprocesamiento-y-visualización.html#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co"># hacer la descomposición</span></span>
+<span id="cb29-7"><a href="preprocesamiento-y-visualización.html#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="co">#decomposition = seasonal_decompose(df_precios_historicos)</span></span>
+<span id="cb29-8"><a href="preprocesamiento-y-visualización.html#cb29-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-9"><a href="preprocesamiento-y-visualización.html#cb29-9" aria-hidden="true" tabindex="-1"></a><span class="co"># mostrar las componentes</span></span>
+<span id="cb29-10"><a href="preprocesamiento-y-visualización.html#cb29-10" aria-hidden="true" tabindex="-1"></a><span class="co">#fig, axes = plt.subplots(nrows=4, ncols=1, figsize=(8, 10), sharex=True)</span></span>
+<span id="cb29-11"><a href="preprocesamiento-y-visualización.html#cb29-11" aria-hidden="true" tabindex="-1"></a><span class="co">#axes[0].set(title=&#39;Serie de tiempo original&#39;)</span></span>
+<span id="cb29-12"><a href="preprocesamiento-y-visualización.html#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="co">#df_precios_historicos.plot(ax=axes[0])</span></span>
+<span id="cb29-13"><a href="preprocesamiento-y-visualización.html#cb29-13" aria-hidden="true" tabindex="-1"></a><span class="co">#axes[1].set(title=&#39;Tendencia&#39;)</span></span>
+<span id="cb29-14"><a href="preprocesamiento-y-visualización.html#cb29-14" aria-hidden="true" tabindex="-1"></a><span class="co">#decomposition.trend.plot(ax=axes[1])</span></span>
+<span id="cb29-15"><a href="preprocesamiento-y-visualización.html#cb29-15" aria-hidden="true" tabindex="-1"></a><span class="co">#axes[2].set(title=&#39;Estacionalidad&#39;)</span></span>
+<span id="cb29-16"><a href="preprocesamiento-y-visualización.html#cb29-16" aria-hidden="true" tabindex="-1"></a><span class="co">#decomposition.seasonal.plot(ax=axes[2])</span></span>
+<span id="cb29-17"><a href="preprocesamiento-y-visualización.html#cb29-17" aria-hidden="true" tabindex="-1"></a><span class="co">#axes[3].set(title=&#39;Residuos&#39;)</span></span>
+<span id="cb29-18"><a href="preprocesamiento-y-visualización.html#cb29-18" aria-hidden="true" tabindex="-1"></a><span class="co">#decomposition.resid.plot(ax=axes[3])</span></span>
+<span id="cb29-19"><a href="preprocesamiento-y-visualización.html#cb29-19" aria-hidden="true" tabindex="-1"></a><span class="co">#plt.show()</span></span></code></pre></div>
 </div>
             </section>
 
           </div>
         </div>
       </div>
+<a href="analisis-de-la-dinamica-de-los-datos.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
-<a href="historico-de-precios-del-maracuya.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>
