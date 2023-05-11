@@ -22,3 +22,32 @@ Actualmente hago parte como socio de una empresa dedicada al cultivo y venta de 
 Para lograr mi objetivo de prediccion de precios, se cuenta con una base historica desde aproximadamente 5 años atras, junto datos propios de la compañia como lo son los costos y gastos, tambien se cuenta con la experiencia del lider del proyecto quien es Ingeniero Agronomo y puede orientar sobre los costos externos como lo pueden ser el precio de la gasolina, precios de insumos, fertilizantes así como también impacto en las lluvias, cantidad de empresas de la competencia y las zonas. Diferentes datos que pueden ser obtenidos ya que son publicos.
 
 Adicional a lo anterior, me encuentro abierto a los diferentes metodos ya que no hace parte de mi trabajo de grado y lo veo mas como una aplicacion al proyecto personal.
+
+# Historico de precios del Maracuya
+
+```{python}
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+
+datos_precios_historicos = pd.read_excel("historico_precios_maracuya.xlsx")
+
+print(datos_precios_historicos.head())
+```
+
+```{python}
+print(datos_precios_historicos.info())
+```
+
+```{python}
+print(datos_precios_historicos.shape)
+```
+
+```{python}
+print(datos_precios_historicos["precio_prom_kg"].describe())
+```
+
+```{python}
+datos_precios_historicos.plot(x="anio_mes", y="precio_prom_kg")
+plt.show()
+```
