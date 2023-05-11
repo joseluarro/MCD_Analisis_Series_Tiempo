@@ -20,6 +20,8 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# Propuesta Bookdown
+
 # Prediccion del precio de la Maracuya para el Valle del Cauca
 
 Uno de los mayores desafios para los agricultores es saber en que momento vender los productos cosechados para así obtener una mayor rentabilidad y poder "jugar" con los diferentes costos y gastos en los que se incurren.
