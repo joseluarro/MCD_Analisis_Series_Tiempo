@@ -41,24 +41,44 @@ import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-datos_precios_historicos = pd.read_excel("historico_precios_maracuya.xlsx")
+df_precios_historicos = pd.read_excel("historico_precios_maracuya.xlsx")
+df_precios_passion = pd.read_excel("INFORME_PRODUCCION.xlsx")
 
-print(datos_precios_historicos.head())
+
+print(df_precios_historicos.head())
+print(df_precios_passion.head())
 ```
 
 ```{python}
-print(datos_precios_historicos.info())
+print(df_precios_historicos.info())
+print(df_precios_passion.info())
 ```
 
 ```{python}
-print(datos_precios_historicos.shape)
+print(df_precios_historicos.shape)
+print(df_precios_passion.shape)
 ```
 
 ```{python}
-print(datos_precios_historicos["precio_prom_kg"].describe())
+print(df_precios_historicos["prom_valle"].describe())
 ```
 
 ```{python}
-datos_precios_historicos.plot(x="anio_mes", y="precio_prom_kg")
+print(df_precios_passion["VALOR KILO"].describe())
+```
+
+```{python}
+df_precios_historicos.plot(x="fecha", y="prom_valle")
+plt.show()
+```
+
+```{python}
+# Calcular media por fecha
+df_precios_passion_mean = df_precios_passion.set_index('FECHA')
+df_precios_media = df_precios_passion_mean.groupby(pd.Grouper(freq='M')).mean()
+
+# Graficar datos y línea de tendencia
+df_precios_passion.plot(x="FECHA", y="VALOR KILO")
+df_precios_media.plot(y="VALOR KILO", ax=plt.gca(), color='red')
 plt.show()
 ```
