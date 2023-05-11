@@ -22,6 +22,10 @@ knitr::opts_chunk$set(echo = TRUE)
 
 # Propuesta Bookdown
 
+Propuesta de qué tipo de información a trabajar a lo largo del curso y por qué cree que es importante el pronóstico de ese tipo de información que permita tener valor agregado a esa situación particular que pretende analizar.
+
+Elaboración de documento tipo \'bookdown\' en GitHub, con máximo una página, con información y justificación de la elección en relación con la importancia de analizar esa información. Especificando las fuentes y los permisos de uso de esa información en caso de ser de una empresa específica.
+
 # Prediccion del precio de la Maracuya para el Valle del Cauca
 
 Uno de los mayores desafios para los agricultores es saber en que momento vender los productos cosechados para así obtener una mayor rentabilidad y poder "jugar" con los diferentes costos y gastos en los que se incurren.
