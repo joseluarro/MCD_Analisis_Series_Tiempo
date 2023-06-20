@@ -771,4 +771,125 @@ En resumen, hemos aplicado y comparado diferentes modelos de series de tiempo pa
 
 ### RN Elman
 
+```{python}
+import numpy as np
+import pandas as pd
+import tensorflow as tf
+from sklearn.preprocessing import MinMaxScaler
+
+# Cargar los datos en un DataFrame de pandas
+data = pd.read_excel("historico_precios_maracuya.xlsx", sheet_name="Hoja1")
+
+# Preparar los datos
+data_values = data['prom_valle'].values.reshape(-1, 1)
+
+# Normalizar los datos
+scaler = MinMaxScaler(feature_range=(0, 1))
+scaled_data = scaler.fit_transform(data_values)
+
+# Dividir los datos en conjuntos de entrenamiento y prueba
+train_size = int(len(scaled_data) * 0.8)
+train_data = scaled_data[:train_size]
+test_data = scaled_data[train_size:]
+
+# Función para crear secuencias de datos de entrada y salida
+def create_sequences(data, sequence_length):
+    X = []
+    y = []
+    for i in range(len(data) - sequence_length):
+        X.append(data[i:i+sequence_length])
+        y.append(data[i+sequence_length])
+    return np.array(X), np.array(y)
+
+# Definir la longitud de la secuencia de entrada
+sequence_length = 12
+
+# Crear secuencias de entrada y salida
+X_train, y_train = create_sequences(train_data, sequence_length)
+X_test, y_test = create_sequences(test_data, sequence_length)
+
+# Definir la arquitectura de la red neuronal
+model = tf.keras.Sequential([
+    tf.keras.layers.SimpleRNN(32, input_shape=(sequence_length, 1), activation='relu'),
+    tf.keras.layers.Dense(1)
+])
+
+# Compilar el modelo
+model.compile(optimizer='adam', loss='mean_squared_error')
+
+# Entrenar el modelo
+model.fit(X_train, y_train, epochs=50, batch_size=16)
+
+# Evaluar el modelo en los datos de prueba
+mse = model.evaluate(X_test, y_test)
+
+# Realizar predicciones
+predictions = model.predict(X_test)
+
+# Desnormalizar las predicciones
+predictions = scaler.inverse_transform(predictions)
+
+# Crear un DataFrame con las fechas y las predicciones
+df_predictions = pd.DataFrame({'fecha': data.index[train_size+sequence_length:], 'prediccion': predictions.flatten()})
+
+# Imprimir las predicciones
+print(df_predictions)
+
+RN_Elman_prediction = df_predictions
+```
+
 ### RN Jordan
+
+```{python}
+import numpy as np
+import pandas as pd
+import tensorflow as tf
+from sklearn.preprocessing import MinMaxScaler
+
+data = pd.read_excel("historico_precios_maracuya.xlsx", sheet_name="Hoja1")
+
+# Extraer los valores de la columna 'prom_valle' y cambiar la forma a (-1, 1)
+data_values = data['prom_valle'].values.reshape(-1, 1)
+
+# Normalizar los datos
+scaler = MinMaxScaler(feature_range=(0, 1))
+scaled_data = scaler.fit_transform(data_values)
+
+train_size = int(len(scaled_data) * 0.8)
+train_data = scaled_data[:train_size]
+test_data = scaled_data[train_size:]
+
+def create_sequences(data, sequence_length):
+    X = []
+    y = []
+    for i in range(len(data) - sequence_length):
+        X.append(data[i:i+sequence_length])
+        y.append(data[i+sequence_length])
+    return np.array(X), np.array(y)
+
+sequence_length = 12
+
+X_train, y_train = create_sequences(train_data, sequence_length)
+X_test, y_test = create_sequences(test_data, sequence_length)
+
+model = tf.keras.Sequential([
+    tf.keras.layers.SimpleRNN(32, input_shape=(sequence_length, 1), activation='relu'),
+    tf.keras.layers.Dense(1)
+])
+
+model.compile(optimizer='adam', loss='mean_squared_error')
+
+model.fit(X_train, y_train, epochs=50, batch_size=16)
+
+mse = model.evaluate(X_test, y_test)
+
+predictions = model.predict(X_test)
+
+predictions = scaler.inverse_transform(predictions)
+
+RN_Jordan_prediction = predictions
+```
+
+```{python}
+print(predictions)
+```
