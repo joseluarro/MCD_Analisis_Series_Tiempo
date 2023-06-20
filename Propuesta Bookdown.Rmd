@@ -275,7 +275,7 @@ print("ADF Statistic:", result[0])
 print("p-value:", result[1])
 ```
 
--   ADF Statistic: El valor de -4.41408929369015 es el estadístico ADF obtenido en la prueba. Este valor negativo indica que la serie de tiempo tiene una tendencia decreciente.
+-   ADF Statistic: El valor de -4.41408929369015 es el estadístico Dickey-Fuller Aumentado obtenido en la prueba indica un rechazo a la hipotesis nula de no estacionaridad.
 
 -   p-value: El valor de 0.0002802463072135418 es el valor p asociado al estadístico ADF. El valor p es utilizado para tomar una decisión sobre la hipótesis nula. En este caso, como el valor p es menor que un nivel de significancia comúnmente utilizado (0.05), se rechaza la hipótesis nula de que la serie de tiempo tiene una raíz unitaria (es no estacionaria). Esto sugiere que la serie de tiempo es estacionaria.
 
@@ -293,7 +293,7 @@ En resumen, los resultados indican que la serie de tiempo analizada parece ser e
 
     En resumen, la descomposición revela una tendencia creciente en la serie de tiempo, estacionalidades distintivas en ciertos meses y patrones interesantes en los residuos. Estos hallazgos respaldan la presencia de componentes estructurales en los datos y pueden ser útiles para comprender mejor el comportamiento de la serie a lo largo del tiempo.
 
-2.  El estadístico ADF obtenido en la prueba es de -4.41408929369015. Un valor negativo para este estadístico indica la presencia de una tendencia decreciente en la serie de tiempo. Por otro lado, el valor p asociado al estadístico ADF es de 0.0002802463072135418. El valor p se utiliza para evaluar la hipótesis nula de que la serie de tiempo tiene una raíz unitaria, lo que indica no estacionariedad. En este caso, como el valor p es menor que el nivel de significancia comúnmente utilizado (0.05), se rechaza la hipótesis nula, lo que sugiere que la serie de tiempo es estacionaria.
+2.  El estadístico ADF obtenido en la prueba es de -4.41408929369015. Un valor menor a los valores criticos lo que indica un rechazo de la hipotesis nula de no estacionariedad. Por otro lado, el valor p asociado al estadístico ADF es de 0.0002802463072135418. El valor p se utiliza para evaluar la hipótesis nula de que la serie de tiempo tiene una raíz unitaria, lo que indica no estacionariedad. En este caso, como el valor p es menor que el nivel de significancia comúnmente utilizado (0.05), se rechaza la hipótesis nula, lo que sugiere que la serie de tiempo es estacionaria.
 
     En resumen, los resultados indican que la serie de tiempo analizada parece exhibir estacionariedad, lo cual es un requisito importante para aplicar diversos modelos de análisis de series de tiempo.
 
