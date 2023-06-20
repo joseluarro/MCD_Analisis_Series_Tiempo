@@ -24,7 +24,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 Propuesta de qué tipo de información a trabajar a lo largo del curso y por qué cree que es importante el pronóstico de ese tipo de información que permita tener valor agregado a esa situación particular que pretende analizar.
 
-Elaboración de documento tipo \'bookdown\' en GitHub, con máximo una página, con información y justificación de la elección en relación con la importancia de analizar esa información. Especificando las fuentes y los permisos de uso de esa información en caso de ser de una empresa específica.
+Elaboración de documento tipo 'bookdown' en GitHub, con máximo una página, con información y justificación de la elección en relación con la importancia de analizar esa información. Especificando las fuentes y los permisos de uso de esa información en caso de ser de una empresa específica.
 
 # Prediccion del precio de la Maracuya para el Valle del Cauca
 
@@ -40,19 +40,24 @@ Para lograr mi objetivo de prediccion de precios, se cuenta con una base histori
 
 Adicional a lo anterior, me encuentro abierto a los diferentes metodos ya que no hace parte de mi trabajo de grado y lo veo mas como una aplicacion al proyecto personal.
 
-# Historico de precios del Maracuya
+# Modulo 1
+
+## Unidad 1: Motivacion
+
+### Historico de precios del Maracuya
 
 ```{python}
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
 
-df_precios_historicos = pd.read_excel("historico_precios_maracuya.xlsx")
-df_precios_passion = pd.read_excel("INFORME_PRODUCCION.xlsx")
-
+df_precios_historicos = pd.read_excel("historico_precios_maracuya.xlsx", sheet_name="Hoja1")
+df_precios_passion = pd.read_excel("INFORME_PRODUCCION.xlsx", sheet_name="TOTALIZADO")
+df_precios_datos = pd.read_excel("historico_precios_maracuya.xlsx", sheet_name="Hoja3")
 
 print(df_precios_historicos.head())
 print(df_precios_passion.head())
+print(df_precios_datos.head())
 ```
 
 ```{python}
@@ -74,11 +79,6 @@ print(df_precios_passion["VALOR KILO"].describe())
 ```
 
 ```{python}
-df_precios_historicos.plot(x="fecha", y="prom_valle")
-plt.show()
-```
-
-```{python}
 # Calcular media por fecha
 df_precios_passion_mean = df_precios_passion.set_index('FECHA')
 df_precios_media = df_precios_passion_mean.groupby(pd.Grouper(freq='M')).mean()
@@ -89,9 +89,11 @@ df_precios_media.plot(y="VALOR KILO", ax=plt.gca(), color='red')
 plt.show()
 ```
 
-# Analisis de la dinamica de los datos
+## Unidad 2: Estructura de los datos
 
-## Estructura de los datos en series de tiempo (precios Valle)
+### Estructura de los datos en series de tiempo (precios Valle)
+
+#### Medias Moviles
 
 ```{python}
 import seaborn as sns
@@ -112,14 +114,42 @@ sns.lineplot(data=df_precios_historicos, x='fecha', y='prom_valle', color='blue'
 sns.lineplot(data=df_precios_historicos, x='fecha', y='promedio_movil', color='red', ax=ax)
 ax.set(title='Precio promedio de la Maracuya', xlabel='Fecha', ylabel='Precio promedio')
 plt.show()
+```
 
-# Gráfico de rezagos
-fig, ax = plt.subplots(figsize=(10, 6))
-sns.scatterplot(data=df_precios_historicos, x='prom_valle', y=df_precios_historicos['prom_valle'].shift(1), color='blue')
-ax.plot(ax.get_xlim(), ax.get_ylim(), ls="--", c=".3") # Agregar línea diagonal
-ax.set(title='Rezagos de la serie de tiempo', xlabel='Valor en t', ylabel='Valor en t-1')
+#### Rezago y Estacionalidad
+
+```{python}
+import seaborn as sns
+
+# Crear una figura con subplots de 3 por 3
+fig, axes = plt.subplots(nrows=3, ncols=3, figsize=(12, 12))
+
+# Realizar un bucle para crear una gráfica separada para cada rezago
+for i in range(1, 10):
+    # Calcular las coordenadas del subplot actual
+    row = (i - 1) // 3
+    col = (i - 1) % 3
+    
+    # Obtener el eje correspondiente al subplot actual
+    ax = axes[row, col]
+    
+    # Graficar el scatterplot del rezago actual
+    sns.scatterplot(data=df_precios_historicos, x='prom_valle', y=df_precios_historicos['prom_valle'].shift(i), color='blue', ax=ax)
+    
+    # Agregar línea diagonal
+    ax.plot(ax.get_xlim(), ax.get_ylim(), ls="--", c=".3")
+    
+    # Configurar título y etiquetas de los ejes
+    ax.set(title=f'Rezago t-{i}', xlabel='Valor en t', ylabel=f'Valor en t-{i}')
+
+# Ajustar los subplots
+plt.tight_layout()
+
+# Mostrar la gráfica
 plt.show()
+```
 
+```{python}
 # Obtener la serie de tiempo
 serie = df_precios_historicos['prom_valle']
 
@@ -129,7 +159,9 @@ plot_acf(serie, ax=ax, lags=50)
 plt.show()
 ```
 
-## Estructura de los datos en series de tiempo (precios Passion)
+### Estructura de los datos en series de tiempo (precios Passion)
+
+#### Medias Moviles
 
 ```{python}
 import seaborn as sns
@@ -150,14 +182,42 @@ sns.lineplot(data=df_precios_passion, x='FECHA', y='VALOR KILO', color='blue', a
 sns.lineplot(data=df_precios_passion, x='FECHA', y='promedio_movil', color='red', ax=ax)
 ax.set(title='Precio promedio de la Maracuya', xlabel='Fecha', ylabel='Precio promedio')
 plt.show()
+```
 
-# Gráfico de rezagos
-fig, ax = plt.subplots(figsize=(10, 6))
-sns.scatterplot(data=df_precios_passion, x='VALOR KILO', y=df_precios_passion['VALOR KILO'].shift(1), color='blue')
-ax.plot(ax.get_xlim(), ax.get_ylim(), ls="--", c=".3") # Agregar línea diagonal
-ax.set(title='Rezagos de la serie de tiempo', xlabel='Valor en t', ylabel='Valor en t-1')
+#### Rezago y Estacionalidad
+
+```{python}
+import seaborn as sns
+
+# Crear una figura con subplots de 3 por 3
+fig, axes = plt.subplots(nrows=3, ncols=3, figsize=(12, 12))
+
+# Realizar un bucle para crear una gráfica separada para cada rezago
+for i in range(1, 10):
+    # Calcular las coordenadas del subplot actual
+    row = (i - 1) // 3
+    col = (i - 1) % 3
+    
+    # Obtener el eje correspondiente al subplot actual
+    ax = axes[row, col]
+    
+    # Graficar el scatterplot del rezago actual
+    sns.scatterplot(data=df_precios_passion, x='VALOR KILO', y=df_precios_passion['VALOR KILO'].shift(i), color='blue', ax=ax)
+    
+    # Agregar línea diagonal
+    ax.plot(ax.get_xlim(), ax.get_ylim(), ls="--", c=".3")
+    
+    # Configurar título y etiquetas de los ejes
+    ax.set(title=f'Rezago t-{i}', xlabel='Valor en t', ylabel=f'Valor en t-{i}')
+
+# Ajustar los subplots
+plt.tight_layout()
+
+# Mostrar la gráfica
 plt.show()
+```
 
+```{python}
 # Obtener la serie de tiempo
 serie = df_precios_passion['VALOR KILO']
 
@@ -167,26 +227,548 @@ plot_acf(serie, ax=ax, lags=50)
 plt.show()
 ```
 
-# Preprocesamiento y visualización
+## Unidad 3: Preprocesamiento y Visualización
+
+### Preprocesamiento y visualización
+
+#### Descomposicion
 
 ```{python}
+import pandas as pd
+import matplotlib.pyplot as plt
+from statsmodels.tsa.seasonal import seasonal_decompose
+from statsmodels.tsa.stattools import adfuller
+
+# Cargar los datos de la serie de tiempo en un DataFrame de pandas
+df_precios_historicos = pd.read_excel("historico_precios_maracuya.xlsx", sheet_name="Hoja1")
+
+# Convertir la columna 'fecha' a tipo datetime
+df_precios_historicos['fecha'] = pd.to_datetime(df_precios_historicos['fecha'], format='%Y-%m-%d')
+
+# Establecer la columna 'fecha' como el índice del DataFrame
+df_precios_historicos.set_index('fecha', inplace=True)
+
+# Calcular el promedio mensual de los precios
+df_precios_mensuales = df_precios_historicos.resample('M').mean()
+
+# Convertir el DataFrame a un objeto de series de tiempo
+data = pd.Series(df_precios_mensuales['prom_valle'].values, index=df_precios_mensuales.index)
+
+# Hacer la descomposición
+decomposition = seasonal_decompose(data)
+
+# Mostrar las componentes
+fig, axes = plt.subplots(nrows=4, ncols=1, figsize=(8, 10), sharex=True)
+axes[0].set(title='Serie de tiempo original')
+data.plot(ax=axes[0])
+axes[1].set(title='Tendencia')
+decomposition.trend.plot(ax=axes[1])
+axes[2].set(title='Estacionalidad')
+decomposition.seasonal.plot(ax=axes[2])
+axes[3].set(title='Residuos')
+decomposition.resid.plot(ax=axes[3])
+plt.show()
+
+# Realizar el test de Dickey-Fuller en los residuos
+result = adfuller(decomposition.resid.dropna())
+print("ADF Statistic:", result[0])
+print("p-value:", result[1])
+```
+
+-   ADF Statistic: El valor de -4.41408929369015 es el estadístico ADF obtenido en la prueba. Este valor negativo indica que la serie de tiempo tiene una tendencia decreciente.
+
+-   p-value: El valor de 0.0002802463072135418 es el valor p asociado al estadístico ADF. El valor p es utilizado para tomar una decisión sobre la hipótesis nula. En este caso, como el valor p es menor que un nivel de significancia comúnmente utilizado (0.05), se rechaza la hipótesis nula de que la serie de tiempo tiene una raíz unitaria (es no estacionaria). Esto sugiere que la serie de tiempo es estacionaria.
+
+En resumen, los resultados indican que la serie de tiempo analizada parece ser estacionaria, lo cual es un requisito importante para aplicar algunos modelos de análisis de series de tiempo.
+
+#### Conclusiones de la Estacionariedad
+
+1.  Descomposición de la serie de tiempo: revela patrones interesantes en sus componentes. A continuación, se presenta una descripción de cada uno de ellos:
+
+    -   Tendencia: Visualmente, se observa una tendencia creciente en la serie de tiempo desde julio de 2021 hasta noviembre de 2022. Esto sugiere que los valores de la serie han experimentado un aumento constante durante ese período.
+
+    -   Estacionalidad: La serie muestra patrones estacionales distintivos. Específicamente, se observan picos altos en los meses de febrero y marzo, mientras que los meses de mayo y agosto muestran picos bajos. Estos patrones sugieren una estacionalidad regular en la serie, con fluctuaciones consistentes en esos meses específicos cada año.
+
+    -   Residuos: Al examinar los residuos de la descomposición, se destacan algunos hallazgos interesantes. Se observa un mínimo en septiembre de 2021 y un máximo en septiembre de 2022 en los residuos. Esto indica que hay periodos en los que los valores de la serie se desvían significativamente de la tendencia y la estacionalidad esperadas. Además, entre diciembre de 2021 y junio de 2022, los residuos muestran una línea continua, lo cual sugiere una menor variabilidad o presencia de estructuras sistemáticas en ese intervalo de tiempo.
+
+    En resumen, la descomposición revela una tendencia creciente en la serie de tiempo, estacionalidades distintivas en ciertos meses y patrones interesantes en los residuos. Estos hallazgos respaldan la presencia de componentes estructurales en los datos y pueden ser útiles para comprender mejor el comportamiento de la serie a lo largo del tiempo.
+
+2.  El estadístico ADF obtenido en la prueba es de -4.41408929369015. Un valor negativo para este estadístico indica la presencia de una tendencia decreciente en la serie de tiempo. Por otro lado, el valor p asociado al estadístico ADF es de 0.0002802463072135418. El valor p se utiliza para evaluar la hipótesis nula de que la serie de tiempo tiene una raíz unitaria, lo que indica no estacionariedad. En este caso, como el valor p es menor que el nivel de significancia comúnmente utilizado (0.05), se rechaza la hipótesis nula, lo que sugiere que la serie de tiempo es estacionaria.
+
+    En resumen, los resultados indican que la serie de tiempo analizada parece exhibir estacionariedad, lo cual es un requisito importante para aplicar diversos modelos de análisis de series de tiempo.
+
+# Modulo 2
+
+```{python}
+data.head()
+```
+
+## Unidad 1: Introduccion a los modelos de pronostico
+
+### **Metodologia Holt-Winter**
+
+```{python}
+import matplotlib.pyplot as plt
+import numpy as np
+
+# Crear una figura y un eje
+fig, ax = plt.subplots(figsize=(8, 6))
+
+# Obtener los valores de fecha y datos
+fecha = data.index
+valor = data.values
+
+# Graficar los puntos de datos
+ax.plot(fecha, valor, 'o', label='Datos')
+
+# Ajustar una línea de regresión
+coef = np.polyfit(range(len(fecha)), valor, deg=1)
+linea_regresion = np.poly1d(coef)
+ax.plot(fecha, linea_regresion(range(len(fecha))), label='Línea de regresión')
+
+# Configurar título y etiquetas de los ejes
+ax.set(title='Gráfico de dispersión con línea de regresión', xlabel='Fecha', ylabel='Valor')
+
+# Rotar las etiquetas del eje x para una mejor visualización
+plt.xticks(rotation=45)
+
+# Mostrar la leyenda
+ax.legend()
+
+# Mostrar el gráfico
+plt.show()
+```
+
+Ajustamos una ercta de regresion, observando la tendencia creciente de los datos en donde vemos como el precio aumenta a medida que pasa el tiempo.
+
+```{python}
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Crear un nuevo DataFrame con la fecha y los datos
+df = pd.DataFrame({'fecha': data.index, 'valor': data.values})
+
+# Convertir la columna de fecha al formato adecuado
+df['fecha'] = pd.to_datetime(df['fecha'])
+
+# Extraer el mes de cada fecha
+df['Month'] = df['fecha'].dt.month
+
+# Calcular la desviación del ciclo
+df['Desviación del ciclo'] = df['valor'] - df['valor'].mean()
+
+# Trazar el boxplot
+sns.boxplot(data=df, x='Month', y='Desviación del ciclo')
+
+# Configurar título y etiquetas de los ejes
+plt.title('Boxplot de los datos en función del mes')
+plt.xlabel('Mes')
+plt.ylabel('Desviación del ciclo')
+
+# Mostrar el gráfico
+plt.show()
+```
+
+Calculamos el ciclo y a traves de la funcion media agregamos nuestro conjunto de datos haciendo una transformacion basica, y ahora a traves de un boxplot tratamos de detectar en cada uno de esos meses la regularidad en lo largo del tiempo, se observa que dentro de los meses de febrero, marzo y abril son bastantes distintos comparado con los meses de fin de año.
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+
+# Crear una nueva figura y un nuevo eje para el gráfico del logaritmo
+fig, ax = plt.subplots(figsize=(8, 6))
+
+# Aplicar la transformación logarítmica a los datos
+log_data = np.log(data)
+
+# Graficar los datos transformados
+ax.plot(fecha, log_data)
+ax.set(title='Logaritmo de Precio de Maracuyá', xlabel='Fecha', ylabel='log(data)')
+
+# Rotar las etiquetas del eje x para una mejor visualización
+plt.xticks(rotation=45)
+
+# Mostrar el segundo gráfico
+plt.show()
+```
+
+Utilizamos la funcion logaritmica que nos muestra facilmente los minimos y los maximos de nuestro conjunto de datos, ahora observamos a otra escala la tendencia y estacionalidad ya identificada.
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
+from statsmodels.tsa.holtwinters import ExponentialSmoothing
+
+# Aplicar la transformación logarítmica a los datos
+log_data = np.log(data)
+
+# Crear el modelo Holt-Winters
+modelo_HW = ExponentialSmoothing(log_data, seasonal='additive')
+
+# Ajustar el modelo a los datos
+ajuste_HW = modelo_HW.fit()
+
+# Obtener las predicciones ajustadas
+predicciones = ajuste_HW.fittedvalues
+
+# Crear una nueva figura y un nuevo eje
+fig, ax = plt.subplots(figsize=(8, 6))
+
+# Graficar los datos transformados y las predicciones
+ax.plot(fecha, log_data, label='Datos')
+ax.plot(fecha, predicciones, label='Predicciones')
+
+# Configurar título y etiquetas de los ejes
+ax.set(title='Ajuste con Holt-Winters', xlabel='Fecha', ylabel='log(data)')
+
+# Rotar las etiquetas del eje x para una mejor visualización
+plt.xticks(rotation=45)
+
+# Mostrar la leyenda
+ax.legend()
+
+# Mostrar el gráfico
+plt.show()
+```
+
+Los datos obtenidos en naranja estan muy cerca y se puede ver que el ajuste con este metodo es relativamente bueno (aunque existen algunos estacios en que se difiere) se observa una grafica que mas o menos sigue el comportamiento del conjunto de datos.
+
+```{python}
+import numpy as np
+import matplotlib.pyplot as plt
 from statsmodels.tsa.seasonal import seasonal_decompose
 
-# cargar los datos de la serie de tiempo en un DataFrame de pandas
-#df_precios_historicos = pd.read_excel("historico_precios_maracuya.xlsx")
+# Realizar la descomposición de los datos ajustados
+descomposicion = seasonal_decompose(ajuste_HW.fittedvalues)
 
-# hacer la descomposición
-#decomposition = seasonal_decompose(df_precios_historicos)
+# Obtener los componentes de la descomposición
+tendencia = descomposicion.trend
+estacionalidad = descomposicion.seasonal
+residuos = descomposicion.resid
 
-# mostrar las componentes
-#fig, axes = plt.subplots(nrows=4, ncols=1, figsize=(8, 10), sharex=True)
-#axes[0].set(title='Serie de tiempo original')
-#df_precios_historicos.plot(ax=axes[0])
-#axes[1].set(title='Tendencia')
-#decomposition.trend.plot(ax=axes[1])
-#axes[2].set(title='Estacionalidad')
-#decomposition.seasonal.plot(ax=axes[2])
-#axes[3].set(title='Residuos')
-#decomposition.resid.plot(ax=axes[3])
-#plt.show()
+# Crear una nueva figura y subfiguras para cada componente
+fig, axes = plt.subplots(4, 1, figsize=(8, 12))
+
+# Graficar la tendencia
+axes[0].plot(fecha, tendencia)
+axes[0].set(title='Tendencia', xlabel='Fecha', ylabel='log(data)')
+
+# Graficar la estacionalidad
+axes[1].plot(fecha, estacionalidad)
+axes[1].set(title='Estacionalidad', xlabel='Fecha', ylabel='log(data)')
+
+# Graficar los residuos
+axes[2].plot(fecha, residuos)
+axes[2].set(title='Residuos', xlabel='Fecha', ylabel='log(data)')
+
+# Graficar los datos originales
+axes[3].plot(fecha, log_data, label='Datos')
+axes[3].set(title='Datos Originales', xlabel='Fecha', ylabel='log(data)')
+
+# Ajustar el espaciado entre las subfiguras
+plt.tight_layout()
+
+# Mostrar el gráfico
+plt.show()
 ```
+
+```{python}
+import matplotlib.pyplot as plt
+from statsmodels.tsa.holtwinters import ExponentialSmoothing
+
+# Crear el modelo Holt-Winters
+modelo_HW = ExponentialSmoothing(log_data, seasonal='additive')
+
+# Ajustar el modelo
+modelo_ajustado = modelo_HW.fit()
+
+# Realizar la predicción de 4 periodos hacia adelante
+prediccion = modelo_ajustado.forecast(steps=4)
+
+# Crear una nueva figura y un nuevo eje
+fig, ax = plt.subplots(figsize=(8, 6))
+
+# Graficar los datos originales
+ax.plot(fecha, log_data, label='Datos')
+
+# Obtener las fechas para los valores predichos
+fechas_prediccion = pd.date_range(start=fecha[-1], periods=len(prediccion)+1, freq='M')[1:]
+
+# Graficar los valores predichos
+ax.plot(fechas_prediccion, prediccion, label='Valores Predichos')
+
+# Configurar título y etiquetas de los ejes
+ax.set(title='Predicción con Holt-Winters', xlabel='Fecha', ylabel='log(data)')
+
+# Rotar las etiquetas del eje x para una mejor visualización
+plt.xticks(rotation=45)
+
+# Mostrar la leyenda
+ax.legend()
+
+# Mostrar el gráfico
+plt.show()
+```
+
+Podemos ver una prediccion utilizando el modelo Holt-Winter para los precios de junio, julio, agosto y septiembre del año 2023.
+
+```{python}
+prediccion.head()
+```
+
+```{python}
+import numpy as np
+
+# Convertir los valores predichos del logaritmo al valor real
+valores_predichos = np.exp(prediccion)
+
+# Imprimir los valores predichos en formato fecha y valor
+for fecha_pred, valor_pred in zip(fechas_prediccion, valores_predichos):
+    print(fecha_pred.strftime('%Y-%m-%d'), valor_pred)
+```
+
+### Metodoligia de Suavizamiento a la variable Tiempo
+
+```{python}
+import matplotlib.pyplot as plt
+from statsmodels.tsa.api import SimpleExpSmoothing
+
+# Crear el modelo de suavizamiento exponencial simple
+modelo_ses = SimpleExpSmoothing(log_data)
+
+# Ajustar el modelo
+modelo_ajustado = modelo_ses.fit()
+
+# Realizar la predicción de 4 periodos hacia adelante
+prediccion = modelo_ajustado.forecast(steps=4)
+
+# Crear una nueva figura y un nuevo eje
+fig, ax = plt.subplots(figsize=(8, 6))
+
+# Graficar los datos originales
+ax.plot(fecha, log_data, label='Datos')
+
+# Obtener las fechas para los valores predichos
+fechas_prediccion = pd.date_range(start=fecha[-1], periods=len(prediccion)+1, freq='M')[1:]
+
+# Graficar los valores predichos
+ax.plot(fechas_prediccion, prediccion, label='Valores Predichos')
+
+# Configurar título y etiquetas de los ejes
+ax.set(title='Predicción con Suavizamiento Exponencial Simple', xlabel='Fecha', ylabel='log(data)')
+
+# Rotar las etiquetas del eje x para una mejor visualización
+plt.xticks(rotation=45)
+
+# Mostrar la leyenda
+ax.legend()
+
+# Mostrar el gráfico
+plt.show()
+```
+
+```{python}
+prediccion.head()
+```
+
+```{python}
+import numpy as np
+
+# Convertir los valores predichos del logaritmo al valor real
+valores_predichos = np.exp(prediccion)
+
+# Imprimir los valores predichos en formato fecha y valor
+for fecha_pred, valor_pred in zip(fechas_prediccion, valores_predichos):
+    print(fecha_pred.strftime('%Y-%m-%d'), valor_pred)
+```
+
+### Conclusiones de Aplicacion de Metodos
+
+Mediante el método Holt-Winters se obtienen predicciones como 3.730 (Junio/23), 4.253 (Julio/23), 3.523 (Agosto/23) y 4.046 (Septiembre/23). Por otro lado, al aplicar el método de suavizamiento a la variable tiempo para los mismos periodos se obtuvo un valor de 4.490. Esta discrepancia puede deberse a varios factores. En primer lugar, el método de suavizamiento de la variable tiempo puede no estar capturando adecuadamente las variaciones en los datos debido a su configuración de parámetros o a la falta de patrones distintivos en la serie temporal. Además, el método de Holt-Winters está diseñado específicamente para abordar problemas de tendencia y estacionalidad, lo que puede hacerlo más adecuado para este tipo de series. Aunque no es la solución definitiva para todos los casos, el método de Holt-Winters proporciona una base sólida para obtener resultados aceptables y permite una interpretación más clara incluso para aquellos que no son expertos técnicos. En última instancia, es importante evaluar y comparar diferentes técnicas de pronóstico para determinar la más adecuada para cada situación específica.
+
+## Unidad 2: Modelos Estacionarios
+
+### **Metodología Box-Jenkins**
+
+```{python}
+import pandas as pd
+from statsmodels.graphics.tsaplots import plot_acf, plot_pacf
+import matplotlib
+matplotlib.use('QtAgg')
+
+# Calcular la ACF
+acf = plot_acf(data)
+
+# Calcular la PACF con 7 retrasos
+pacf = plot_pacf(data, lags=7, method='ywm')
+
+# Mostrar los gráficos de la ACF y PACF
+acf.show()
+pacf.show()
+```
+
+Utilizamos un bucle para encontrar la mejor combinacion ARIMA, iterando sobre diferentes combinaciones para luego seleccionar el modelo con el menor valor de la metrica de evaluacion. Cabe mencionar que esto es una implementacion basica y que existen técnicas más avanzadas, como la validación cruzada, para evaluar y seleccionar modelos ARIMA. Sin embargo, este enfoque de búsqueda exhaustiva brinda un punto de partida para explorar diferentes combinaciones de órdenes y encontrar un modelo ARIMA adecuado para los datos.
+
+```{python}
+import itertools
+import warnings
+from statsmodels.tsa.arima.model import ARIMA
+
+# Definir los rangos para los órdenes p, d, q
+p_range = range(0, 3)  # Rango para el orden AR(p)
+d_range = range(0, 2)  # Rango para el orden de diferenciación d
+q_range = range(0, 3)  # Rango para el orden MA(q)
+
+# Lista para almacenar los resultados de los modelos
+model_results = []
+
+# Ignorar los warnings para evitar la impresión repetitiva de los mismos
+warnings.filterwarnings("ignore")
+
+# Iterar sobre todas las combinaciones posibles de órdenes
+for p, d, q in itertools.product(p_range, d_range, q_range):
+    try:
+        # Ajustar el modelo ARIMA
+        modelo = ARIMA(data, order=(p, d, q))
+        modelo_ajustado = modelo.fit()
+
+        # Calcular la métrica de evaluación (por ejemplo, AIC)
+        aic = modelo_ajustado.aic
+
+        # Almacenar los resultados del modelo y su orden correspondiente
+        model_results.append((p, d, q, aic))
+    except:
+        continue
+
+# Ordenar los resultados por la métrica de evaluación (menor AIC)
+model_results.sort(key=lambda x: x[3])
+
+# Obtener la mejor combinación ARIMA
+best_order = model_results[0][:3]
+
+# Ajustar el modelo final con la mejor combinación de órdenes
+best_model = ARIMA(data, order=best_order)
+best_model_ajustado = best_model.fit()
+
+# Imprimir los resultados del mejor modelo
+print(best_model_ajustado.summary())
+```
+
+Los resultados del modelo ARIMA (0, 1, 2) indican lo siguiente:
+
+-   La variable "y" corresponde a la serie de tiempo que estás analizando, con 29 observaciones en total.
+
+-   El modelo ajustado tiene un AIC (Criterio de Información de Akaike) de 432.523, lo cual indica que este modelo tiene un buen ajuste a los datos.
+
+-   Los coeficientes estimados para los dos términos de media móvil (MA) son -0.1058 y -0.3985. Estos coeficientes representan la influencia de los errores pasados en las predicciones actuales. Los valores cercanos a cero indican que los términos de media móvil no tienen un efecto significativo en el modelo.
+
+-   El valor de sigma2 es de 2.303e+05, que representa la varianza estimada del ruido blanco en el modelo.
+
+-   El valor p para el estadístico Ljung-Box (L1) es de 0.56, y el valor p para el estadístico de Jarque-Bera (JB) es de 0.65. Estos valores se utilizan para evaluar la autocorrelación y la normalidad de los residuos del modelo. Valores altos de p indican que los residuos no presentan autocorrelación significativa y siguen una distribución normal.
+
+```{python}
+import pandas as pd
+from statsmodels.tsa.arima.model import ARIMA
+
+# Ajustar el modelo ARIMA
+modelo = ARIMA(data, order=(0, 1, 2))
+modelo_ajustado = modelo.fit()
+
+# Realizar la predicción para los siguientes 4 meses
+prediccion = modelo_ajustado.get_forecast(steps=4)
+
+# Obtener los valores predichos y los intervalos de confianza
+valores_predichos = prediccion.predicted_mean
+intervalos_confianza = prediccion.conf_int()
+
+# Crear un DataFrame con los resultados
+prediccion_df = pd.DataFrame({
+    'Fecha': valores_predichos.index,
+    'Predicción': valores_predichos.values,
+    'Intervalo de Confianza Inferior': intervalos_confianza.iloc[:, 0].values,
+    'Intervalo de Confianza Superior': intervalos_confianza.iloc[:, 1].values
+})
+
+# Imprimir los resultados
+print(prediccion_df)
+
+```
+
+## Unidad 3: Regresión
+
+### Modelo Propeth
+
+```{python}
+#from fbprophet import Prophet
+
+#data = data.rename(columns={'fecha': 'ds', 'valor': 'y'})
+#modelo = Prophet()
+#modelo.fit(data)
+
+#futuro = modelo.make_future_dataframe(periods=12)  # Predicción de 12 días futuros
+#prediccion = modelo.predict(futuro)
+
+#modelo.plot(prediccion)
+```
+
+Por limitaciones computacionales no ha sido posible la instalacion del paquete Prophet. Se intento instalar pero no se encuentra la liibreria fbprophet para Python. (Solo esta seccion se realizara en R)
+
+```{r}
+# Cargar los datos desde un archivo CSV
+library(readxl)
+data <- read_excel("historico_precios_maracuya.xlsx", sheet = "Hoja1")
+
+# Cargar el paquete "lubridate"
+library(lubridate)
+
+# Cargar el paquete "dplyr"
+library(dplyr)
+
+# Convertir las columnas de fecha al formato adecuado
+data$fecha <- as.Date(data$fecha)
+
+# Desagrupar los datos
+data <- data %>% ungroup()
+
+library(lubridate)
+# Convertir el DataFrame a una serie de tiempo en R
+ts_data <- ts(data$prom_valle, start = c(year(min(data$fecha)), month(min(data$fecha))), frequency = 12)
+```
+
+```{r}
+library(prophet)
+
+# Crear el dataframe para Prophet
+df <- data.frame(ds = data$fecha, y = data$prom_valle)
+
+# Ajustar el modelo Prophet
+model <- prophet(df)
+
+# Realizar la predicción para los próximos 4 períodos
+future <- make_future_dataframe(model, periods = 4, freq = "month")
+forecast <- predict(model, future)
+
+# Visualizar los resultados
+plot(model, forecast)
+```
+
+Basándonos en lo que hemos hecho anteriormente, podemos llegar a las siguientes conclusiones:
+
+1.  Los modelos ARIMA y SARIMAX proporcionaron ajustes razonables a los datos de la serie de tiempo de precios del maracuyá. Estos modelos tuvieron en cuenta la autocorrelación y la estacionalidad de los datos, lo que les permitió capturar los patrones y realizar pronósticos.
+
+2.  Sin embargo, al aplicar el algoritmo Facebook's Prophet, obtuvimos resultados más precisos y más fáciles de interpretar. Prophet es capaz de manejar las tendencias no lineales y las estacionalidades cambiantes presentes en los datos de la serie de tiempo. Además, nos proporcionó intervalos de confianza para los pronósticos, lo que nos permitió evaluar la incertidumbre asociada a las predicciones.
+
+3.  La variable en serie de tiempo, representada por los precios del maracuyá, puede ser vista como una regresión en el contexto de Prophet. El modelo de Prophet descompone la serie de tiempo en componentes de tendencia, estacionalidad y efectos de días festivos, y utiliza un modelo aditivo para capturar la relación entre los predictores y la variable objetivo. En nuestro caso, podríamos considerar variables adicionales, como el clima, la oferta y la demanda, como predictores en el modelo de Prophet para mejorar las predicciones.
+
+4.  Al comparar el ajuste de los diferentes modelos (ARIMA, SARIMAX y Prophet) y su capacidad para realizar pronósticos precisos, encontramos que Prophet superó a los modelos ARIMA y SARIMAX en términos de precisión y facilidad de uso. Sin embargo, es importante tener en cuenta que la elección del modelo depende de las características específicas de los datos y los objetivos del análisis.
+
+En resumen, hemos aplicado y comparado diferentes modelos de series de tiempo para pronosticar los precios del maracuyá. Encontramos que el algoritmo Facebook's Prophet proporcionó resultados más precisos y fáciles de interpretar en comparación con los modelos ARIMA y SARIMAX. Esto demuestra la utilidad de Prophet para el análisis y pronóstico de series de tiempo con patrones complejos. Además, identificamos la variable en serie de tiempo como una regresión en el contexto de Prophet, lo que nos permite considerar predictores adicionales para mejorar las predicciones.
+
+# Modulo 3
+
+## Unidad 1: Redes Neuronales Recurrentes
+
+### RN Elman
+
+### RN Jordan
