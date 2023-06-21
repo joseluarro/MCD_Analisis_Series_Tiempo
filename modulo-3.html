@@ -31,7 +31,7 @@
   
   
 <link rel="prev" href="modulo-2.html"/>
-
+<link rel="next" href="conclusiones.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -182,6 +182,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.1.2" data-path="modulo-3.html"><a href="modulo-3.html#rn-jordan"><i class="fa fa-check"></i><b>5.1.2</b> RN Jordan</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="6" data-path="conclusiones.html"><a href="conclusiones.html"><i class="fa fa-check"></i><b>6</b> CONCLUSIONES</a></li>
 </ul>
 
       </nav>
@@ -205,558 +206,558 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">5.1</span> Unidad 1: Redes Neuronales Recurrentes<a href="modulo-3.html#unidad-1-redes-neuronales-recurrentes" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="rn-elman" class="section level3 hasAnchor" number="5.1.1">
 <h3><span class="header-section-number">5.1.1</span> RN Elman<a href="modulo-3.html#rn-elman" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb87"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb87-1"><a href="modulo-3.html#cb87-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb87-2"><a href="modulo-3.html#cb87-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb87-3"><a href="modulo-3.html#cb87-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
-<span id="cb87-4"><a href="modulo-3.html#cb87-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> MinMaxScaler</span>
-<span id="cb87-5"><a href="modulo-3.html#cb87-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-6"><a href="modulo-3.html#cb87-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Cargar los datos en un DataFrame de pandas</span></span>
-<span id="cb87-7"><a href="modulo-3.html#cb87-7" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.read_excel(<span class="st">&quot;historico_precios_maracuya.xlsx&quot;</span>, sheet_name<span class="op">=</span><span class="st">&quot;Hoja1&quot;</span>)</span>
-<span id="cb87-8"><a href="modulo-3.html#cb87-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-9"><a href="modulo-3.html#cb87-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Preparar los datos</span></span>
-<span id="cb87-10"><a href="modulo-3.html#cb87-10" aria-hidden="true" tabindex="-1"></a>data_values <span class="op">=</span> data[<span class="st">&#39;prom_valle&#39;</span>].values.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb87-11"><a href="modulo-3.html#cb87-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-12"><a href="modulo-3.html#cb87-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalizar los datos</span></span>
-<span id="cb87-13"><a href="modulo-3.html#cb87-13" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> MinMaxScaler(feature_range<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span>
-<span id="cb87-14"><a href="modulo-3.html#cb87-14" aria-hidden="true" tabindex="-1"></a>scaled_data <span class="op">=</span> scaler.fit_transform(data_values)</span>
-<span id="cb87-15"><a href="modulo-3.html#cb87-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-16"><a href="modulo-3.html#cb87-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Dividir los datos en conjuntos de entrenamiento y prueba</span></span>
-<span id="cb87-17"><a href="modulo-3.html#cb87-17" aria-hidden="true" tabindex="-1"></a>train_size <span class="op">=</span> <span class="bu">int</span>(<span class="bu">len</span>(scaled_data) <span class="op">*</span> <span class="fl">0.8</span>)</span>
-<span id="cb87-18"><a href="modulo-3.html#cb87-18" aria-hidden="true" tabindex="-1"></a>train_data <span class="op">=</span> scaled_data[:train_size]</span>
-<span id="cb87-19"><a href="modulo-3.html#cb87-19" aria-hidden="true" tabindex="-1"></a>test_data <span class="op">=</span> scaled_data[train_size:]</span>
-<span id="cb87-20"><a href="modulo-3.html#cb87-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-21"><a href="modulo-3.html#cb87-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Función para crear secuencias de datos de entrada y salida</span></span>
-<span id="cb87-22"><a href="modulo-3.html#cb87-22" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_sequences(data, sequence_length):</span>
-<span id="cb87-23"><a href="modulo-3.html#cb87-23" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> []</span>
-<span id="cb87-24"><a href="modulo-3.html#cb87-24" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> []</span>
-<span id="cb87-25"><a href="modulo-3.html#cb87-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(data) <span class="op">-</span> sequence_length):</span>
-<span id="cb87-26"><a href="modulo-3.html#cb87-26" aria-hidden="true" tabindex="-1"></a>        X.append(data[i:i<span class="op">+</span>sequence_length])</span>
-<span id="cb87-27"><a href="modulo-3.html#cb87-27" aria-hidden="true" tabindex="-1"></a>        y.append(data[i<span class="op">+</span>sequence_length])</span>
-<span id="cb87-28"><a href="modulo-3.html#cb87-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.array(X), np.array(y)</span>
-<span id="cb87-29"><a href="modulo-3.html#cb87-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-30"><a href="modulo-3.html#cb87-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Definir la longitud de la secuencia de entrada</span></span>
-<span id="cb87-31"><a href="modulo-3.html#cb87-31" aria-hidden="true" tabindex="-1"></a>sequence_length <span class="op">=</span> <span class="dv">12</span></span>
-<span id="cb87-32"><a href="modulo-3.html#cb87-32" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-33"><a href="modulo-3.html#cb87-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear secuencias de entrada y salida</span></span>
-<span id="cb87-34"><a href="modulo-3.html#cb87-34" aria-hidden="true" tabindex="-1"></a>X_train, y_train <span class="op">=</span> create_sequences(train_data, sequence_length)</span>
-<span id="cb87-35"><a href="modulo-3.html#cb87-35" aria-hidden="true" tabindex="-1"></a>X_test, y_test <span class="op">=</span> create_sequences(test_data, sequence_length)</span>
-<span id="cb87-36"><a href="modulo-3.html#cb87-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-37"><a href="modulo-3.html#cb87-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Definir la arquitectura de la red neuronal</span></span>
-<span id="cb87-38"><a href="modulo-3.html#cb87-38" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> tf.keras.Sequential([</span>
-<span id="cb87-39"><a href="modulo-3.html#cb87-39" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.SimpleRNN(<span class="dv">32</span>, input_shape<span class="op">=</span>(sequence_length, <span class="dv">1</span>), activation<span class="op">=</span><span class="st">&#39;relu&#39;</span>),</span>
-<span id="cb87-40"><a href="modulo-3.html#cb87-40" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dense(<span class="dv">1</span>)</span>
-<span id="cb87-41"><a href="modulo-3.html#cb87-41" aria-hidden="true" tabindex="-1"></a>])</span>
-<span id="cb87-42"><a href="modulo-3.html#cb87-42" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-43"><a href="modulo-3.html#cb87-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Compilar el modelo</span></span>
-<span id="cb87-44"><a href="modulo-3.html#cb87-44" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">compile</span>(optimizer<span class="op">=</span><span class="st">&#39;adam&#39;</span>, loss<span class="op">=</span><span class="st">&#39;mean_squared_error&#39;</span>)</span>
-<span id="cb87-45"><a href="modulo-3.html#cb87-45" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-46"><a href="modulo-3.html#cb87-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Entrenar el modelo</span></span>
-<span id="cb87-47"><a href="modulo-3.html#cb87-47" aria-hidden="true" tabindex="-1"></a>model.fit(X_train, y_train, epochs<span class="op">=</span><span class="dv">50</span>, batch_size<span class="op">=</span><span class="dv">16</span>)</span>
-<span id="cb87-48"><a href="modulo-3.html#cb87-48" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb87-49"><a href="modulo-3.html#cb87-49" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluar el modelo en los datos de prueba</span></span></code></pre></div>
+<div class="sourceCode" id="cb114"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb114-1"><a href="modulo-3.html#cb114-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb114-2"><a href="modulo-3.html#cb114-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb114-3"><a href="modulo-3.html#cb114-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
+<span id="cb114-4"><a href="modulo-3.html#cb114-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> MinMaxScaler</span>
+<span id="cb114-5"><a href="modulo-3.html#cb114-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-6"><a href="modulo-3.html#cb114-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Cargar los datos en un DataFrame de pandas</span></span>
+<span id="cb114-7"><a href="modulo-3.html#cb114-7" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.read_excel(<span class="st">&quot;historico_precios_maracuya.xlsx&quot;</span>, sheet_name<span class="op">=</span><span class="st">&quot;Hoja1&quot;</span>)</span>
+<span id="cb114-8"><a href="modulo-3.html#cb114-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-9"><a href="modulo-3.html#cb114-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Preparar los datos</span></span>
+<span id="cb114-10"><a href="modulo-3.html#cb114-10" aria-hidden="true" tabindex="-1"></a>data_values <span class="op">=</span> data[<span class="st">&#39;prom_valle&#39;</span>].values.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb114-11"><a href="modulo-3.html#cb114-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-12"><a href="modulo-3.html#cb114-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalizar los datos</span></span>
+<span id="cb114-13"><a href="modulo-3.html#cb114-13" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> MinMaxScaler(feature_range<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb114-14"><a href="modulo-3.html#cb114-14" aria-hidden="true" tabindex="-1"></a>scaled_data <span class="op">=</span> scaler.fit_transform(data_values)</span>
+<span id="cb114-15"><a href="modulo-3.html#cb114-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-16"><a href="modulo-3.html#cb114-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Dividir los datos en conjuntos de entrenamiento y prueba</span></span>
+<span id="cb114-17"><a href="modulo-3.html#cb114-17" aria-hidden="true" tabindex="-1"></a>train_size <span class="op">=</span> <span class="bu">int</span>(<span class="bu">len</span>(scaled_data) <span class="op">*</span> <span class="fl">0.8</span>)</span>
+<span id="cb114-18"><a href="modulo-3.html#cb114-18" aria-hidden="true" tabindex="-1"></a>train_data <span class="op">=</span> scaled_data[:train_size]</span>
+<span id="cb114-19"><a href="modulo-3.html#cb114-19" aria-hidden="true" tabindex="-1"></a>test_data <span class="op">=</span> scaled_data[train_size:]</span>
+<span id="cb114-20"><a href="modulo-3.html#cb114-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-21"><a href="modulo-3.html#cb114-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Función para crear secuencias de datos de entrada y salida</span></span>
+<span id="cb114-22"><a href="modulo-3.html#cb114-22" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_sequences(data, sequence_length):</span>
+<span id="cb114-23"><a href="modulo-3.html#cb114-23" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> []</span>
+<span id="cb114-24"><a href="modulo-3.html#cb114-24" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> []</span>
+<span id="cb114-25"><a href="modulo-3.html#cb114-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(data) <span class="op">-</span> sequence_length):</span>
+<span id="cb114-26"><a href="modulo-3.html#cb114-26" aria-hidden="true" tabindex="-1"></a>        X.append(data[i:i<span class="op">+</span>sequence_length])</span>
+<span id="cb114-27"><a href="modulo-3.html#cb114-27" aria-hidden="true" tabindex="-1"></a>        y.append(data[i<span class="op">+</span>sequence_length])</span>
+<span id="cb114-28"><a href="modulo-3.html#cb114-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.array(X), np.array(y)</span>
+<span id="cb114-29"><a href="modulo-3.html#cb114-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-30"><a href="modulo-3.html#cb114-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Definir la longitud de la secuencia de entrada</span></span>
+<span id="cb114-31"><a href="modulo-3.html#cb114-31" aria-hidden="true" tabindex="-1"></a>sequence_length <span class="op">=</span> <span class="dv">12</span></span>
+<span id="cb114-32"><a href="modulo-3.html#cb114-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-33"><a href="modulo-3.html#cb114-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear secuencias de entrada y salida</span></span>
+<span id="cb114-34"><a href="modulo-3.html#cb114-34" aria-hidden="true" tabindex="-1"></a>X_train, y_train <span class="op">=</span> create_sequences(train_data, sequence_length)</span>
+<span id="cb114-35"><a href="modulo-3.html#cb114-35" aria-hidden="true" tabindex="-1"></a>X_test, y_test <span class="op">=</span> create_sequences(test_data, sequence_length)</span>
+<span id="cb114-36"><a href="modulo-3.html#cb114-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-37"><a href="modulo-3.html#cb114-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Definir la arquitectura de la red neuronal</span></span>
+<span id="cb114-38"><a href="modulo-3.html#cb114-38" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> tf.keras.Sequential([</span>
+<span id="cb114-39"><a href="modulo-3.html#cb114-39" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.SimpleRNN(<span class="dv">32</span>, input_shape<span class="op">=</span>(sequence_length, <span class="dv">1</span>), activation<span class="op">=</span><span class="st">&#39;relu&#39;</span>),</span>
+<span id="cb114-40"><a href="modulo-3.html#cb114-40" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dense(<span class="dv">1</span>)</span>
+<span id="cb114-41"><a href="modulo-3.html#cb114-41" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb114-42"><a href="modulo-3.html#cb114-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-43"><a href="modulo-3.html#cb114-43" aria-hidden="true" tabindex="-1"></a><span class="co"># Compilar el modelo</span></span>
+<span id="cb114-44"><a href="modulo-3.html#cb114-44" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">compile</span>(optimizer<span class="op">=</span><span class="st">&#39;adam&#39;</span>, loss<span class="op">=</span><span class="st">&#39;mean_squared_error&#39;</span>)</span>
+<span id="cb114-45"><a href="modulo-3.html#cb114-45" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-46"><a href="modulo-3.html#cb114-46" aria-hidden="true" tabindex="-1"></a><span class="co"># Entrenar el modelo</span></span>
+<span id="cb114-47"><a href="modulo-3.html#cb114-47" aria-hidden="true" tabindex="-1"></a>model.fit(X_train, y_train, epochs<span class="op">=</span><span class="dv">50</span>, batch_size<span class="op">=</span><span class="dv">16</span>)</span>
+<span id="cb114-48"><a href="modulo-3.html#cb114-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb114-49"><a href="modulo-3.html#cb114-49" aria-hidden="true" tabindex="-1"></a><span class="co"># Evaluar el modelo en los datos de prueba</span></span></code></pre></div>
 <pre><code>## Epoch 1/50
 ## 
-1/6 [====&gt;.........................] - ETA: 8s - loss: 0.1468
-6/6 [==============================] - 2s 3ms/step - loss: 0.1059
+1/6 [====&gt;.........................] - ETA: 7s - loss: 0.1103
+6/6 [==============================] - 2s 4ms/step - loss: 0.0834
 ## Epoch 2/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0643
-6/6 [==============================] - 0s 3ms/step - loss: 0.0507
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0871
+6/6 [==============================] - 0s 3ms/step - loss: 0.0565
 ## Epoch 3/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0173
-6/6 [==============================] - 0s 3ms/step - loss: 0.0214
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0341
+6/6 [==============================] - 0s 3ms/step - loss: 0.0327
 ## Epoch 4/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0117
-6/6 [==============================] - 0s 3ms/step - loss: 0.0083
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0268
+6/6 [==============================] - 0s 3ms/step - loss: 0.0171
 ## Epoch 5/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0076
-6/6 [==============================] - 0s 3ms/step - loss: 0.0100
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0105
+6/6 [==============================] - 0s 3ms/step - loss: 0.0109
 ## Epoch 6/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0100
-6/6 [==============================] - 0s 3ms/step - loss: 0.0081
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0127
+6/6 [==============================] - 0s 3ms/step - loss: 0.0113
 ## Epoch 7/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0034
-6/6 [==============================] - 0s 3ms/step - loss: 0.0057
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0126
+6/6 [==============================] - 0s 3ms/step - loss: 0.0089
 ## Epoch 8/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0058
-6/6 [==============================] - 0s 3ms/step - loss: 0.0052
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0075
+6/6 [==============================] - 0s 3ms/step - loss: 0.0074
 ## Epoch 9/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0052
-6/6 [==============================] - 0s 2ms/step - loss: 0.0047
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0091
+6/6 [==============================] - 0s 2ms/step - loss: 0.0072
 ## Epoch 10/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0069
-6/6 [==============================] - 0s 3ms/step - loss: 0.0044
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0062
+6/6 [==============================] - 0s 3ms/step - loss: 0.0066
 ## Epoch 11/50
 ## 
 1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0060
-6/6 [==============================] - 0s 3ms/step - loss: 0.0043
-## Epoch 12/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0028
-6/6 [==============================] - 0s 3ms/step - loss: 0.0040
-## Epoch 13/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0051
-6/6 [==============================] - 0s 2ms/step - loss: 0.0040
-## Epoch 14/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0047
-6/6 [==============================] - 0s 3ms/step - loss: 0.0038
-## Epoch 15/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0021
-6/6 [==============================] - 0s 3ms/step - loss: 0.0038
-## Epoch 16/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0026
-6/6 [==============================] - 0s 3ms/step - loss: 0.0036
-## Epoch 17/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0030
-6/6 [==============================] - 0s 3ms/step - loss: 0.0037
-## Epoch 18/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0047
-6/6 [==============================] - 0s 3ms/step - loss: 0.0036
-## Epoch 19/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0028
-6/6 [==============================] - 0s 3ms/step - loss: 0.0035
-## Epoch 20/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0040
-6/6 [==============================] - 0s 3ms/step - loss: 0.0035
-## Epoch 21/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0034
-6/6 [==============================] - 0s 3ms/step - loss: 0.0034
-## Epoch 22/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0031
-6/6 [==============================] - 0s 2ms/step - loss: 0.0035
-## Epoch 23/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0036
-6/6 [==============================] - 0s 3ms/step - loss: 0.0034
-## Epoch 24/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 9.4434e-04
-6/6 [==============================] - 0s 2ms/step - loss: 0.0034
-## Epoch 25/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0036
-6/6 [==============================] - 0s 3ms/step - loss: 0.0034
-## Epoch 26/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0029
-6/6 [==============================] - 0s 3ms/step - loss: 0.0033
-## Epoch 27/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0020
-6/6 [==============================] - 0s 3ms/step - loss: 0.0033
-## Epoch 28/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0048
-6/6 [==============================] - 0s 2ms/step - loss: 0.0033
-## Epoch 29/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0030
-6/6 [==============================] - 0s 2ms/step - loss: 0.0033
-## Epoch 30/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0036
-6/6 [==============================] - 0s 3ms/step - loss: 0.0032
-## Epoch 31/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0053
-6/6 [==============================] - 0s 2ms/step - loss: 0.0032
-## Epoch 32/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0031
-6/6 [==============================] - 0s 3ms/step - loss: 0.0032
-## Epoch 33/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0045
-6/6 [==============================] - 0s 3ms/step - loss: 0.0032
-## Epoch 34/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0054
-6/6 [==============================] - 0s 3ms/step - loss: 0.0031
-## Epoch 35/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0037
-6/6 [==============================] - 0s 3ms/step - loss: 0.0031
-## Epoch 36/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0025
-6/6 [==============================] - 0s 3ms/step - loss: 0.0031
-## Epoch 37/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0025
-6/6 [==============================] - 0s 3ms/step - loss: 0.0031
-## Epoch 38/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0027
-6/6 [==============================] - 0s 3ms/step - loss: 0.0031
-## Epoch 39/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0032
-6/6 [==============================] - 0s 3ms/step - loss: 0.0030
-## Epoch 40/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0031
-6/6 [==============================] - 0s 3ms/step - loss: 0.0030
-## Epoch 41/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0021
-6/6 [==============================] - 0s 3ms/step - loss: 0.0030
-## Epoch 42/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0029
-6/6 [==============================] - 0s 3ms/step - loss: 0.0030
-## Epoch 43/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0016
-6/6 [==============================] - 0s 4ms/step - loss: 0.0030
-## Epoch 44/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0026
-6/6 [==============================] - 0s 3ms/step - loss: 0.0029
-## Epoch 45/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0029
-6/6 [==============================] - 0s 3ms/step - loss: 0.0029
-## Epoch 46/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0040
-6/6 [==============================] - 0s 3ms/step - loss: 0.0029
-## Epoch 47/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0021
-6/6 [==============================] - 0s 3ms/step - loss: 0.0030
-## Epoch 48/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 8.8856e-04
-6/6 [==============================] - 0s 2ms/step - loss: 0.0028
-## Epoch 49/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0022
-6/6 [==============================] - 0s 3ms/step - loss: 0.0028
-## Epoch 50/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0047
-6/6 [==============================] - 0s 3ms/step - loss: 0.0029
-## &lt;keras.callbacks.History object at 0x0000029D56273FA0&gt;</code></pre>
-<div class="sourceCode" id="cb89"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb89-1"><a href="modulo-3.html#cb89-1" aria-hidden="true" tabindex="-1"></a>mse <span class="op">=</span> model.evaluate(X_test, y_test)</span>
-<span id="cb89-2"><a href="modulo-3.html#cb89-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb89-3"><a href="modulo-3.html#cb89-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Realizar predicciones</span></span></code></pre></div>
-<pre><code>## 
-1/1 [==============================] - ETA: 0s - loss: 0.0281
-1/1 [==============================] - 0s 244ms/step - loss: 0.0281</code></pre>
-<div class="sourceCode" id="cb91"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb91-1"><a href="modulo-3.html#cb91-1" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> model.predict(X_test)</span>
-<span id="cb91-2"><a href="modulo-3.html#cb91-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb91-3"><a href="modulo-3.html#cb91-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Desnormalizar las predicciones</span></span></code></pre></div>
-<pre><code>## 
-1/1 [==============================] - ETA: 0s
-1/1 [==============================] - 0s 250ms/step</code></pre>
-<div class="sourceCode" id="cb93"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb93-1"><a href="modulo-3.html#cb93-1" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> scaler.inverse_transform(predictions)</span>
-<span id="cb93-2"><a href="modulo-3.html#cb93-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb93-3"><a href="modulo-3.html#cb93-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear un DataFrame con las fechas y las predicciones</span></span>
-<span id="cb93-4"><a href="modulo-3.html#cb93-4" aria-hidden="true" tabindex="-1"></a>df_predictions <span class="op">=</span> pd.DataFrame({<span class="st">&#39;fecha&#39;</span>: data.index[train_size<span class="op">+</span>sequence_length:], <span class="st">&#39;prediccion&#39;</span>: predictions.flatten()})</span>
-<span id="cb93-5"><a href="modulo-3.html#cb93-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb93-6"><a href="modulo-3.html#cb93-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Imprimir las predicciones</span></span>
-<span id="cb93-7"><a href="modulo-3.html#cb93-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_predictions)</span></code></pre></div>
-<pre><code>##     fecha   prediccion
-## 0     110  4541.988281
-## 1     111  5124.388672
-## 2     112  5405.074707
-## 3     113  4785.739746
-## 4     114  4598.105957
-## 5     115  4280.407715
-## 6     116  3746.693359
-## 7     117  4577.230957
-## 8     118  5574.527344
-## 9     119  5600.125000
-## 10    120  4564.193359
-## 11    121  4302.356934
-## 12    122  3607.270996</code></pre>
-<div class="sourceCode" id="cb95"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb95-1"><a href="modulo-3.html#cb95-1" aria-hidden="true" tabindex="-1"></a>RN_Elman_prediction <span class="op">=</span> df_predictions</span></code></pre></div>
-</div>
-<div id="rn-jordan" class="section level3 hasAnchor" number="5.1.2">
-<h3><span class="header-section-number">5.1.2</span> RN Jordan<a href="modulo-3.html#rn-jordan" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb96"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb96-1"><a href="modulo-3.html#cb96-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb96-2"><a href="modulo-3.html#cb96-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb96-3"><a href="modulo-3.html#cb96-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
-<span id="cb96-4"><a href="modulo-3.html#cb96-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> MinMaxScaler</span>
-<span id="cb96-5"><a href="modulo-3.html#cb96-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb96-6"><a href="modulo-3.html#cb96-6" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.read_excel(<span class="st">&quot;historico_precios_maracuya.xlsx&quot;</span>, sheet_name<span class="op">=</span><span class="st">&quot;Hoja1&quot;</span>)</span>
-<span id="cb96-7"><a href="modulo-3.html#cb96-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb96-8"><a href="modulo-3.html#cb96-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Extraer los valores de la columna &#39;prom_valle&#39; y cambiar la forma a (-1, 1)</span></span>
-<span id="cb96-9"><a href="modulo-3.html#cb96-9" aria-hidden="true" tabindex="-1"></a>data_values <span class="op">=</span> data[<span class="st">&#39;prom_valle&#39;</span>].values.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
-<span id="cb96-10"><a href="modulo-3.html#cb96-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb96-11"><a href="modulo-3.html#cb96-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalizar los datos</span></span>
-<span id="cb96-12"><a href="modulo-3.html#cb96-12" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> MinMaxScaler(feature_range<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span>
-<span id="cb96-13"><a href="modulo-3.html#cb96-13" aria-hidden="true" tabindex="-1"></a>scaled_data <span class="op">=</span> scaler.fit_transform(data_values)</span>
-<span id="cb96-14"><a href="modulo-3.html#cb96-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb96-15"><a href="modulo-3.html#cb96-15" aria-hidden="true" tabindex="-1"></a>train_size <span class="op">=</span> <span class="bu">int</span>(<span class="bu">len</span>(scaled_data) <span class="op">*</span> <span class="fl">0.8</span>)</span>
-<span id="cb96-16"><a href="modulo-3.html#cb96-16" aria-hidden="true" tabindex="-1"></a>train_data <span class="op">=</span> scaled_data[:train_size]</span>
-<span id="cb96-17"><a href="modulo-3.html#cb96-17" aria-hidden="true" tabindex="-1"></a>test_data <span class="op">=</span> scaled_data[train_size:]</span>
-<span id="cb96-18"><a href="modulo-3.html#cb96-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb96-19"><a href="modulo-3.html#cb96-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_sequences(data, sequence_length):</span>
-<span id="cb96-20"><a href="modulo-3.html#cb96-20" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> []</span>
-<span id="cb96-21"><a href="modulo-3.html#cb96-21" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> []</span>
-<span id="cb96-22"><a href="modulo-3.html#cb96-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(data) <span class="op">-</span> sequence_length):</span>
-<span id="cb96-23"><a href="modulo-3.html#cb96-23" aria-hidden="true" tabindex="-1"></a>        X.append(data[i:i<span class="op">+</span>sequence_length])</span>
-<span id="cb96-24"><a href="modulo-3.html#cb96-24" aria-hidden="true" tabindex="-1"></a>        y.append(data[i<span class="op">+</span>sequence_length])</span>
-<span id="cb96-25"><a href="modulo-3.html#cb96-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.array(X), np.array(y)</span>
-<span id="cb96-26"><a href="modulo-3.html#cb96-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb96-27"><a href="modulo-3.html#cb96-27" aria-hidden="true" tabindex="-1"></a>sequence_length <span class="op">=</span> <span class="dv">12</span></span>
-<span id="cb96-28"><a href="modulo-3.html#cb96-28" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb96-29"><a href="modulo-3.html#cb96-29" aria-hidden="true" tabindex="-1"></a>X_train, y_train <span class="op">=</span> create_sequences(train_data, sequence_length)</span>
-<span id="cb96-30"><a href="modulo-3.html#cb96-30" aria-hidden="true" tabindex="-1"></a>X_test, y_test <span class="op">=</span> create_sequences(test_data, sequence_length)</span>
-<span id="cb96-31"><a href="modulo-3.html#cb96-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb96-32"><a href="modulo-3.html#cb96-32" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> tf.keras.Sequential([</span>
-<span id="cb96-33"><a href="modulo-3.html#cb96-33" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.SimpleRNN(<span class="dv">32</span>, input_shape<span class="op">=</span>(sequence_length, <span class="dv">1</span>), activation<span class="op">=</span><span class="st">&#39;relu&#39;</span>),</span>
-<span id="cb96-34"><a href="modulo-3.html#cb96-34" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dense(<span class="dv">1</span>)</span>
-<span id="cb96-35"><a href="modulo-3.html#cb96-35" aria-hidden="true" tabindex="-1"></a>])</span>
-<span id="cb96-36"><a href="modulo-3.html#cb96-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb96-37"><a href="modulo-3.html#cb96-37" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">compile</span>(optimizer<span class="op">=</span><span class="st">&#39;adam&#39;</span>, loss<span class="op">=</span><span class="st">&#39;mean_squared_error&#39;</span>)</span>
-<span id="cb96-38"><a href="modulo-3.html#cb96-38" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb96-39"><a href="modulo-3.html#cb96-39" aria-hidden="true" tabindex="-1"></a>model.fit(X_train, y_train, epochs<span class="op">=</span><span class="dv">50</span>, batch_size<span class="op">=</span><span class="dv">16</span>)</span></code></pre></div>
-<pre><code>## Epoch 1/50
-## 
-1/6 [====&gt;.........................] - ETA: 6s - loss: 0.1413
-6/6 [==============================] - 1s 3ms/step - loss: 0.1115
-## Epoch 2/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0937
-6/6 [==============================] - 0s 3ms/step - loss: 0.0728
-## Epoch 3/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0574
-6/6 [==============================] - 0s 3ms/step - loss: 0.0440
-## Epoch 4/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0340
-6/6 [==============================] - 0s 2ms/step - loss: 0.0224
-## Epoch 5/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0100
-6/6 [==============================] - 0s 3ms/step - loss: 0.0095
-## Epoch 6/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0109
-6/6 [==============================] - 0s 3ms/step - loss: 0.0076
-## Epoch 7/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0035
-6/6 [==============================] - 0s 3ms/step - loss: 0.0079
-## Epoch 8/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0058
-6/6 [==============================] - 0s 3ms/step - loss: 0.0065
-## Epoch 9/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0043
-6/6 [==============================] - 0s 3ms/step - loss: 0.0060
-## Epoch 10/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0070
-6/6 [==============================] - 0s 3ms/step - loss: 0.0057
-## Epoch 11/50
-## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0041
-6/6 [==============================] - 0s 3ms/step - loss: 0.0054
+6/6 [==============================] - 0s 3ms/step - loss: 0.0058
 ## Epoch 12/50
 ## 
 1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0064
-6/6 [==============================] - 0s 3ms/step - loss: 0.0051
+6/6 [==============================] - 0s 3ms/step - loss: 0.0056
 ## Epoch 13/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0060
-6/6 [==============================] - 0s 3ms/step - loss: 0.0049
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0053
+6/6 [==============================] - 0s 3ms/step - loss: 0.0053
 ## Epoch 14/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0069
-6/6 [==============================] - 0s 3ms/step - loss: 0.0047
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0057
+6/6 [==============================] - 0s 3ms/step - loss: 0.0050
 ## Epoch 15/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0053
-6/6 [==============================] - 0s 3ms/step - loss: 0.0044
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0068
+6/6 [==============================] - 0s 3ms/step - loss: 0.0048
 ## Epoch 16/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0036
-6/6 [==============================] - 0s 4ms/step - loss: 0.0042
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0058
+6/6 [==============================] - 0s 3ms/step - loss: 0.0046
 ## Epoch 17/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0032
-6/6 [==============================] - 0s 3ms/step - loss: 0.0041
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0076
+6/6 [==============================] - 0s 3ms/step - loss: 0.0044
 ## Epoch 18/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0047
-6/6 [==============================] - 0s 3ms/step - loss: 0.0040
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0051
+6/6 [==============================] - 0s 3ms/step - loss: 0.0042
 ## Epoch 19/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0033
-6/6 [==============================] - 0s 3ms/step - loss: 0.0038
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0037
+6/6 [==============================] - 0s 3ms/step - loss: 0.0041
 ## Epoch 20/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0026
-6/6 [==============================] - 0s 3ms/step - loss: 0.0037
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0044
+6/6 [==============================] - 0s 3ms/step - loss: 0.0042
 ## Epoch 21/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0049
-6/6 [==============================] - 0s 3ms/step - loss: 0.0037
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0041
+6/6 [==============================] - 0s 3ms/step - loss: 0.0039
 ## Epoch 22/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0031
-6/6 [==============================] - 0s 2ms/step - loss: 0.0036
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0034
+6/6 [==============================] - 0s 3ms/step - loss: 0.0038
 ## Epoch 23/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0056
-6/6 [==============================] - 0s 3ms/step - loss: 0.0035
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0036
+6/6 [==============================] - 0s 3ms/step - loss: 0.0039
 ## Epoch 24/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0041
-6/6 [==============================] - 0s 2ms/step - loss: 0.0035
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0059
+6/6 [==============================] - 0s 3ms/step - loss: 0.0036
 ## Epoch 25/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0051
-6/6 [==============================] - 0s 3ms/step - loss: 0.0035
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0052
+6/6 [==============================] - 0s 3ms/step - loss: 0.0036
 ## Epoch 26/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0049
-6/6 [==============================] - 0s 3ms/step - loss: 0.0034
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0032
+6/6 [==============================] - 0s 3ms/step - loss: 0.0035
 ## Epoch 27/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0013
-6/6 [==============================] - 0s 3ms/step - loss: 0.0034
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0021
+6/6 [==============================] - 0s 3ms/step - loss: 0.0036
 ## Epoch 28/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0043
-6/6 [==============================] - 0s 2ms/step - loss: 0.0033
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0039
+6/6 [==============================] - 0s 3ms/step - loss: 0.0034
 ## Epoch 29/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0023
-6/6 [==============================] - 0s 3ms/step - loss: 0.0033
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0022
+6/6 [==============================] - 0s 3ms/step - loss: 0.0034
 ## Epoch 30/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0024
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0057
 6/6 [==============================] - 0s 3ms/step - loss: 0.0033
 ## Epoch 31/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0026
-6/6 [==============================] - 0s 3ms/step - loss: 0.0032
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0023
+6/6 [==============================] - 0s 2ms/step - loss: 0.0035
 ## Epoch 32/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0029
-6/6 [==============================] - 0s 2ms/step - loss: 0.0032
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0036
+6/6 [==============================] - 0s 3ms/step - loss: 0.0033
 ## Epoch 33/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0036
-6/6 [==============================] - 0s 3ms/step - loss: 0.0031
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0026
+6/6 [==============================] - 0s 3ms/step - loss: 0.0034
 ## Epoch 34/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0017
-6/6 [==============================] - 0s 3ms/step - loss: 0.0031
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0016
+6/6 [==============================] - 0s 3ms/step - loss: 0.0033
 ## Epoch 35/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0020
-6/6 [==============================] - 0s 3ms/step - loss: 0.0030
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0046
+6/6 [==============================] - 0s 3ms/step - loss: 0.0033
 ## Epoch 36/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0035
-6/6 [==============================] - 0s 2ms/step - loss: 0.0031
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0026
+6/6 [==============================] - 0s 3ms/step - loss: 0.0034
 ## Epoch 37/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0015
-6/6 [==============================] - 0s 2ms/step - loss: 0.0030
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0027
+6/6 [==============================] - 0s 3ms/step - loss: 0.0034
 ## Epoch 38/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0030
-6/6 [==============================] - 0s 3ms/step - loss: 0.0030
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0042
+6/6 [==============================] - 0s 3ms/step - loss: 0.0033
 ## Epoch 39/50
 ## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0031
+6/6 [==============================] - 0s 3ms/step - loss: 0.0034
+## Epoch 40/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0038
+6/6 [==============================] - 0s 3ms/step - loss: 0.0033
+## Epoch 41/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0032
+6/6 [==============================] - 0s 3ms/step - loss: 0.0033
+## Epoch 42/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0015
+6/6 [==============================] - 0s 3ms/step - loss: 0.0034
+## Epoch 43/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0022
+6/6 [==============================] - 0s 3ms/step - loss: 0.0033
+## Epoch 44/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0030
+6/6 [==============================] - 0s 3ms/step - loss: 0.0032
+## Epoch 45/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0037
+6/6 [==============================] - 0s 3ms/step - loss: 0.0032
+## Epoch 46/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0030
+6/6 [==============================] - 0s 3ms/step - loss: 0.0032
+## Epoch 47/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0046
+6/6 [==============================] - 0s 3ms/step - loss: 0.0033
+## Epoch 48/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0016
+6/6 [==============================] - 0s 3ms/step - loss: 0.0032
+## Epoch 49/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0037
+6/6 [==============================] - 0s 3ms/step - loss: 0.0031
+## Epoch 50/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0055
+6/6 [==============================] - 0s 3ms/step - loss: 0.0031
+## &lt;keras.callbacks.History object at 0x00000203A2E36E50&gt;</code></pre>
+<div class="sourceCode" id="cb116"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb116-1"><a href="modulo-3.html#cb116-1" aria-hidden="true" tabindex="-1"></a>mse <span class="op">=</span> model.evaluate(X_test, y_test)</span>
+<span id="cb116-2"><a href="modulo-3.html#cb116-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb116-3"><a href="modulo-3.html#cb116-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Realizar predicciones</span></span></code></pre></div>
+<pre><code>## 
+1/1 [==============================] - ETA: 0s - loss: 0.0291
+1/1 [==============================] - 0s 277ms/step - loss: 0.0291</code></pre>
+<div class="sourceCode" id="cb118"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb118-1"><a href="modulo-3.html#cb118-1" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> model.predict(X_test)</span>
+<span id="cb118-2"><a href="modulo-3.html#cb118-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb118-3"><a href="modulo-3.html#cb118-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Desnormalizar las predicciones</span></span></code></pre></div>
+<pre><code>## 
+1/1 [==============================] - ETA: 0s
+1/1 [==============================] - 0s 233ms/step</code></pre>
+<div class="sourceCode" id="cb120"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb120-1"><a href="modulo-3.html#cb120-1" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> scaler.inverse_transform(predictions)</span>
+<span id="cb120-2"><a href="modulo-3.html#cb120-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb120-3"><a href="modulo-3.html#cb120-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear un DataFrame con las fechas y las predicciones</span></span>
+<span id="cb120-4"><a href="modulo-3.html#cb120-4" aria-hidden="true" tabindex="-1"></a>df_predictions <span class="op">=</span> pd.DataFrame({<span class="st">&#39;fecha&#39;</span>: data.index[train_size<span class="op">+</span>sequence_length:], <span class="st">&#39;prediccion&#39;</span>: predictions.flatten()})</span>
+<span id="cb120-5"><a href="modulo-3.html#cb120-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb120-6"><a href="modulo-3.html#cb120-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Imprimir las predicciones</span></span>
+<span id="cb120-7"><a href="modulo-3.html#cb120-7" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_predictions)</span></code></pre></div>
+<pre><code>##     fecha   prediccion
+## 0     110  4642.141602
+## 1     111  5074.793945
+## 2     112  5388.567383
+## 3     113  5039.997070
+## 4     114  4718.616699
+## 5     115  4382.464844
+## 6     116  3825.581787
+## 7     117  4608.871582
+## 8     118  5510.705566
+## 9     119  5773.092773
+## 10    120  4636.347656
+## 11    121  4296.612793
+## 12    122  3855.480713</code></pre>
+<div class="sourceCode" id="cb122"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb122-1"><a href="modulo-3.html#cb122-1" aria-hidden="true" tabindex="-1"></a>RN_Elman_prediction <span class="op">=</span> df_predictions</span></code></pre></div>
+</div>
+<div id="rn-jordan" class="section level3 hasAnchor" number="5.1.2">
+<h3><span class="header-section-number">5.1.2</span> RN Jordan<a href="modulo-3.html#rn-jordan" class="anchor-section" aria-label="Anchor link to header"></a></h3>
+<div class="sourceCode" id="cb123"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb123-1"><a href="modulo-3.html#cb123-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb123-2"><a href="modulo-3.html#cb123-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb123-3"><a href="modulo-3.html#cb123-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tensorflow <span class="im">as</span> tf</span>
+<span id="cb123-4"><a href="modulo-3.html#cb123-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.preprocessing <span class="im">import</span> MinMaxScaler</span>
+<span id="cb123-5"><a href="modulo-3.html#cb123-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb123-6"><a href="modulo-3.html#cb123-6" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.read_excel(<span class="st">&quot;historico_precios_maracuya.xlsx&quot;</span>, sheet_name<span class="op">=</span><span class="st">&quot;Hoja1&quot;</span>)</span>
+<span id="cb123-7"><a href="modulo-3.html#cb123-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb123-8"><a href="modulo-3.html#cb123-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Extraer los valores de la columna &#39;prom_valle&#39; y cambiar la forma a (-1, 1)</span></span>
+<span id="cb123-9"><a href="modulo-3.html#cb123-9" aria-hidden="true" tabindex="-1"></a>data_values <span class="op">=</span> data[<span class="st">&#39;prom_valle&#39;</span>].values.reshape(<span class="op">-</span><span class="dv">1</span>, <span class="dv">1</span>)</span>
+<span id="cb123-10"><a href="modulo-3.html#cb123-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb123-11"><a href="modulo-3.html#cb123-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Normalizar los datos</span></span>
+<span id="cb123-12"><a href="modulo-3.html#cb123-12" aria-hidden="true" tabindex="-1"></a>scaler <span class="op">=</span> MinMaxScaler(feature_range<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">1</span>))</span>
+<span id="cb123-13"><a href="modulo-3.html#cb123-13" aria-hidden="true" tabindex="-1"></a>scaled_data <span class="op">=</span> scaler.fit_transform(data_values)</span>
+<span id="cb123-14"><a href="modulo-3.html#cb123-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb123-15"><a href="modulo-3.html#cb123-15" aria-hidden="true" tabindex="-1"></a>train_size <span class="op">=</span> <span class="bu">int</span>(<span class="bu">len</span>(scaled_data) <span class="op">*</span> <span class="fl">0.8</span>)</span>
+<span id="cb123-16"><a href="modulo-3.html#cb123-16" aria-hidden="true" tabindex="-1"></a>train_data <span class="op">=</span> scaled_data[:train_size]</span>
+<span id="cb123-17"><a href="modulo-3.html#cb123-17" aria-hidden="true" tabindex="-1"></a>test_data <span class="op">=</span> scaled_data[train_size:]</span>
+<span id="cb123-18"><a href="modulo-3.html#cb123-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb123-19"><a href="modulo-3.html#cb123-19" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> create_sequences(data, sequence_length):</span>
+<span id="cb123-20"><a href="modulo-3.html#cb123-20" aria-hidden="true" tabindex="-1"></a>    X <span class="op">=</span> []</span>
+<span id="cb123-21"><a href="modulo-3.html#cb123-21" aria-hidden="true" tabindex="-1"></a>    y <span class="op">=</span> []</span>
+<span id="cb123-22"><a href="modulo-3.html#cb123-22" aria-hidden="true" tabindex="-1"></a>    <span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="bu">len</span>(data) <span class="op">-</span> sequence_length):</span>
+<span id="cb123-23"><a href="modulo-3.html#cb123-23" aria-hidden="true" tabindex="-1"></a>        X.append(data[i:i<span class="op">+</span>sequence_length])</span>
+<span id="cb123-24"><a href="modulo-3.html#cb123-24" aria-hidden="true" tabindex="-1"></a>        y.append(data[i<span class="op">+</span>sequence_length])</span>
+<span id="cb123-25"><a href="modulo-3.html#cb123-25" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> np.array(X), np.array(y)</span>
+<span id="cb123-26"><a href="modulo-3.html#cb123-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb123-27"><a href="modulo-3.html#cb123-27" aria-hidden="true" tabindex="-1"></a>sequence_length <span class="op">=</span> <span class="dv">12</span></span>
+<span id="cb123-28"><a href="modulo-3.html#cb123-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb123-29"><a href="modulo-3.html#cb123-29" aria-hidden="true" tabindex="-1"></a>X_train, y_train <span class="op">=</span> create_sequences(train_data, sequence_length)</span>
+<span id="cb123-30"><a href="modulo-3.html#cb123-30" aria-hidden="true" tabindex="-1"></a>X_test, y_test <span class="op">=</span> create_sequences(test_data, sequence_length)</span>
+<span id="cb123-31"><a href="modulo-3.html#cb123-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb123-32"><a href="modulo-3.html#cb123-32" aria-hidden="true" tabindex="-1"></a>model <span class="op">=</span> tf.keras.Sequential([</span>
+<span id="cb123-33"><a href="modulo-3.html#cb123-33" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.SimpleRNN(<span class="dv">32</span>, input_shape<span class="op">=</span>(sequence_length, <span class="dv">1</span>), activation<span class="op">=</span><span class="st">&#39;relu&#39;</span>),</span>
+<span id="cb123-34"><a href="modulo-3.html#cb123-34" aria-hidden="true" tabindex="-1"></a>    tf.keras.layers.Dense(<span class="dv">1</span>)</span>
+<span id="cb123-35"><a href="modulo-3.html#cb123-35" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb123-36"><a href="modulo-3.html#cb123-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb123-37"><a href="modulo-3.html#cb123-37" aria-hidden="true" tabindex="-1"></a>model.<span class="bu">compile</span>(optimizer<span class="op">=</span><span class="st">&#39;adam&#39;</span>, loss<span class="op">=</span><span class="st">&#39;mean_squared_error&#39;</span>)</span>
+<span id="cb123-38"><a href="modulo-3.html#cb123-38" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb123-39"><a href="modulo-3.html#cb123-39" aria-hidden="true" tabindex="-1"></a>model.fit(X_train, y_train, epochs<span class="op">=</span><span class="dv">50</span>, batch_size<span class="op">=</span><span class="dv">16</span>)</span></code></pre></div>
+<pre><code>## Epoch 1/50
+## 
+1/6 [====&gt;.........................] - ETA: 6s - loss: 0.0390
+6/6 [==============================] - 1s 3ms/step - loss: 0.0250
+## Epoch 2/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0085
+6/6 [==============================] - 0s 3ms/step - loss: 0.0092
+## Epoch 3/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0061
+6/6 [==============================] - 0s 3ms/step - loss: 0.0091
+## Epoch 4/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0046
+6/6 [==============================] - 0s 3ms/step - loss: 0.0072
+## Epoch 5/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0061
+6/6 [==============================] - 0s 3ms/step - loss: 0.0060
+## Epoch 6/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0048
+6/6 [==============================] - 0s 3ms/step - loss: 0.0060
+## Epoch 7/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0072
+6/6 [==============================] - 0s 3ms/step - loss: 0.0056
+## Epoch 8/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0074
+6/6 [==============================] - 0s 3ms/step - loss: 0.0054
+## Epoch 9/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0057
+6/6 [==============================] - 0s 3ms/step - loss: 0.0054
+## Epoch 10/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0058
+6/6 [==============================] - 0s 3ms/step - loss: 0.0052
+## Epoch 11/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0040
+6/6 [==============================] - 0s 3ms/step - loss: 0.0051
+## Epoch 12/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0073
+6/6 [==============================] - 0s 3ms/step - loss: 0.0050
+## Epoch 13/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0026
+6/6 [==============================] - 0s 3ms/step - loss: 0.0050
+## Epoch 14/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0055
+6/6 [==============================] - 0s 3ms/step - loss: 0.0049
+## Epoch 15/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0033
+6/6 [==============================] - 0s 3ms/step - loss: 0.0048
+## Epoch 16/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0066
+6/6 [==============================] - 0s 2ms/step - loss: 0.0047
+## Epoch 17/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0039
+6/6 [==============================] - 0s 2ms/step - loss: 0.0046
+## Epoch 18/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0054
+6/6 [==============================] - 0s 3ms/step - loss: 0.0045
+## Epoch 19/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0040
+6/6 [==============================] - 0s 3ms/step - loss: 0.0045
+## Epoch 20/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0049
+6/6 [==============================] - 0s 3ms/step - loss: 0.0043
+## Epoch 21/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0048
+6/6 [==============================] - 0s 3ms/step - loss: 0.0042
+## Epoch 22/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0050
+6/6 [==============================] - 0s 3ms/step - loss: 0.0041
+## Epoch 23/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0014
+6/6 [==============================] - 0s 3ms/step - loss: 0.0040
+## Epoch 24/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0036
+6/6 [==============================] - 0s 3ms/step - loss: 0.0039
+## Epoch 25/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0045
+6/6 [==============================] - 0s 3ms/step - loss: 0.0038
+## Epoch 26/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0023
+6/6 [==============================] - 0s 3ms/step - loss: 0.0038
+## Epoch 27/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0034
+6/6 [==============================] - 0s 3ms/step - loss: 0.0038
+## Epoch 28/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0022
+6/6 [==============================] - 0s 3ms/step - loss: 0.0037
+## Epoch 29/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0034
+6/6 [==============================] - 0s 3ms/step - loss: 0.0036
+## Epoch 30/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0016
+6/6 [==============================] - 0s 3ms/step - loss: 0.0036
+## Epoch 31/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0045
+6/6 [==============================] - 0s 3ms/step - loss: 0.0035
+## Epoch 32/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0040
+6/6 [==============================] - 0s 3ms/step - loss: 0.0037
+## Epoch 33/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0040
+6/6 [==============================] - 0s 3ms/step - loss: 0.0035
+## Epoch 34/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0045
+6/6 [==============================] - 0s 3ms/step - loss: 0.0036
+## Epoch 35/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0047
+6/6 [==============================] - 0s 3ms/step - loss: 0.0035
+## Epoch 36/50
+## 
 1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0020
-6/6 [==============================] - 0s 3ms/step - loss: 0.0029
+6/6 [==============================] - 0s 3ms/step - loss: 0.0034
+## Epoch 37/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0053
+6/6 [==============================] - 0s 3ms/step - loss: 0.0034
+## Epoch 38/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0025
+6/6 [==============================] - 0s 3ms/step - loss: 0.0033
+## Epoch 39/50
+## 
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0035
+6/6 [==============================] - 0s 3ms/step - loss: 0.0035
 ## Epoch 40/50
 ## 
 1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0021
-6/6 [==============================] - 0s 2ms/step - loss: 0.0029
+6/6 [==============================] - 0s 3ms/step - loss: 0.0032
 ## Epoch 41/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0017
-6/6 [==============================] - 0s 3ms/step - loss: 0.0029
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0029
+6/6 [==============================] - 0s 3ms/step - loss: 0.0034
 ## Epoch 42/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0038
-6/6 [==============================] - 0s 3ms/step - loss: 0.0028
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0040
+6/6 [==============================] - 0s 3ms/step - loss: 0.0032
 ## Epoch 43/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0030
-6/6 [==============================] - 0s 3ms/step - loss: 0.0028
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0034
+6/6 [==============================] - 0s 3ms/step - loss: 0.0032
 ## Epoch 44/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0023
-6/6 [==============================] - 0s 3ms/step - loss: 0.0028
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0019
+6/6 [==============================] - 0s 3ms/step - loss: 0.0031
 ## Epoch 45/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0020
-6/6 [==============================] - 0s 3ms/step - loss: 0.0028
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0024
+6/6 [==============================] - 0s 3ms/step - loss: 0.0031
 ## Epoch 46/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0015
-6/6 [==============================] - 0s 3ms/step - loss: 0.0027
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0027
+6/6 [==============================] - 0s 2ms/step - loss: 0.0032
 ## Epoch 47/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0017
-6/6 [==============================] - 0s 3ms/step - loss: 0.0027
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0049
+6/6 [==============================] - 0s 2ms/step - loss: 0.0031
 ## Epoch 48/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0014
-6/6 [==============================] - 0s 1ms/step - loss: 0.0026
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0044
+6/6 [==============================] - 0s 3ms/step - loss: 0.0030
 ## Epoch 49/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0014
-6/6 [==============================] - 0s 5ms/step - loss: 0.0026
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0016
+6/6 [==============================] - 0s 3ms/step - loss: 0.0030
 ## Epoch 50/50
 ## 
-1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0029
-6/6 [==============================] - 0s 3ms/step - loss: 0.0026
-## &lt;keras.callbacks.History object at 0x0000029D586F1280&gt;</code></pre>
-<div class="sourceCode" id="cb98"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb98-1"><a href="modulo-3.html#cb98-1" aria-hidden="true" tabindex="-1"></a>mse <span class="op">=</span> model.evaluate(X_test, y_test)</span></code></pre></div>
+1/6 [====&gt;.........................] - ETA: 0s - loss: 0.0023
+6/6 [==============================] - 0s 3ms/step - loss: 0.0030
+## &lt;keras.callbacks.History object at 0x00000203A529D5B0&gt;</code></pre>
+<div class="sourceCode" id="cb125"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb125-1"><a href="modulo-3.html#cb125-1" aria-hidden="true" tabindex="-1"></a>mse <span class="op">=</span> model.evaluate(X_test, y_test)</span></code></pre></div>
 <pre><code>## 
-1/1 [==============================] - ETA: 0s - loss: 0.0306
-1/1 [==============================] - 0s 211ms/step - loss: 0.0306</code></pre>
-<div class="sourceCode" id="cb100"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb100-1"><a href="modulo-3.html#cb100-1" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> model.predict(X_test)</span></code></pre></div>
+1/1 [==============================] - ETA: 0s - loss: 0.0282
+1/1 [==============================] - 0s 218ms/step - loss: 0.0282</code></pre>
+<div class="sourceCode" id="cb127"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb127-1"><a href="modulo-3.html#cb127-1" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> model.predict(X_test)</span></code></pre></div>
 <pre><code>## 
 1/1 [==============================] - ETA: 0s
-1/1 [==============================] - 0s 189ms/step</code></pre>
-<div class="sourceCode" id="cb102"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb102-1"><a href="modulo-3.html#cb102-1" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> scaler.inverse_transform(predictions)</span>
-<span id="cb102-2"><a href="modulo-3.html#cb102-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb102-3"><a href="modulo-3.html#cb102-3" aria-hidden="true" tabindex="-1"></a>RN_Jordan_prediction <span class="op">=</span> predictions</span></code></pre></div>
-<div class="sourceCode" id="cb103"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb103-1"><a href="modulo-3.html#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(predictions)</span></code></pre></div>
-<pre><code>## [[4657.9136]
-##  [4990.5337]
-##  [5341.551 ]
-##  [5012.45  ]
-##  [4617.077 ]
-##  [4173.6313]
-##  [3682.1475]
-##  [4539.983 ]
-##  [5257.553 ]
-##  [5663.1353]
-##  [4710.4688]
-##  [4105.199 ]
-##  [3401.4438]]</code></pre>
+1/1 [==============================] - 0s 156ms/step</code></pre>
+<div class="sourceCode" id="cb129"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb129-1"><a href="modulo-3.html#cb129-1" aria-hidden="true" tabindex="-1"></a>predictions <span class="op">=</span> scaler.inverse_transform(predictions)</span>
+<span id="cb129-2"><a href="modulo-3.html#cb129-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb129-3"><a href="modulo-3.html#cb129-3" aria-hidden="true" tabindex="-1"></a>RN_Jordan_prediction <span class="op">=</span> predictions</span></code></pre></div>
+<div class="sourceCode" id="cb130"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb130-1"><a href="modulo-3.html#cb130-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(predictions)</span></code></pre></div>
+<pre><code>## [[4661.0767]
+##  [5198.558 ]
+##  [5562.505 ]
+##  [5017.8477]
+##  [4666.6753]
+##  [4302.487 ]
+##  [3802.3018]
+##  [4555.248 ]
+##  [5652.188 ]
+##  [5771.6226]
+##  [4683.5806]
+##  [4168.301 ]
+##  [3534.5305]]</code></pre>
 </div>
 </div>
 </div>
@@ -765,8 +766,8 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           </div>
         </div>
       </div>
-<a href="modulo-2.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
-
+<a href="modulo-2.html" class="navigation navigation-prev " aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
+<a href="conclusiones.html" class="navigation navigation-next " aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

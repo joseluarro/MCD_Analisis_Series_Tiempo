@@ -4,18 +4,18 @@
 
   <meta charset="utf-8" />
   <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-  <title>Propuesta Bookdown</title>
-  <meta name="description" content="Propuesta Bookdown" />
+  <title>6 CONCLUSIONES | Propuesta Bookdown</title>
+  <meta name="description" content="6 CONCLUSIONES | Propuesta Bookdown" />
   <meta name="generator" content="bookdown 0.34 and GitBook 2.6.7" />
 
-  <meta property="og:title" content="Propuesta Bookdown" />
+  <meta property="og:title" content="6 CONCLUSIONES | Propuesta Bookdown" />
   <meta property="og:type" content="book" />
   
   
   
 
   <meta name="twitter:card" content="summary" />
-  <meta name="twitter:title" content="Propuesta Bookdown" />
+  <meta name="twitter:title" content="6 CONCLUSIONES | Propuesta Bookdown" />
   
   
   
@@ -30,8 +30,8 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black" />
   
   
+<link rel="prev" href="modulo-3.html"/>
 
-<link rel="next" href="prediccion-del-precio-de-la-maracuya-para-el-valle-del-cauca.html"/>
 <script src="libs/jquery-3.6.0/jquery-3.6.0.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/fuse.js@6.4.6/dist/fuse.min.js"></script>
 <link href="libs/gitbook-2.6.7/css/style.css" rel="stylesheet" />
@@ -200,23 +200,31 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
           <div class="page-inner">
 
             <section class="normal" id="section-">
-<div id="header">
-<h1 class="title">Propuesta Bookdown</h1>
-<p class="author"><em>Jose Luis Arroyave Capera</em></p>
-<p class="date"><em>2023-04-21</em></p>
-</div>
-<div id="propuesta-bookdown" class="section level1 hasAnchor" number="1">
-<h1><span class="header-section-number">1</span> Propuesta Bookdown<a href="propuesta-bookdown.html#propuesta-bookdown" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<p>Propuesta de qué tipo de información a trabajar a lo largo del curso y por qué cree que es importante el pronóstico de ese tipo de información que permita tener valor agregado a esa situación particular que pretende analizar.</p>
-<p>Elaboración de documento tipo ‘bookdown’ en GitHub, con máximo una página, con información y justificación de la elección en relación con la importancia de analizar esa información. Especificando las fuentes y los permisos de uso de esa información en caso de ser de una empresa específica.</p>
+<div id="conclusiones" class="section level1 hasAnchor" number="6">
+<h1><span class="header-section-number">6</span> CONCLUSIONES<a href="conclusiones.html#conclusiones" class="anchor-section" aria-label="Anchor link to header"></a></h1>
+<div class="sourceCode" id="cb132"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb132-1"><a href="conclusiones.html#cb132-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_metrics)</span></code></pre></div>
+<pre><code>##           Model  Type  ME        RMSE         MAE  MPE      ACF1
+## 0  Holt-Winters  Test NaN  991.771204  810.435834  NaN -0.239248
+## 1           SES  Test NaN  528.361663  482.704167  NaN  0.040856
+## 2         ARIMA  Test NaN  622.704493  499.457282  NaN -0.094519</code></pre>
+<div class="sourceCode" id="cb134"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb134-1"><a href="conclusiones.html#cb134-1" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(metrics_prophet)</span></code></pre></div>
+<pre><code>##     Model Type        ME     RMSE      MAE       MPE
+## 1 Prophet Test -211.1896 866.8507 642.4646 -7.390366</code></pre>
+<p>En términos de las métricas de evaluación presentadas:</p>
+<ul>
+<li><p>El modelo SES (Simple Exponential Smoothing) tiene el valor más bajo de RMSE (528.361663) y MAE (482.704167), lo que indica que tiene un ajuste relativamente bueno en comparación con los otros modelos.</p></li>
+<li><p>El modelo Prophet también tiene un RMSE (866.8507) y un MAE (642.4646) más bajos que los modelos Holt-Winters y ARIMA, aunque no tan bajos como el modelo SES.</p></li>
+</ul>
+<p>Es importante tener en cuenta que la elección del mejor modelo depende del contexto y los requisitos específicos del problema. Además, los resultados proporcionados pueden no ser suficientes para llegar a una conclusión definitiva. Sería beneficioso considerar otros factores, como el rendimiento del modelo en el conjunto de datos de entrenamiento, la estabilidad del modelo a lo largo del tiempo y la interpretación de los resultados en relación con el dominio del problema.</p>
+<p>En resumen, según los resultados presentados, el modelo SES parece tener un rendimiento ligeramente mejor que los otros modelos evaluados.</p>
 </div>
             </section>
 
           </div>
         </div>
       </div>
+<a href="modulo-3.html" class="navigation navigation-prev navigation-unique" aria-label="Previous page"><i class="fa fa-angle-left"></i></a>
 
-<a href="prediccion-del-precio-de-la-maracuya-para-el-valle-del-cauca.html" class="navigation navigation-next navigation-unique" aria-label="Next page"><i class="fa fa-angle-right"></i></a>
     </div>
   </div>
 <script src="libs/gitbook-2.6.7/js/app.min.js"></script>

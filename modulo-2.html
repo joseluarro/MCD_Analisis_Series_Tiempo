@@ -182,6 +182,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.1.2" data-path="modulo-3.html"><a href="modulo-3.html#rn-jordan"><i class="fa fa-check"></i><b>5.1.2</b> RN Jordan</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="6" data-path="conclusiones.html"><a href="conclusiones.html"><i class="fa fa-check"></i><b>6</b> CONCLUSIONES</a></li>
 </ul>
 
       </nav>
@@ -201,7 +202,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
             <section class="normal" id="section-">
 <div id="modulo-2" class="section level1 hasAnchor" number="4">
 <h1><span class="header-section-number">4</span> Modulo 2<a href="modulo-2.html#modulo-2" class="anchor-section" aria-label="Anchor link to header"></a></h1>
-<div class="sourceCode" id="cb35"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb35-1"><a href="modulo-2.html#cb35-1" aria-hidden="true" tabindex="-1"></a>data.head()</span></code></pre></div>
+<div class="sourceCode" id="cb36"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb36-1"><a href="modulo-2.html#cb36-1" aria-hidden="true" tabindex="-1"></a>data.head()</span></code></pre></div>
 <pre><code>## fecha
 ## 2021-01-31    2241.458333
 ## 2021-02-28    2223.291667
@@ -213,280 +214,380 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">4.1</span> Unidad 1: Introduccion a los modelos de pronostico<a href="modulo-2.html#unidad-1-introduccion-a-los-modelos-de-pronostico" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="metodologia-holt-winter" class="section level3 hasAnchor" number="4.1.1">
 <h3><span class="header-section-number">4.1.1</span> <strong>Metodologia Holt-Winter</strong><a href="modulo-2.html#metodologia-holt-winter" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb37"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb37-1"><a href="modulo-2.html#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb37-2"><a href="modulo-2.html#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb37-3"><a href="modulo-2.html#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-4"><a href="modulo-2.html#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear una figura y un eje</span></span>
-<span id="cb37-5"><a href="modulo-2.html#cb37-5" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
-<span id="cb37-6"><a href="modulo-2.html#cb37-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-7"><a href="modulo-2.html#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener los valores de fecha y datos</span></span>
-<span id="cb37-8"><a href="modulo-2.html#cb37-8" aria-hidden="true" tabindex="-1"></a>fecha <span class="op">=</span> data.index</span>
-<span id="cb37-9"><a href="modulo-2.html#cb37-9" aria-hidden="true" tabindex="-1"></a>valor <span class="op">=</span> data.values</span>
-<span id="cb37-10"><a href="modulo-2.html#cb37-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-11"><a href="modulo-2.html#cb37-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar los puntos de datos</span></span>
-<span id="cb37-12"><a href="modulo-2.html#cb37-12" aria-hidden="true" tabindex="-1"></a>ax.plot(fecha, valor, <span class="st">&#39;o&#39;</span>, label<span class="op">=</span><span class="st">&#39;Datos&#39;</span>)</span>
-<span id="cb37-13"><a href="modulo-2.html#cb37-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-14"><a href="modulo-2.html#cb37-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajustar una línea de regresión</span></span>
-<span id="cb37-15"><a href="modulo-2.html#cb37-15" aria-hidden="true" tabindex="-1"></a>coef <span class="op">=</span> np.polyfit(<span class="bu">range</span>(<span class="bu">len</span>(fecha)), valor, deg<span class="op">=</span><span class="dv">1</span>)</span>
-<span id="cb37-16"><a href="modulo-2.html#cb37-16" aria-hidden="true" tabindex="-1"></a>linea_regresion <span class="op">=</span> np.poly1d(coef)</span>
-<span id="cb37-17"><a href="modulo-2.html#cb37-17" aria-hidden="true" tabindex="-1"></a>ax.plot(fecha, linea_regresion(<span class="bu">range</span>(<span class="bu">len</span>(fecha))), label<span class="op">=</span><span class="st">&#39;Línea de regresión&#39;</span>)</span>
-<span id="cb37-18"><a href="modulo-2.html#cb37-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-19"><a href="modulo-2.html#cb37-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Configurar título y etiquetas de los ejes</span></span>
-<span id="cb37-20"><a href="modulo-2.html#cb37-20" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(title<span class="op">=</span><span class="st">&#39;Gráfico de dispersión con línea de regresión&#39;</span>, xlabel<span class="op">=</span><span class="st">&#39;Fecha&#39;</span>, ylabel<span class="op">=</span><span class="st">&#39;Valor&#39;</span>)</span>
-<span id="cb37-21"><a href="modulo-2.html#cb37-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-22"><a href="modulo-2.html#cb37-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Rotar las etiquetas del eje x para una mejor visualización</span></span>
-<span id="cb37-23"><a href="modulo-2.html#cb37-23" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>)</span>
-<span id="cb37-24"><a href="modulo-2.html#cb37-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb37-25"><a href="modulo-2.html#cb37-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar la leyenda</span></span></code></pre></div>
+<div class="sourceCode" id="cb38"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb38-1"><a href="modulo-2.html#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb38-2"><a href="modulo-2.html#cb38-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb38-3"><a href="modulo-2.html#cb38-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-4"><a href="modulo-2.html#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear una figura y un eje</span></span>
+<span id="cb38-5"><a href="modulo-2.html#cb38-5" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb38-6"><a href="modulo-2.html#cb38-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-7"><a href="modulo-2.html#cb38-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener los valores de fecha y datos</span></span>
+<span id="cb38-8"><a href="modulo-2.html#cb38-8" aria-hidden="true" tabindex="-1"></a>fecha <span class="op">=</span> data.index</span>
+<span id="cb38-9"><a href="modulo-2.html#cb38-9" aria-hidden="true" tabindex="-1"></a>valor <span class="op">=</span> data.values</span>
+<span id="cb38-10"><a href="modulo-2.html#cb38-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-11"><a href="modulo-2.html#cb38-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar los puntos de datos</span></span>
+<span id="cb38-12"><a href="modulo-2.html#cb38-12" aria-hidden="true" tabindex="-1"></a>ax.plot(fecha, valor, <span class="st">&#39;o&#39;</span>, label<span class="op">=</span><span class="st">&#39;Datos&#39;</span>)</span>
+<span id="cb38-13"><a href="modulo-2.html#cb38-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-14"><a href="modulo-2.html#cb38-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajustar una línea de regresión</span></span>
+<span id="cb38-15"><a href="modulo-2.html#cb38-15" aria-hidden="true" tabindex="-1"></a>coef <span class="op">=</span> np.polyfit(<span class="bu">range</span>(<span class="bu">len</span>(fecha)), valor, deg<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb38-16"><a href="modulo-2.html#cb38-16" aria-hidden="true" tabindex="-1"></a>linea_regresion <span class="op">=</span> np.poly1d(coef)</span>
+<span id="cb38-17"><a href="modulo-2.html#cb38-17" aria-hidden="true" tabindex="-1"></a>ax.plot(fecha, linea_regresion(<span class="bu">range</span>(<span class="bu">len</span>(fecha))), label<span class="op">=</span><span class="st">&#39;Línea de regresión&#39;</span>)</span>
+<span id="cb38-18"><a href="modulo-2.html#cb38-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-19"><a href="modulo-2.html#cb38-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Configurar título y etiquetas de los ejes</span></span>
+<span id="cb38-20"><a href="modulo-2.html#cb38-20" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(title<span class="op">=</span><span class="st">&#39;Gráfico de dispersión con línea de regresión&#39;</span>, xlabel<span class="op">=</span><span class="st">&#39;Fecha&#39;</span>, ylabel<span class="op">=</span><span class="st">&#39;Valor&#39;</span>)</span>
+<span id="cb38-21"><a href="modulo-2.html#cb38-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-22"><a href="modulo-2.html#cb38-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Rotar las etiquetas del eje x para una mejor visualización</span></span>
+<span id="cb38-23"><a href="modulo-2.html#cb38-23" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>)</span>
+<span id="cb38-24"><a href="modulo-2.html#cb38-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb38-25"><a href="modulo-2.html#cb38-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar la leyenda</span></span></code></pre></div>
 <pre><code>## (array([18628., 18718., 18809., 18901., 18993., 19083., 19174., 19266.,
 ##        19358., 19448., 19539.]), [Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;)])</code></pre>
-<div class="sourceCode" id="cb39"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb39-1"><a href="modulo-2.html#cb39-1" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
-<span id="cb39-2"><a href="modulo-2.html#cb39-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb39-3"><a href="modulo-2.html#cb39-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar el gráfico</span></span>
-<span id="cb39-4"><a href="modulo-2.html#cb39-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb40-1"><a href="modulo-2.html#cb40-1" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb40-2"><a href="modulo-2.html#cb40-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb40-3"><a href="modulo-2.html#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar el gráfico</span></span>
+<span id="cb40-4"><a href="modulo-2.html#cb40-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
 <p><img src="Propuesta-Bookdown_files/figure-html/unnamed-chunk-15-17.png" width="768" /></p>
 <p>Ajustamos una ercta de regresion, observando la tendencia creciente de los datos en donde vemos como el precio aumenta a medida que pasa el tiempo.</p>
-<div class="sourceCode" id="cb40"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb40-1"><a href="modulo-2.html#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb40-2"><a href="modulo-2.html#cb40-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb40-3"><a href="modulo-2.html#cb40-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb40-4"><a href="modulo-2.html#cb40-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-5"><a href="modulo-2.html#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear un nuevo DataFrame con la fecha y los datos</span></span>
-<span id="cb40-6"><a href="modulo-2.html#cb40-6" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({<span class="st">&#39;fecha&#39;</span>: data.index, <span class="st">&#39;valor&#39;</span>: data.values})</span>
-<span id="cb40-7"><a href="modulo-2.html#cb40-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-8"><a href="modulo-2.html#cb40-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Convertir la columna de fecha al formato adecuado</span></span>
-<span id="cb40-9"><a href="modulo-2.html#cb40-9" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;fecha&#39;</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">&#39;fecha&#39;</span>])</span>
-<span id="cb40-10"><a href="modulo-2.html#cb40-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-11"><a href="modulo-2.html#cb40-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Extraer el mes de cada fecha</span></span>
-<span id="cb40-12"><a href="modulo-2.html#cb40-12" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;Month&#39;</span>] <span class="op">=</span> df[<span class="st">&#39;fecha&#39;</span>].dt.month</span>
-<span id="cb40-13"><a href="modulo-2.html#cb40-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-14"><a href="modulo-2.html#cb40-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular la desviación del ciclo</span></span>
-<span id="cb40-15"><a href="modulo-2.html#cb40-15" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;Desviación del ciclo&#39;</span>] <span class="op">=</span> df[<span class="st">&#39;valor&#39;</span>] <span class="op">-</span> df[<span class="st">&#39;valor&#39;</span>].mean()</span>
-<span id="cb40-16"><a href="modulo-2.html#cb40-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-17"><a href="modulo-2.html#cb40-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Trazar el boxplot</span></span>
-<span id="cb40-18"><a href="modulo-2.html#cb40-18" aria-hidden="true" tabindex="-1"></a>sns.boxplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">&#39;Month&#39;</span>, y<span class="op">=</span><span class="st">&#39;Desviación del ciclo&#39;</span>)</span>
-<span id="cb40-19"><a href="modulo-2.html#cb40-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-20"><a href="modulo-2.html#cb40-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Configurar título y etiquetas de los ejes</span></span>
-<span id="cb40-21"><a href="modulo-2.html#cb40-21" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&#39;Boxplot de los datos en función del mes&#39;</span>)</span>
-<span id="cb40-22"><a href="modulo-2.html#cb40-22" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;Mes&#39;</span>)</span>
-<span id="cb40-23"><a href="modulo-2.html#cb40-23" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;Desviación del ciclo&#39;</span>)</span>
-<span id="cb40-24"><a href="modulo-2.html#cb40-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb40-25"><a href="modulo-2.html#cb40-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar el gráfico</span></span>
-<span id="cb40-26"><a href="modulo-2.html#cb40-26" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<div class="sourceCode" id="cb41"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb41-1"><a href="modulo-2.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb41-2"><a href="modulo-2.html#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb41-3"><a href="modulo-2.html#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb41-4"><a href="modulo-2.html#cb41-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-5"><a href="modulo-2.html#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear un nuevo DataFrame con la fecha y los datos</span></span>
+<span id="cb41-6"><a href="modulo-2.html#cb41-6" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> pd.DataFrame({<span class="st">&#39;fecha&#39;</span>: data.index, <span class="st">&#39;valor&#39;</span>: data.values})</span>
+<span id="cb41-7"><a href="modulo-2.html#cb41-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-8"><a href="modulo-2.html#cb41-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Convertir la columna de fecha al formato adecuado</span></span>
+<span id="cb41-9"><a href="modulo-2.html#cb41-9" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;fecha&#39;</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">&#39;fecha&#39;</span>])</span>
+<span id="cb41-10"><a href="modulo-2.html#cb41-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-11"><a href="modulo-2.html#cb41-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Extraer el mes de cada fecha</span></span>
+<span id="cb41-12"><a href="modulo-2.html#cb41-12" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;Month&#39;</span>] <span class="op">=</span> df[<span class="st">&#39;fecha&#39;</span>].dt.month</span>
+<span id="cb41-13"><a href="modulo-2.html#cb41-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-14"><a href="modulo-2.html#cb41-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular la desviación del ciclo</span></span>
+<span id="cb41-15"><a href="modulo-2.html#cb41-15" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&#39;Desviación del ciclo&#39;</span>] <span class="op">=</span> df[<span class="st">&#39;valor&#39;</span>] <span class="op">-</span> df[<span class="st">&#39;valor&#39;</span>].mean()</span>
+<span id="cb41-16"><a href="modulo-2.html#cb41-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-17"><a href="modulo-2.html#cb41-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Trazar el boxplot</span></span>
+<span id="cb41-18"><a href="modulo-2.html#cb41-18" aria-hidden="true" tabindex="-1"></a>sns.boxplot(data<span class="op">=</span>df, x<span class="op">=</span><span class="st">&#39;Month&#39;</span>, y<span class="op">=</span><span class="st">&#39;Desviación del ciclo&#39;</span>)</span>
+<span id="cb41-19"><a href="modulo-2.html#cb41-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-20"><a href="modulo-2.html#cb41-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Configurar título y etiquetas de los ejes</span></span>
+<span id="cb41-21"><a href="modulo-2.html#cb41-21" aria-hidden="true" tabindex="-1"></a>plt.title(<span class="st">&#39;Boxplot de los datos en función del mes&#39;</span>)</span>
+<span id="cb41-22"><a href="modulo-2.html#cb41-22" aria-hidden="true" tabindex="-1"></a>plt.xlabel(<span class="st">&#39;Mes&#39;</span>)</span>
+<span id="cb41-23"><a href="modulo-2.html#cb41-23" aria-hidden="true" tabindex="-1"></a>plt.ylabel(<span class="st">&#39;Desviación del ciclo&#39;</span>)</span>
+<span id="cb41-24"><a href="modulo-2.html#cb41-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-25"><a href="modulo-2.html#cb41-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar el gráfico</span></span>
+<span id="cb41-26"><a href="modulo-2.html#cb41-26" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
 <p><img src="Propuesta-Bookdown_files/figure-html/unnamed-chunk-16-19.png" width="768" /></p>
 <p>Calculamos el ciclo y a traves de la funcion media agregamos nuestro conjunto de datos haciendo una transformacion basica, y ahora a traves de un boxplot tratamos de detectar en cada uno de esos meses la regularidad en lo largo del tiempo, se observa que dentro de los meses de febrero, marzo y abril son bastantes distintos comparado con los meses de fin de año.</p>
-<div class="sourceCode" id="cb41"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb41-1"><a href="modulo-2.html#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb41-2"><a href="modulo-2.html#cb41-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb41-3"><a href="modulo-2.html#cb41-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-4"><a href="modulo-2.html#cb41-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear una nueva figura y un nuevo eje para el gráfico del logaritmo</span></span>
-<span id="cb41-5"><a href="modulo-2.html#cb41-5" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
-<span id="cb41-6"><a href="modulo-2.html#cb41-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-7"><a href="modulo-2.html#cb41-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Aplicar la transformación logarítmica a los datos</span></span>
-<span id="cb41-8"><a href="modulo-2.html#cb41-8" aria-hidden="true" tabindex="-1"></a>log_data <span class="op">=</span> np.log(data)</span>
-<span id="cb41-9"><a href="modulo-2.html#cb41-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-10"><a href="modulo-2.html#cb41-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar los datos transformados</span></span>
-<span id="cb41-11"><a href="modulo-2.html#cb41-11" aria-hidden="true" tabindex="-1"></a>ax.plot(fecha, log_data)</span>
-<span id="cb41-12"><a href="modulo-2.html#cb41-12" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(title<span class="op">=</span><span class="st">&#39;Logaritmo de Precio de Maracuyá&#39;</span>, xlabel<span class="op">=</span><span class="st">&#39;Fecha&#39;</span>, ylabel<span class="op">=</span><span class="st">&#39;log(data)&#39;</span>)</span>
-<span id="cb41-13"><a href="modulo-2.html#cb41-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-14"><a href="modulo-2.html#cb41-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Rotar las etiquetas del eje x para una mejor visualización</span></span>
-<span id="cb41-15"><a href="modulo-2.html#cb41-15" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>)</span>
-<span id="cb41-16"><a href="modulo-2.html#cb41-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb41-17"><a href="modulo-2.html#cb41-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar el segundo gráfico</span></span></code></pre></div>
+<div class="sourceCode" id="cb42"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb42-1"><a href="modulo-2.html#cb42-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb42-2"><a href="modulo-2.html#cb42-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb42-3"><a href="modulo-2.html#cb42-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-4"><a href="modulo-2.html#cb42-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear una nueva figura y un nuevo eje para el gráfico del logaritmo</span></span>
+<span id="cb42-5"><a href="modulo-2.html#cb42-5" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb42-6"><a href="modulo-2.html#cb42-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-7"><a href="modulo-2.html#cb42-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Aplicar la transformación logarítmica a los datos</span></span>
+<span id="cb42-8"><a href="modulo-2.html#cb42-8" aria-hidden="true" tabindex="-1"></a>log_data <span class="op">=</span> np.log(data)</span>
+<span id="cb42-9"><a href="modulo-2.html#cb42-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-10"><a href="modulo-2.html#cb42-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar los datos transformados</span></span>
+<span id="cb42-11"><a href="modulo-2.html#cb42-11" aria-hidden="true" tabindex="-1"></a>ax.plot(fecha, log_data)</span>
+<span id="cb42-12"><a href="modulo-2.html#cb42-12" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(title<span class="op">=</span><span class="st">&#39;Logaritmo de Precio de Maracuyá&#39;</span>, xlabel<span class="op">=</span><span class="st">&#39;Fecha&#39;</span>, ylabel<span class="op">=</span><span class="st">&#39;log(data)&#39;</span>)</span>
+<span id="cb42-13"><a href="modulo-2.html#cb42-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-14"><a href="modulo-2.html#cb42-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Rotar las etiquetas del eje x para una mejor visualización</span></span>
+<span id="cb42-15"><a href="modulo-2.html#cb42-15" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>)</span>
+<span id="cb42-16"><a href="modulo-2.html#cb42-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb42-17"><a href="modulo-2.html#cb42-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar el segundo gráfico</span></span></code></pre></div>
 <pre><code>## (array([18628., 18718., 18809., 18901., 18993., 19083., 19174., 19266.,
 ##        19358., 19448., 19539.]), [Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;)])</code></pre>
-<div class="sourceCode" id="cb43"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb43-1"><a href="modulo-2.html#cb43-1" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<div class="sourceCode" id="cb44"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb44-1"><a href="modulo-2.html#cb44-1" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
 <p><img src="Propuesta-Bookdown_files/figure-html/unnamed-chunk-17-21.png" width="768" /></p>
 <p>Utilizamos la funcion logaritmica que nos muestra facilmente los minimos y los maximos de nuestro conjunto de datos, ahora observamos a otra escala la tendencia y estacionalidad ya identificada.</p>
-<div class="sourceCode" id="cb44"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb44-1"><a href="modulo-2.html#cb44-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb44-2"><a href="modulo-2.html#cb44-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb44-3"><a href="modulo-2.html#cb44-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.holtwinters <span class="im">import</span> ExponentialSmoothing</span>
-<span id="cb44-4"><a href="modulo-2.html#cb44-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-5"><a href="modulo-2.html#cb44-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Aplicar la transformación logarítmica a los datos</span></span>
-<span id="cb44-6"><a href="modulo-2.html#cb44-6" aria-hidden="true" tabindex="-1"></a>log_data <span class="op">=</span> np.log(data)</span>
-<span id="cb44-7"><a href="modulo-2.html#cb44-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-8"><a href="modulo-2.html#cb44-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear el modelo Holt-Winters</span></span>
-<span id="cb44-9"><a href="modulo-2.html#cb44-9" aria-hidden="true" tabindex="-1"></a>modelo_HW <span class="op">=</span> ExponentialSmoothing(log_data, seasonal<span class="op">=</span><span class="st">&#39;additive&#39;</span>)</span>
-<span id="cb44-10"><a href="modulo-2.html#cb44-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-11"><a href="modulo-2.html#cb44-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajustar el modelo a los datos</span></span>
-<span id="cb44-12"><a href="modulo-2.html#cb44-12" aria-hidden="true" tabindex="-1"></a>ajuste_HW <span class="op">=</span> modelo_HW.fit()</span>
-<span id="cb44-13"><a href="modulo-2.html#cb44-13" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-14"><a href="modulo-2.html#cb44-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener las predicciones ajustadas</span></span>
-<span id="cb44-15"><a href="modulo-2.html#cb44-15" aria-hidden="true" tabindex="-1"></a>predicciones <span class="op">=</span> ajuste_HW.fittedvalues</span>
-<span id="cb44-16"><a href="modulo-2.html#cb44-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-17"><a href="modulo-2.html#cb44-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear una nueva figura y un nuevo eje</span></span>
-<span id="cb44-18"><a href="modulo-2.html#cb44-18" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
-<span id="cb44-19"><a href="modulo-2.html#cb44-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-20"><a href="modulo-2.html#cb44-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar los datos transformados y las predicciones</span></span>
-<span id="cb44-21"><a href="modulo-2.html#cb44-21" aria-hidden="true" tabindex="-1"></a>ax.plot(fecha, log_data, label<span class="op">=</span><span class="st">&#39;Datos&#39;</span>)</span>
-<span id="cb44-22"><a href="modulo-2.html#cb44-22" aria-hidden="true" tabindex="-1"></a>ax.plot(fecha, predicciones, label<span class="op">=</span><span class="st">&#39;Predicciones&#39;</span>)</span>
-<span id="cb44-23"><a href="modulo-2.html#cb44-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-24"><a href="modulo-2.html#cb44-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Configurar título y etiquetas de los ejes</span></span>
-<span id="cb44-25"><a href="modulo-2.html#cb44-25" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(title<span class="op">=</span><span class="st">&#39;Ajuste con Holt-Winters&#39;</span>, xlabel<span class="op">=</span><span class="st">&#39;Fecha&#39;</span>, ylabel<span class="op">=</span><span class="st">&#39;log(data)&#39;</span>)</span>
-<span id="cb44-26"><a href="modulo-2.html#cb44-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-27"><a href="modulo-2.html#cb44-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Rotar las etiquetas del eje x para una mejor visualización</span></span>
-<span id="cb44-28"><a href="modulo-2.html#cb44-28" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>)</span>
-<span id="cb44-29"><a href="modulo-2.html#cb44-29" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb44-30"><a href="modulo-2.html#cb44-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar la leyenda</span></span></code></pre></div>
+<div class="sourceCode" id="cb45"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb45-1"><a href="modulo-2.html#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb45-2"><a href="modulo-2.html#cb45-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb45-3"><a href="modulo-2.html#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.holtwinters <span class="im">import</span> ExponentialSmoothing</span>
+<span id="cb45-4"><a href="modulo-2.html#cb45-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-5"><a href="modulo-2.html#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Aplicar la transformación logarítmica a los datos</span></span>
+<span id="cb45-6"><a href="modulo-2.html#cb45-6" aria-hidden="true" tabindex="-1"></a>log_data <span class="op">=</span> np.log(data)</span>
+<span id="cb45-7"><a href="modulo-2.html#cb45-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-8"><a href="modulo-2.html#cb45-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear el modelo Holt-Winters</span></span>
+<span id="cb45-9"><a href="modulo-2.html#cb45-9" aria-hidden="true" tabindex="-1"></a>modelo_HW <span class="op">=</span> ExponentialSmoothing(log_data, seasonal<span class="op">=</span><span class="st">&#39;additive&#39;</span>)</span>
+<span id="cb45-10"><a href="modulo-2.html#cb45-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-11"><a href="modulo-2.html#cb45-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajustar el modelo a los datos</span></span>
+<span id="cb45-12"><a href="modulo-2.html#cb45-12" aria-hidden="true" tabindex="-1"></a>ajuste_HW <span class="op">=</span> modelo_HW.fit()</span>
+<span id="cb45-13"><a href="modulo-2.html#cb45-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-14"><a href="modulo-2.html#cb45-14" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener las predicciones ajustadas</span></span>
+<span id="cb45-15"><a href="modulo-2.html#cb45-15" aria-hidden="true" tabindex="-1"></a>predicciones <span class="op">=</span> ajuste_HW.fittedvalues</span>
+<span id="cb45-16"><a href="modulo-2.html#cb45-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-17"><a href="modulo-2.html#cb45-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear una nueva figura y un nuevo eje</span></span>
+<span id="cb45-18"><a href="modulo-2.html#cb45-18" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb45-19"><a href="modulo-2.html#cb45-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-20"><a href="modulo-2.html#cb45-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar los datos transformados y las predicciones</span></span>
+<span id="cb45-21"><a href="modulo-2.html#cb45-21" aria-hidden="true" tabindex="-1"></a>ax.plot(fecha, log_data, label<span class="op">=</span><span class="st">&#39;Datos&#39;</span>)</span>
+<span id="cb45-22"><a href="modulo-2.html#cb45-22" aria-hidden="true" tabindex="-1"></a>ax.plot(fecha, predicciones, label<span class="op">=</span><span class="st">&#39;Predicciones&#39;</span>)</span>
+<span id="cb45-23"><a href="modulo-2.html#cb45-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-24"><a href="modulo-2.html#cb45-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Configurar título y etiquetas de los ejes</span></span>
+<span id="cb45-25"><a href="modulo-2.html#cb45-25" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(title<span class="op">=</span><span class="st">&#39;Ajuste con Holt-Winters&#39;</span>, xlabel<span class="op">=</span><span class="st">&#39;Fecha&#39;</span>, ylabel<span class="op">=</span><span class="st">&#39;log(data)&#39;</span>)</span>
+<span id="cb45-26"><a href="modulo-2.html#cb45-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-27"><a href="modulo-2.html#cb45-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Rotar las etiquetas del eje x para una mejor visualización</span></span>
+<span id="cb45-28"><a href="modulo-2.html#cb45-28" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>)</span>
+<span id="cb45-29"><a href="modulo-2.html#cb45-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-30"><a href="modulo-2.html#cb45-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar la leyenda</span></span></code></pre></div>
 <pre><code>## (array([18628., 18718., 18809., 18901., 18993., 19083., 19174., 19266.,
 ##        19358., 19448., 19539.]), [Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;)])</code></pre>
-<div class="sourceCode" id="cb46"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb46-1"><a href="modulo-2.html#cb46-1" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
-<span id="cb46-2"><a href="modulo-2.html#cb46-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb46-3"><a href="modulo-2.html#cb46-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar el gráfico</span></span>
-<span id="cb46-4"><a href="modulo-2.html#cb46-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<div class="sourceCode" id="cb47"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb47-1"><a href="modulo-2.html#cb47-1" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb47-2"><a href="modulo-2.html#cb47-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-3"><a href="modulo-2.html#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar el gráfico</span></span>
+<span id="cb47-4"><a href="modulo-2.html#cb47-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
 <p><img src="Propuesta-Bookdown_files/figure-html/unnamed-chunk-18-23.png" width="768" /></p>
 <p>Los datos obtenidos en naranja estan muy cerca y se puede ver que el ajuste con este metodo es relativamente bueno (aunque existen algunos estacios en que se difiere) se observa una grafica que mas o menos sigue el comportamiento del conjunto de datos.</p>
-<div class="sourceCode" id="cb47"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb47-1"><a href="modulo-2.html#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb47-2"><a href="modulo-2.html#cb47-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb47-3"><a href="modulo-2.html#cb47-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.seasonal <span class="im">import</span> seasonal_decompose</span>
-<span id="cb47-4"><a href="modulo-2.html#cb47-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-5"><a href="modulo-2.html#cb47-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Realizar la descomposición de los datos ajustados</span></span>
-<span id="cb47-6"><a href="modulo-2.html#cb47-6" aria-hidden="true" tabindex="-1"></a>descomposicion <span class="op">=</span> seasonal_decompose(ajuste_HW.fittedvalues)</span>
-<span id="cb47-7"><a href="modulo-2.html#cb47-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-8"><a href="modulo-2.html#cb47-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener los componentes de la descomposición</span></span>
-<span id="cb47-9"><a href="modulo-2.html#cb47-9" aria-hidden="true" tabindex="-1"></a>tendencia <span class="op">=</span> descomposicion.trend</span>
-<span id="cb47-10"><a href="modulo-2.html#cb47-10" aria-hidden="true" tabindex="-1"></a>estacionalidad <span class="op">=</span> descomposicion.seasonal</span>
-<span id="cb47-11"><a href="modulo-2.html#cb47-11" aria-hidden="true" tabindex="-1"></a>residuos <span class="op">=</span> descomposicion.resid</span>
-<span id="cb47-12"><a href="modulo-2.html#cb47-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-13"><a href="modulo-2.html#cb47-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear una nueva figura y subfiguras para cada componente</span></span>
-<span id="cb47-14"><a href="modulo-2.html#cb47-14" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">4</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">12</span>))</span>
-<span id="cb47-15"><a href="modulo-2.html#cb47-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-16"><a href="modulo-2.html#cb47-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar la tendencia</span></span>
-<span id="cb47-17"><a href="modulo-2.html#cb47-17" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(fecha, tendencia)</span>
-<span id="cb47-18"><a href="modulo-2.html#cb47-18" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">&#39;Tendencia&#39;</span>, xlabel<span class="op">=</span><span class="st">&#39;Fecha&#39;</span>, ylabel<span class="op">=</span><span class="st">&#39;log(data)&#39;</span>)</span>
-<span id="cb47-19"><a href="modulo-2.html#cb47-19" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-20"><a href="modulo-2.html#cb47-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar la estacionalidad</span></span>
-<span id="cb47-21"><a href="modulo-2.html#cb47-21" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(fecha, estacionalidad)</span>
-<span id="cb47-22"><a href="modulo-2.html#cb47-22" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">&#39;Estacionalidad&#39;</span>, xlabel<span class="op">=</span><span class="st">&#39;Fecha&#39;</span>, ylabel<span class="op">=</span><span class="st">&#39;log(data)&#39;</span>)</span>
-<span id="cb47-23"><a href="modulo-2.html#cb47-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-24"><a href="modulo-2.html#cb47-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar los residuos</span></span>
-<span id="cb47-25"><a href="modulo-2.html#cb47-25" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].plot(fecha, residuos)</span>
-<span id="cb47-26"><a href="modulo-2.html#cb47-26" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">&#39;Residuos&#39;</span>, xlabel<span class="op">=</span><span class="st">&#39;Fecha&#39;</span>, ylabel<span class="op">=</span><span class="st">&#39;log(data)&#39;</span>)</span>
-<span id="cb47-27"><a href="modulo-2.html#cb47-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-28"><a href="modulo-2.html#cb47-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar los datos originales</span></span>
-<span id="cb47-29"><a href="modulo-2.html#cb47-29" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">3</span>].plot(fecha, log_data, label<span class="op">=</span><span class="st">&#39;Datos&#39;</span>)</span>
-<span id="cb47-30"><a href="modulo-2.html#cb47-30" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">3</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">&#39;Datos Originales&#39;</span>, xlabel<span class="op">=</span><span class="st">&#39;Fecha&#39;</span>, ylabel<span class="op">=</span><span class="st">&#39;log(data)&#39;</span>)</span>
-<span id="cb47-31"><a href="modulo-2.html#cb47-31" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-32"><a href="modulo-2.html#cb47-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajustar el espaciado entre las subfiguras</span></span>
-<span id="cb47-33"><a href="modulo-2.html#cb47-33" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb47-34"><a href="modulo-2.html#cb47-34" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb47-35"><a href="modulo-2.html#cb47-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar el gráfico</span></span>
-<span id="cb47-36"><a href="modulo-2.html#cb47-36" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
-<p><img src="Propuesta-Bookdown_files/figure-html/unnamed-chunk-19-25.png" width="768" /></p>
-<div class="sourceCode" id="cb48"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb48-1"><a href="modulo-2.html#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb48-2"><a href="modulo-2.html#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.holtwinters <span class="im">import</span> ExponentialSmoothing</span>
-<span id="cb48-3"><a href="modulo-2.html#cb48-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-4"><a href="modulo-2.html#cb48-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear el modelo Holt-Winters</span></span>
-<span id="cb48-5"><a href="modulo-2.html#cb48-5" aria-hidden="true" tabindex="-1"></a>modelo_HW <span class="op">=</span> ExponentialSmoothing(log_data, seasonal<span class="op">=</span><span class="st">&#39;additive&#39;</span>)</span>
-<span id="cb48-6"><a href="modulo-2.html#cb48-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-7"><a href="modulo-2.html#cb48-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajustar el modelo</span></span>
-<span id="cb48-8"><a href="modulo-2.html#cb48-8" aria-hidden="true" tabindex="-1"></a>modelo_ajustado <span class="op">=</span> modelo_HW.fit()</span>
-<span id="cb48-9"><a href="modulo-2.html#cb48-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-10"><a href="modulo-2.html#cb48-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Realizar la predicción de 4 periodos hacia adelante</span></span>
-<span id="cb48-11"><a href="modulo-2.html#cb48-11" aria-hidden="true" tabindex="-1"></a>prediccion <span class="op">=</span> modelo_ajustado.forecast(steps<span class="op">=</span><span class="dv">4</span>)</span>
+<div class="sourceCode" id="cb48"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb48-1"><a href="modulo-2.html#cb48-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb48-2"><a href="modulo-2.html#cb48-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb48-3"><a href="modulo-2.html#cb48-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.seasonal <span class="im">import</span> seasonal_decompose</span>
+<span id="cb48-4"><a href="modulo-2.html#cb48-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-5"><a href="modulo-2.html#cb48-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Realizar la descomposición de los datos ajustados</span></span>
+<span id="cb48-6"><a href="modulo-2.html#cb48-6" aria-hidden="true" tabindex="-1"></a>descomposicion <span class="op">=</span> seasonal_decompose(ajuste_HW.fittedvalues)</span>
+<span id="cb48-7"><a href="modulo-2.html#cb48-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-8"><a href="modulo-2.html#cb48-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener los componentes de la descomposición</span></span>
+<span id="cb48-9"><a href="modulo-2.html#cb48-9" aria-hidden="true" tabindex="-1"></a>tendencia <span class="op">=</span> descomposicion.trend</span>
+<span id="cb48-10"><a href="modulo-2.html#cb48-10" aria-hidden="true" tabindex="-1"></a>estacionalidad <span class="op">=</span> descomposicion.seasonal</span>
+<span id="cb48-11"><a href="modulo-2.html#cb48-11" aria-hidden="true" tabindex="-1"></a>residuos <span class="op">=</span> descomposicion.resid</span>
 <span id="cb48-12"><a href="modulo-2.html#cb48-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-13"><a href="modulo-2.html#cb48-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear una nueva figura y un nuevo eje</span></span>
-<span id="cb48-14"><a href="modulo-2.html#cb48-14" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb48-13"><a href="modulo-2.html#cb48-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear una nueva figura y subfiguras para cada componente</span></span>
+<span id="cb48-14"><a href="modulo-2.html#cb48-14" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(<span class="dv">4</span>, <span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">12</span>))</span>
 <span id="cb48-15"><a href="modulo-2.html#cb48-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-16"><a href="modulo-2.html#cb48-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar los datos originales</span></span>
-<span id="cb48-17"><a href="modulo-2.html#cb48-17" aria-hidden="true" tabindex="-1"></a>ax.plot(fecha, log_data, label<span class="op">=</span><span class="st">&#39;Datos&#39;</span>)</span>
-<span id="cb48-18"><a href="modulo-2.html#cb48-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-19"><a href="modulo-2.html#cb48-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener las fechas para los valores predichos</span></span>
-<span id="cb48-20"><a href="modulo-2.html#cb48-20" aria-hidden="true" tabindex="-1"></a>fechas_prediccion <span class="op">=</span> pd.date_range(start<span class="op">=</span>fecha[<span class="op">-</span><span class="dv">1</span>], periods<span class="op">=</span><span class="bu">len</span>(prediccion)<span class="op">+</span><span class="dv">1</span>, freq<span class="op">=</span><span class="st">&#39;M&#39;</span>)[<span class="dv">1</span>:]</span>
-<span id="cb48-21"><a href="modulo-2.html#cb48-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-22"><a href="modulo-2.html#cb48-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar los valores predichos</span></span>
-<span id="cb48-23"><a href="modulo-2.html#cb48-23" aria-hidden="true" tabindex="-1"></a>ax.plot(fechas_prediccion, prediccion, label<span class="op">=</span><span class="st">&#39;Valores Predichos&#39;</span>)</span>
-<span id="cb48-24"><a href="modulo-2.html#cb48-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-25"><a href="modulo-2.html#cb48-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Configurar título y etiquetas de los ejes</span></span>
-<span id="cb48-26"><a href="modulo-2.html#cb48-26" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(title<span class="op">=</span><span class="st">&#39;Predicción con Holt-Winters&#39;</span>, xlabel<span class="op">=</span><span class="st">&#39;Fecha&#39;</span>, ylabel<span class="op">=</span><span class="st">&#39;log(data)&#39;</span>)</span>
+<span id="cb48-16"><a href="modulo-2.html#cb48-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar la tendencia</span></span>
+<span id="cb48-17"><a href="modulo-2.html#cb48-17" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].plot(fecha, tendencia)</span>
+<span id="cb48-18"><a href="modulo-2.html#cb48-18" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">&#39;Tendencia&#39;</span>, xlabel<span class="op">=</span><span class="st">&#39;Fecha&#39;</span>, ylabel<span class="op">=</span><span class="st">&#39;log(data)&#39;</span>)</span>
+<span id="cb48-19"><a href="modulo-2.html#cb48-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-20"><a href="modulo-2.html#cb48-20" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar la estacionalidad</span></span>
+<span id="cb48-21"><a href="modulo-2.html#cb48-21" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].plot(fecha, estacionalidad)</span>
+<span id="cb48-22"><a href="modulo-2.html#cb48-22" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">&#39;Estacionalidad&#39;</span>, xlabel<span class="op">=</span><span class="st">&#39;Fecha&#39;</span>, ylabel<span class="op">=</span><span class="st">&#39;log(data)&#39;</span>)</span>
+<span id="cb48-23"><a href="modulo-2.html#cb48-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-24"><a href="modulo-2.html#cb48-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar los residuos</span></span>
+<span id="cb48-25"><a href="modulo-2.html#cb48-25" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].plot(fecha, residuos)</span>
+<span id="cb48-26"><a href="modulo-2.html#cb48-26" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">&#39;Residuos&#39;</span>, xlabel<span class="op">=</span><span class="st">&#39;Fecha&#39;</span>, ylabel<span class="op">=</span><span class="st">&#39;log(data)&#39;</span>)</span>
 <span id="cb48-27"><a href="modulo-2.html#cb48-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-28"><a href="modulo-2.html#cb48-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Rotar las etiquetas del eje x para una mejor visualización</span></span>
-<span id="cb48-29"><a href="modulo-2.html#cb48-29" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>)</span>
-<span id="cb48-30"><a href="modulo-2.html#cb48-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb48-31"><a href="modulo-2.html#cb48-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar la leyenda</span></span></code></pre></div>
+<span id="cb48-28"><a href="modulo-2.html#cb48-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar los datos originales</span></span>
+<span id="cb48-29"><a href="modulo-2.html#cb48-29" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">3</span>].plot(fecha, log_data, label<span class="op">=</span><span class="st">&#39;Datos&#39;</span>)</span>
+<span id="cb48-30"><a href="modulo-2.html#cb48-30" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">3</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">&#39;Datos Originales&#39;</span>, xlabel<span class="op">=</span><span class="st">&#39;Fecha&#39;</span>, ylabel<span class="op">=</span><span class="st">&#39;log(data)&#39;</span>)</span>
+<span id="cb48-31"><a href="modulo-2.html#cb48-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-32"><a href="modulo-2.html#cb48-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajustar el espaciado entre las subfiguras</span></span>
+<span id="cb48-33"><a href="modulo-2.html#cb48-33" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb48-34"><a href="modulo-2.html#cb48-34" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb48-35"><a href="modulo-2.html#cb48-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar el gráfico</span></span>
+<span id="cb48-36"><a href="modulo-2.html#cb48-36" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<p><img src="Propuesta-Bookdown_files/figure-html/unnamed-chunk-19-25.png" width="768" /></p>
+<div class="sourceCode" id="cb49"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb49-1"><a href="modulo-2.html#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb49-2"><a href="modulo-2.html#cb49-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.holtwinters <span class="im">import</span> ExponentialSmoothing</span>
+<span id="cb49-3"><a href="modulo-2.html#cb49-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-4"><a href="modulo-2.html#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear el modelo Holt-Winters</span></span>
+<span id="cb49-5"><a href="modulo-2.html#cb49-5" aria-hidden="true" tabindex="-1"></a>modelo_HW <span class="op">=</span> ExponentialSmoothing(log_data, seasonal<span class="op">=</span><span class="st">&#39;additive&#39;</span>)</span>
+<span id="cb49-6"><a href="modulo-2.html#cb49-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-7"><a href="modulo-2.html#cb49-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajustar el modelo</span></span>
+<span id="cb49-8"><a href="modulo-2.html#cb49-8" aria-hidden="true" tabindex="-1"></a>modelo_ajustado <span class="op">=</span> modelo_HW.fit()</span>
+<span id="cb49-9"><a href="modulo-2.html#cb49-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-10"><a href="modulo-2.html#cb49-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Realizar la predicción de 4 periodos hacia adelante</span></span>
+<span id="cb49-11"><a href="modulo-2.html#cb49-11" aria-hidden="true" tabindex="-1"></a>prediccion <span class="op">=</span> modelo_ajustado.forecast(steps<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb49-12"><a href="modulo-2.html#cb49-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-13"><a href="modulo-2.html#cb49-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear una nueva figura y un nuevo eje</span></span>
+<span id="cb49-14"><a href="modulo-2.html#cb49-14" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb49-15"><a href="modulo-2.html#cb49-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-16"><a href="modulo-2.html#cb49-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar los datos originales</span></span>
+<span id="cb49-17"><a href="modulo-2.html#cb49-17" aria-hidden="true" tabindex="-1"></a>ax.plot(fecha, log_data, label<span class="op">=</span><span class="st">&#39;Datos&#39;</span>)</span>
+<span id="cb49-18"><a href="modulo-2.html#cb49-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-19"><a href="modulo-2.html#cb49-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener las fechas para los valores predichos</span></span>
+<span id="cb49-20"><a href="modulo-2.html#cb49-20" aria-hidden="true" tabindex="-1"></a>fechas_prediccion <span class="op">=</span> pd.date_range(start<span class="op">=</span>fecha[<span class="op">-</span><span class="dv">1</span>], periods<span class="op">=</span><span class="bu">len</span>(prediccion)<span class="op">+</span><span class="dv">1</span>, freq<span class="op">=</span><span class="st">&#39;M&#39;</span>)[<span class="dv">1</span>:]</span>
+<span id="cb49-21"><a href="modulo-2.html#cb49-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-22"><a href="modulo-2.html#cb49-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar los valores predichos</span></span>
+<span id="cb49-23"><a href="modulo-2.html#cb49-23" aria-hidden="true" tabindex="-1"></a>ax.plot(fechas_prediccion, prediccion, label<span class="op">=</span><span class="st">&#39;Valores Predichos&#39;</span>)</span>
+<span id="cb49-24"><a href="modulo-2.html#cb49-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-25"><a href="modulo-2.html#cb49-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Configurar título y etiquetas de los ejes</span></span>
+<span id="cb49-26"><a href="modulo-2.html#cb49-26" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(title<span class="op">=</span><span class="st">&#39;Predicción con Holt-Winters&#39;</span>, xlabel<span class="op">=</span><span class="st">&#39;Fecha&#39;</span>, ylabel<span class="op">=</span><span class="st">&#39;log(data)&#39;</span>)</span>
+<span id="cb49-27"><a href="modulo-2.html#cb49-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-28"><a href="modulo-2.html#cb49-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Rotar las etiquetas del eje x para una mejor visualización</span></span>
+<span id="cb49-29"><a href="modulo-2.html#cb49-29" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>)</span>
+<span id="cb49-30"><a href="modulo-2.html#cb49-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-31"><a href="modulo-2.html#cb49-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar la leyenda</span></span></code></pre></div>
 <pre><code>## (array([18628., 18748., 18871., 18993., 19113., 19236., 19358., 19478.,
 ##        19601.]), [Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;)])</code></pre>
-<div class="sourceCode" id="cb50"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb50-1"><a href="modulo-2.html#cb50-1" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
-<span id="cb50-2"><a href="modulo-2.html#cb50-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb50-3"><a href="modulo-2.html#cb50-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar el gráfico</span></span>
-<span id="cb50-4"><a href="modulo-2.html#cb50-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<div class="sourceCode" id="cb51"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb51-1"><a href="modulo-2.html#cb51-1" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb51-2"><a href="modulo-2.html#cb51-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-3"><a href="modulo-2.html#cb51-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar el gráfico</span></span>
+<span id="cb51-4"><a href="modulo-2.html#cb51-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
 <p><img src="Propuesta-Bookdown_files/figure-html/unnamed-chunk-20-27.png" width="768" /></p>
 <p>Podemos ver una prediccion utilizando el modelo Holt-Winter para los precios de junio, julio, agosto y septiembre del año 2023.</p>
-<div class="sourceCode" id="cb51"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb51-1"><a href="modulo-2.html#cb51-1" aria-hidden="true" tabindex="-1"></a>prediccion.head()</span></code></pre></div>
+<div class="sourceCode" id="cb52"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb52-1"><a href="modulo-2.html#cb52-1" aria-hidden="true" tabindex="-1"></a>prediccion.head()</span></code></pre></div>
 <pre><code>## 2023-06-30    8.224309
 ## 2023-07-31    8.355440
 ## 2023-08-31    8.169870
 ## 2023-09-30    8.305518
 ## Freq: M, dtype: float64</code></pre>
-<div class="sourceCode" id="cb53"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb53-1"><a href="modulo-2.html#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb53-2"><a href="modulo-2.html#cb53-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-3"><a href="modulo-2.html#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Convertir los valores predichos del logaritmo al valor real</span></span>
-<span id="cb53-4"><a href="modulo-2.html#cb53-4" aria-hidden="true" tabindex="-1"></a>valores_predichos <span class="op">=</span> np.exp(prediccion)</span>
-<span id="cb53-5"><a href="modulo-2.html#cb53-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb53-6"><a href="modulo-2.html#cb53-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Imprimir los valores predichos en formato fecha y valor</span></span>
-<span id="cb53-7"><a href="modulo-2.html#cb53-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> fecha_pred, valor_pred <span class="kw">in</span> <span class="bu">zip</span>(fechas_prediccion, valores_predichos):</span>
-<span id="cb53-8"><a href="modulo-2.html#cb53-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(fecha_pred.strftime(<span class="st">&#39;%Y-%m-</span><span class="sc">%d</span><span class="st">&#39;</span>), valor_pred)</span></code></pre></div>
+<div class="sourceCode" id="cb54"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb54-1"><a href="modulo-2.html#cb54-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb54-2"><a href="modulo-2.html#cb54-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-3"><a href="modulo-2.html#cb54-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Convertir los valores predichos del logaritmo al valor real</span></span>
+<span id="cb54-4"><a href="modulo-2.html#cb54-4" aria-hidden="true" tabindex="-1"></a>valores_predichos <span class="op">=</span> np.exp(prediccion)</span>
+<span id="cb54-5"><a href="modulo-2.html#cb54-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb54-6"><a href="modulo-2.html#cb54-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Imprimir los valores predichos en formato fecha y valor</span></span>
+<span id="cb54-7"><a href="modulo-2.html#cb54-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> fecha_pred, valor_pred <span class="kw">in</span> <span class="bu">zip</span>(fechas_prediccion, valores_predichos):</span>
+<span id="cb54-8"><a href="modulo-2.html#cb54-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(fecha_pred.strftime(<span class="st">&#39;%Y-%m-</span><span class="sc">%d</span><span class="st">&#39;</span>), valor_pred)</span></code></pre></div>
 <pre><code>## 2023-06-30 3730.543176939008
 ## 2023-07-31 4253.255902042168
 ## 2023-08-31 3532.8863697415463
 ## 2023-09-30 4046.1378831789025</code></pre>
+<div class="sourceCode" id="cb56"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb56-1"><a href="modulo-2.html#cb56-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb56-2"><a href="modulo-2.html#cb56-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error, mean_absolute_error, r2_score</span>
+<span id="cb56-3"><a href="modulo-2.html#cb56-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-4"><a href="modulo-2.html#cb56-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Convertir los datos predichos a escala original (exponencial)</span></span>
+<span id="cb56-5"><a href="modulo-2.html#cb56-5" aria-hidden="true" tabindex="-1"></a>prediccion_escalada <span class="op">=</span> np.exp(prediccion)</span>
+<span id="cb56-6"><a href="modulo-2.html#cb56-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-7"><a href="modulo-2.html#cb56-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Convertir los datos observados a escala original (exponencial)</span></span>
+<span id="cb56-8"><a href="modulo-2.html#cb56-8" aria-hidden="true" tabindex="-1"></a>datos_escalados <span class="op">=</span> np.exp(log_data)</span>
+<span id="cb56-9"><a href="modulo-2.html#cb56-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-10"><a href="modulo-2.html#cb56-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener los valores observados para el período de predicción</span></span>
+<span id="cb56-11"><a href="modulo-2.html#cb56-11" aria-hidden="true" tabindex="-1"></a>valores_observados <span class="op">=</span> datos_escalados[<span class="op">-</span><span class="dv">4</span>:]</span>
+<span id="cb56-12"><a href="modulo-2.html#cb56-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-13"><a href="modulo-2.html#cb56-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular las métricas</span></span>
+<span id="cb56-14"><a href="modulo-2.html#cb56-14" aria-hidden="true" tabindex="-1"></a>me <span class="op">=</span> np.mean(valores_observados <span class="op">-</span> prediccion_escalada)</span>
+<span id="cb56-15"><a href="modulo-2.html#cb56-15" aria-hidden="true" tabindex="-1"></a>rmse <span class="op">=</span> np.sqrt(mean_squared_error(valores_observados, prediccion_escalada))</span>
+<span id="cb56-16"><a href="modulo-2.html#cb56-16" aria-hidden="true" tabindex="-1"></a>mae <span class="op">=</span> mean_absolute_error(valores_observados, prediccion_escalada)</span>
+<span id="cb56-17"><a href="modulo-2.html#cb56-17" aria-hidden="true" tabindex="-1"></a>mpe <span class="op">=</span> np.mean((valores_observados <span class="op">-</span> prediccion_escalada) <span class="op">/</span> valores_observados) <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb56-18"><a href="modulo-2.html#cb56-18" aria-hidden="true" tabindex="-1"></a>acf1 <span class="op">=</span> modelo_ajustado.resid.autocorr(lag<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb56-19"><a href="modulo-2.html#cb56-19" aria-hidden="true" tabindex="-1"></a>r2 <span class="op">=</span> r2_score(valores_observados, prediccion_escalada)</span>
+<span id="cb56-20"><a href="modulo-2.html#cb56-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb56-21"><a href="modulo-2.html#cb56-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Imprimir las métricas</span></span>
+<span id="cb56-22"><a href="modulo-2.html#cb56-22" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Mean Error (ME):&quot;</span>, me)</span></code></pre></div>
+<pre><code>## Mean Error (ME): nan</code></pre>
+<div class="sourceCode" id="cb58"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb58-1"><a href="modulo-2.html#cb58-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Root Mean Squared Error (RMSE):&quot;</span>, rmse)</span></code></pre></div>
+<pre><code>## Root Mean Squared Error (RMSE): 991.7712039457741</code></pre>
+<div class="sourceCode" id="cb60"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb60-1"><a href="modulo-2.html#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Mean Absolute Error (MAE):&quot;</span>, mae)</span></code></pre></div>
+<pre><code>## Mean Absolute Error (MAE): 810.4358336912576</code></pre>
+<div class="sourceCode" id="cb62"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb62-1"><a href="modulo-2.html#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Mean Percentage Error (MPE):&quot;</span>, mpe)</span></code></pre></div>
+<pre><code>## Mean Percentage Error (MPE): nan</code></pre>
+<div class="sourceCode" id="cb64"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb64-1"><a href="modulo-2.html#cb64-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Autocorrelation of First Order (ACF1):&quot;</span>, acf1)</span></code></pre></div>
+<pre><code>## Autocorrelation of First Order (ACF1): -0.23924830699640037</code></pre>
+<div class="sourceCode" id="cb66"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb66-1"><a href="modulo-2.html#cb66-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;Coefficient of Determination (R2):&quot;</span>, r2)</span></code></pre></div>
+<pre><code>## Coefficient of Determination (R2): -3.1912975599771185</code></pre>
+<div class="sourceCode" id="cb68"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb68-1"><a href="modulo-2.html#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear un DataFrame para almacenar las métricas</span></span>
+<span id="cb68-2"><a href="modulo-2.html#cb68-2" aria-hidden="true" tabindex="-1"></a>df_metrics <span class="op">=</span> pd.DataFrame(columns<span class="op">=</span>[<span class="st">&#39;Model&#39;</span>, <span class="st">&#39;Type&#39;</span>, <span class="st">&#39;ME&#39;</span>, <span class="st">&#39;RMSE&#39;</span>, <span class="st">&#39;MAE&#39;</span>, <span class="st">&#39;MPE&#39;</span>, <span class="st">&#39;ACF1&#39;</span>])</span>
+<span id="cb68-3"><a href="modulo-2.html#cb68-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-4"><a href="modulo-2.html#cb68-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Agregar las métricas del modelo Holt-Winters</span></span>
+<span id="cb68-5"><a href="modulo-2.html#cb68-5" aria-hidden="true" tabindex="-1"></a>df_metrics.loc[<span class="dv">0</span>] <span class="op">=</span> [<span class="st">&#39;Holt-Winters&#39;</span>, <span class="st">&#39;Test&#39;</span>, me, rmse, mae, mpe, acf1]</span>
+<span id="cb68-6"><a href="modulo-2.html#cb68-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb68-7"><a href="modulo-2.html#cb68-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Imprimir el DataFrame</span></span>
+<span id="cb68-8"><a href="modulo-2.html#cb68-8" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_metrics)</span></code></pre></div>
+<pre><code>##           Model  Type  ME        RMSE         MAE  MPE      ACF1
+## 0  Holt-Winters  Test NaN  991.771204  810.435834  NaN -0.239248</code></pre>
 </div>
 <div id="metodoligia-de-suavizamiento-a-la-variable-tiempo" class="section level3 hasAnchor" number="4.1.2">
 <h3><span class="header-section-number">4.1.2</span> Metodoligia de Suavizamiento a la variable Tiempo<a href="modulo-2.html#metodoligia-de-suavizamiento-a-la-variable-tiempo" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb55"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb55-1"><a href="modulo-2.html#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb55-2"><a href="modulo-2.html#cb55-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.api <span class="im">import</span> SimpleExpSmoothing</span>
-<span id="cb55-3"><a href="modulo-2.html#cb55-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-4"><a href="modulo-2.html#cb55-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear el modelo de suavizamiento exponencial simple</span></span>
-<span id="cb55-5"><a href="modulo-2.html#cb55-5" aria-hidden="true" tabindex="-1"></a>modelo_ses <span class="op">=</span> SimpleExpSmoothing(log_data)</span>
-<span id="cb55-6"><a href="modulo-2.html#cb55-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-7"><a href="modulo-2.html#cb55-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajustar el modelo</span></span>
-<span id="cb55-8"><a href="modulo-2.html#cb55-8" aria-hidden="true" tabindex="-1"></a>modelo_ajustado <span class="op">=</span> modelo_ses.fit()</span>
-<span id="cb55-9"><a href="modulo-2.html#cb55-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-10"><a href="modulo-2.html#cb55-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Realizar la predicción de 4 periodos hacia adelante</span></span>
-<span id="cb55-11"><a href="modulo-2.html#cb55-11" aria-hidden="true" tabindex="-1"></a>prediccion <span class="op">=</span> modelo_ajustado.forecast(steps<span class="op">=</span><span class="dv">4</span>)</span>
-<span id="cb55-12"><a href="modulo-2.html#cb55-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-13"><a href="modulo-2.html#cb55-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear una nueva figura y un nuevo eje</span></span>
-<span id="cb55-14"><a href="modulo-2.html#cb55-14" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
-<span id="cb55-15"><a href="modulo-2.html#cb55-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-16"><a href="modulo-2.html#cb55-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar los datos originales</span></span>
-<span id="cb55-17"><a href="modulo-2.html#cb55-17" aria-hidden="true" tabindex="-1"></a>ax.plot(fecha, log_data, label<span class="op">=</span><span class="st">&#39;Datos&#39;</span>)</span>
-<span id="cb55-18"><a href="modulo-2.html#cb55-18" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-19"><a href="modulo-2.html#cb55-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener las fechas para los valores predichos</span></span>
-<span id="cb55-20"><a href="modulo-2.html#cb55-20" aria-hidden="true" tabindex="-1"></a>fechas_prediccion <span class="op">=</span> pd.date_range(start<span class="op">=</span>fecha[<span class="op">-</span><span class="dv">1</span>], periods<span class="op">=</span><span class="bu">len</span>(prediccion)<span class="op">+</span><span class="dv">1</span>, freq<span class="op">=</span><span class="st">&#39;M&#39;</span>)[<span class="dv">1</span>:]</span>
-<span id="cb55-21"><a href="modulo-2.html#cb55-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-22"><a href="modulo-2.html#cb55-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar los valores predichos</span></span>
-<span id="cb55-23"><a href="modulo-2.html#cb55-23" aria-hidden="true" tabindex="-1"></a>ax.plot(fechas_prediccion, prediccion, label<span class="op">=</span><span class="st">&#39;Valores Predichos&#39;</span>)</span>
-<span id="cb55-24"><a href="modulo-2.html#cb55-24" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-25"><a href="modulo-2.html#cb55-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Configurar título y etiquetas de los ejes</span></span>
-<span id="cb55-26"><a href="modulo-2.html#cb55-26" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(title<span class="op">=</span><span class="st">&#39;Predicción con Suavizamiento Exponencial Simple&#39;</span>, xlabel<span class="op">=</span><span class="st">&#39;Fecha&#39;</span>, ylabel<span class="op">=</span><span class="st">&#39;log(data)&#39;</span>)</span>
-<span id="cb55-27"><a href="modulo-2.html#cb55-27" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-28"><a href="modulo-2.html#cb55-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Rotar las etiquetas del eje x para una mejor visualización</span></span>
-<span id="cb55-29"><a href="modulo-2.html#cb55-29" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>)</span>
-<span id="cb55-30"><a href="modulo-2.html#cb55-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb55-31"><a href="modulo-2.html#cb55-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar la leyenda</span></span></code></pre></div>
+<div class="sourceCode" id="cb70"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb70-1"><a href="modulo-2.html#cb70-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb70-2"><a href="modulo-2.html#cb70-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.api <span class="im">import</span> SimpleExpSmoothing</span>
+<span id="cb70-3"><a href="modulo-2.html#cb70-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-4"><a href="modulo-2.html#cb70-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear el modelo de suavizamiento exponencial simple</span></span>
+<span id="cb70-5"><a href="modulo-2.html#cb70-5" aria-hidden="true" tabindex="-1"></a>modelo_ses <span class="op">=</span> SimpleExpSmoothing(log_data)</span>
+<span id="cb70-6"><a href="modulo-2.html#cb70-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-7"><a href="modulo-2.html#cb70-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajustar el modelo</span></span>
+<span id="cb70-8"><a href="modulo-2.html#cb70-8" aria-hidden="true" tabindex="-1"></a>modelo_ajustado <span class="op">=</span> modelo_ses.fit()</span>
+<span id="cb70-9"><a href="modulo-2.html#cb70-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-10"><a href="modulo-2.html#cb70-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Realizar la predicción de 4 periodos hacia adelante</span></span>
+<span id="cb70-11"><a href="modulo-2.html#cb70-11" aria-hidden="true" tabindex="-1"></a>prediccion <span class="op">=</span> modelo_ajustado.forecast(steps<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb70-12"><a href="modulo-2.html#cb70-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-13"><a href="modulo-2.html#cb70-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear una nueva figura y un nuevo eje</span></span>
+<span id="cb70-14"><a href="modulo-2.html#cb70-14" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">6</span>))</span>
+<span id="cb70-15"><a href="modulo-2.html#cb70-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-16"><a href="modulo-2.html#cb70-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar los datos originales</span></span>
+<span id="cb70-17"><a href="modulo-2.html#cb70-17" aria-hidden="true" tabindex="-1"></a>ax.plot(fecha, log_data, label<span class="op">=</span><span class="st">&#39;Datos&#39;</span>)</span>
+<span id="cb70-18"><a href="modulo-2.html#cb70-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-19"><a href="modulo-2.html#cb70-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener las fechas para los valores predichos</span></span>
+<span id="cb70-20"><a href="modulo-2.html#cb70-20" aria-hidden="true" tabindex="-1"></a>fechas_prediccion <span class="op">=</span> pd.date_range(start<span class="op">=</span>fecha[<span class="op">-</span><span class="dv">1</span>], periods<span class="op">=</span><span class="bu">len</span>(prediccion)<span class="op">+</span><span class="dv">1</span>, freq<span class="op">=</span><span class="st">&#39;M&#39;</span>)[<span class="dv">1</span>:]</span>
+<span id="cb70-21"><a href="modulo-2.html#cb70-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-22"><a href="modulo-2.html#cb70-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Graficar los valores predichos</span></span>
+<span id="cb70-23"><a href="modulo-2.html#cb70-23" aria-hidden="true" tabindex="-1"></a>ax.plot(fechas_prediccion, prediccion, label<span class="op">=</span><span class="st">&#39;Valores Predichos&#39;</span>)</span>
+<span id="cb70-24"><a href="modulo-2.html#cb70-24" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-25"><a href="modulo-2.html#cb70-25" aria-hidden="true" tabindex="-1"></a><span class="co"># Configurar título y etiquetas de los ejes</span></span>
+<span id="cb70-26"><a href="modulo-2.html#cb70-26" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(title<span class="op">=</span><span class="st">&#39;Predicción con Suavizamiento Exponencial Simple&#39;</span>, xlabel<span class="op">=</span><span class="st">&#39;Fecha&#39;</span>, ylabel<span class="op">=</span><span class="st">&#39;log(data)&#39;</span>)</span>
+<span id="cb70-27"><a href="modulo-2.html#cb70-27" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-28"><a href="modulo-2.html#cb70-28" aria-hidden="true" tabindex="-1"></a><span class="co"># Rotar las etiquetas del eje x para una mejor visualización</span></span>
+<span id="cb70-29"><a href="modulo-2.html#cb70-29" aria-hidden="true" tabindex="-1"></a>plt.xticks(rotation<span class="op">=</span><span class="dv">45</span>)</span>
+<span id="cb70-30"><a href="modulo-2.html#cb70-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb70-31"><a href="modulo-2.html#cb70-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar la leyenda</span></span></code></pre></div>
 <pre><code>## (array([18628., 18748., 18871., 18993., 19113., 19236., 19358., 19478.,
 ##        19601.]), [Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;), Text(0, 0, &#39;&#39;)])</code></pre>
-<div class="sourceCode" id="cb57"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb57-1"><a href="modulo-2.html#cb57-1" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
-<span id="cb57-2"><a href="modulo-2.html#cb57-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb57-3"><a href="modulo-2.html#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar el gráfico</span></span>
-<span id="cb57-4"><a href="modulo-2.html#cb57-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
-<p><img src="Propuesta-Bookdown_files/figure-html/unnamed-chunk-23-29.png" width="768" /></p>
-<div class="sourceCode" id="cb58"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb58-1"><a href="modulo-2.html#cb58-1" aria-hidden="true" tabindex="-1"></a>prediccion.head()</span></code></pre></div>
+<div class="sourceCode" id="cb72"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb72-1"><a href="modulo-2.html#cb72-1" aria-hidden="true" tabindex="-1"></a>ax.legend()</span>
+<span id="cb72-2"><a href="modulo-2.html#cb72-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb72-3"><a href="modulo-2.html#cb72-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar el gráfico</span></span>
+<span id="cb72-4"><a href="modulo-2.html#cb72-4" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<p><img src="Propuesta-Bookdown_files/figure-html/unnamed-chunk-25-29.png" width="768" /></p>
+<div class="sourceCode" id="cb73"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb73-1"><a href="modulo-2.html#cb73-1" aria-hidden="true" tabindex="-1"></a>prediccion.head()</span></code></pre></div>
 <pre><code>## 2023-06-30    8.409658
 ## 2023-07-31    8.409658
 ## 2023-08-31    8.409658
 ## 2023-09-30    8.409658
 ## Freq: M, dtype: float64</code></pre>
-<div class="sourceCode" id="cb60"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb60-1"><a href="modulo-2.html#cb60-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
-<span id="cb60-2"><a href="modulo-2.html#cb60-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-3"><a href="modulo-2.html#cb60-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Convertir los valores predichos del logaritmo al valor real</span></span>
-<span id="cb60-4"><a href="modulo-2.html#cb60-4" aria-hidden="true" tabindex="-1"></a>valores_predichos <span class="op">=</span> np.exp(prediccion)</span>
-<span id="cb60-5"><a href="modulo-2.html#cb60-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb60-6"><a href="modulo-2.html#cb60-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Imprimir los valores predichos en formato fecha y valor</span></span>
-<span id="cb60-7"><a href="modulo-2.html#cb60-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> fecha_pred, valor_pred <span class="kw">in</span> <span class="bu">zip</span>(fechas_prediccion, valores_predichos):</span>
-<span id="cb60-8"><a href="modulo-2.html#cb60-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(fecha_pred.strftime(<span class="st">&#39;%Y-%m-</span><span class="sc">%d</span><span class="st">&#39;</span>), valor_pred)</span></code></pre></div>
+<div class="sourceCode" id="cb75"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb75-1"><a href="modulo-2.html#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb75-2"><a href="modulo-2.html#cb75-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-3"><a href="modulo-2.html#cb75-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Convertir los valores predichos del logaritmo al valor real</span></span>
+<span id="cb75-4"><a href="modulo-2.html#cb75-4" aria-hidden="true" tabindex="-1"></a>valores_predichos <span class="op">=</span> np.exp(prediccion)</span>
+<span id="cb75-5"><a href="modulo-2.html#cb75-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-6"><a href="modulo-2.html#cb75-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Imprimir los valores predichos en formato fecha y valor</span></span>
+<span id="cb75-7"><a href="modulo-2.html#cb75-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> fecha_pred, valor_pred <span class="kw">in</span> <span class="bu">zip</span>(fechas_prediccion, valores_predichos):</span>
+<span id="cb75-8"><a href="modulo-2.html#cb75-8" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(fecha_pred.strftime(<span class="st">&#39;%Y-%m-</span><span class="sc">%d</span><span class="st">&#39;</span>), valor_pred)</span></code></pre></div>
 <pre><code>## 2023-06-30 4490.222478590083
 ## 2023-07-31 4490.222478590083
 ## 2023-08-31 4490.222478590083
 ## 2023-09-30 4490.222478590083</code></pre>
+<div class="sourceCode" id="cb77"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb77-1"><a href="modulo-2.html#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb77-2"><a href="modulo-2.html#cb77-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb77-3"><a href="modulo-2.html#cb77-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb77-4"><a href="modulo-2.html#cb77-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error, mean_absolute_error, r2_score</span>
+<span id="cb77-5"><a href="modulo-2.html#cb77-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-6"><a href="modulo-2.html#cb77-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear el modelo de suavizamiento exponencial simple</span></span>
+<span id="cb77-7"><a href="modulo-2.html#cb77-7" aria-hidden="true" tabindex="-1"></a>modelo_ses <span class="op">=</span> SimpleExpSmoothing(log_data)</span>
+<span id="cb77-8"><a href="modulo-2.html#cb77-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-9"><a href="modulo-2.html#cb77-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajustar el modelo</span></span>
+<span id="cb77-10"><a href="modulo-2.html#cb77-10" aria-hidden="true" tabindex="-1"></a>modelo_ajustado <span class="op">=</span> modelo_ses.fit()</span>
+<span id="cb77-11"><a href="modulo-2.html#cb77-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-12"><a href="modulo-2.html#cb77-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Realizar la predicción de 4 periodos hacia adelante</span></span>
+<span id="cb77-13"><a href="modulo-2.html#cb77-13" aria-hidden="true" tabindex="-1"></a>prediccion <span class="op">=</span> modelo_ajustado.forecast(steps<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb77-14"><a href="modulo-2.html#cb77-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-15"><a href="modulo-2.html#cb77-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Convertir los datos predichos a escala original (exponencial)</span></span>
+<span id="cb77-16"><a href="modulo-2.html#cb77-16" aria-hidden="true" tabindex="-1"></a>prediccion_escalada <span class="op">=</span> np.exp(prediccion)</span>
+<span id="cb77-17"><a href="modulo-2.html#cb77-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-18"><a href="modulo-2.html#cb77-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Convertir los datos observados a escala original (exponencial)</span></span>
+<span id="cb77-19"><a href="modulo-2.html#cb77-19" aria-hidden="true" tabindex="-1"></a>datos_escalados <span class="op">=</span> np.exp(log_data)</span>
+<span id="cb77-20"><a href="modulo-2.html#cb77-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-21"><a href="modulo-2.html#cb77-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener los valores observados para el período de predicción</span></span>
+<span id="cb77-22"><a href="modulo-2.html#cb77-22" aria-hidden="true" tabindex="-1"></a>valores_observados <span class="op">=</span> datos_escalados[<span class="op">-</span><span class="dv">4</span>:]</span>
+<span id="cb77-23"><a href="modulo-2.html#cb77-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-24"><a href="modulo-2.html#cb77-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular las métricas</span></span>
+<span id="cb77-25"><a href="modulo-2.html#cb77-25" aria-hidden="true" tabindex="-1"></a>me <span class="op">=</span> np.mean(valores_observados <span class="op">-</span> prediccion_escalada)</span>
+<span id="cb77-26"><a href="modulo-2.html#cb77-26" aria-hidden="true" tabindex="-1"></a>rmse <span class="op">=</span> np.sqrt(mean_squared_error(valores_observados, prediccion_escalada))</span>
+<span id="cb77-27"><a href="modulo-2.html#cb77-27" aria-hidden="true" tabindex="-1"></a>mae <span class="op">=</span> mean_absolute_error(valores_observados, prediccion_escalada)</span>
+<span id="cb77-28"><a href="modulo-2.html#cb77-28" aria-hidden="true" tabindex="-1"></a>mpe <span class="op">=</span> np.mean((valores_observados <span class="op">-</span> prediccion_escalada) <span class="op">/</span> valores_observados) <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb77-29"><a href="modulo-2.html#cb77-29" aria-hidden="true" tabindex="-1"></a>acf1 <span class="op">=</span> modelo_ajustado.resid.autocorr(lag<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb77-30"><a href="modulo-2.html#cb77-30" aria-hidden="true" tabindex="-1"></a>r2 <span class="op">=</span> r2_score(valores_observados, prediccion_escalada)</span>
+<span id="cb77-31"><a href="modulo-2.html#cb77-31" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-32"><a href="modulo-2.html#cb77-32" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear un diccionario con las métricas del modelo de suavizamiento exponencial simple</span></span>
+<span id="cb77-33"><a href="modulo-2.html#cb77-33" aria-hidden="true" tabindex="-1"></a>metrics_ses <span class="op">=</span> {</span>
+<span id="cb77-34"><a href="modulo-2.html#cb77-34" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;Model&#39;</span>: <span class="st">&#39;SES&#39;</span>,</span>
+<span id="cb77-35"><a href="modulo-2.html#cb77-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;Type&#39;</span>: <span class="st">&#39;Test&#39;</span>,</span>
+<span id="cb77-36"><a href="modulo-2.html#cb77-36" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;ME&#39;</span>: me,</span>
+<span id="cb77-37"><a href="modulo-2.html#cb77-37" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;RMSE&#39;</span>: rmse,</span>
+<span id="cb77-38"><a href="modulo-2.html#cb77-38" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;MAE&#39;</span>: mae,</span>
+<span id="cb77-39"><a href="modulo-2.html#cb77-39" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;MPE&#39;</span>: mpe,</span>
+<span id="cb77-40"><a href="modulo-2.html#cb77-40" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;ACF1&#39;</span>: acf1</span>
+<span id="cb77-41"><a href="modulo-2.html#cb77-41" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb77-42"><a href="modulo-2.html#cb77-42" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-43"><a href="modulo-2.html#cb77-43" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(metrics_ses)</span></code></pre></div>
+<pre><code>## {&#39;Model&#39;: &#39;SES&#39;, &#39;Type&#39;: &#39;Test&#39;, &#39;ME&#39;: nan, &#39;RMSE&#39;: 528.3616633206268, &#39;MAE&#39;: 482.7041666666664, &#39;MPE&#39;: nan, &#39;ACF1&#39;: 0.040855606723752616}</code></pre>
+<div class="sourceCode" id="cb79"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb79-1"><a href="modulo-2.html#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb79-2"><a href="modulo-2.html#cb79-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb79-3"><a href="modulo-2.html#cb79-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error, mean_absolute_error, r2_score</span>
+<span id="cb79-4"><a href="modulo-2.html#cb79-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-5"><a href="modulo-2.html#cb79-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Agregar las métricas del modelo de suavizamiento exponencial simple al DataFrame</span></span>
+<span id="cb79-6"><a href="modulo-2.html#cb79-6" aria-hidden="true" tabindex="-1"></a>df_metrics <span class="op">=</span> df_metrics.append(metrics_ses, ignore_index<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb79-7"><a href="modulo-2.html#cb79-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-8"><a href="modulo-2.html#cb79-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Imprimir el DataFrame completo</span></span></code></pre></div>
+<pre><code>## &lt;string&gt;:1: FutureWarning: The frame.append method is deprecated and will be removed from pandas in a future version. Use pandas.concat instead.</code></pre>
+<div class="sourceCode" id="cb81"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb81-1"><a href="modulo-2.html#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_metrics)</span></code></pre></div>
+<pre><code>##           Model  Type  ME        RMSE         MAE  MPE      ACF1
+## 0  Holt-Winters  Test NaN  991.771204  810.435834  NaN -0.239248
+## 1           SES  Test NaN  528.361663  482.704167  NaN  0.040856</code></pre>
 </div>
 <div id="conclusiones-de-aplicacion-de-metodos" class="section level3 hasAnchor" number="4.1.3">
 <h3><span class="header-section-number">4.1.3</span> Conclusiones de Aplicacion de Metodos<a href="modulo-2.html#conclusiones-de-aplicacion-de-metodos" class="anchor-section" aria-label="Anchor link to header"></a></h3>
@@ -497,69 +598,69 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h2><span class="header-section-number">4.2</span> Unidad 2: Modelos Estacionarios<a href="modulo-2.html#unidad-2-modelos-estacionarios" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="metodología-box-jenkins" class="section level3 hasAnchor" number="4.2.1">
 <h3><span class="header-section-number">4.2.1</span> <strong>Metodología Box-Jenkins</strong><a href="modulo-2.html#metodología-box-jenkins" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb62"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb62-1"><a href="modulo-2.html#cb62-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb62-2"><a href="modulo-2.html#cb62-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.graphics.tsaplots <span class="im">import</span> plot_acf, plot_pacf</span>
-<span id="cb62-3"><a href="modulo-2.html#cb62-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib</span>
-<span id="cb62-4"><a href="modulo-2.html#cb62-4" aria-hidden="true" tabindex="-1"></a>matplotlib.use(<span class="st">&#39;QtAgg&#39;</span>)</span>
-<span id="cb62-5"><a href="modulo-2.html#cb62-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-6"><a href="modulo-2.html#cb62-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular la ACF</span></span>
-<span id="cb62-7"><a href="modulo-2.html#cb62-7" aria-hidden="true" tabindex="-1"></a>acf <span class="op">=</span> plot_acf(data)</span>
-<span id="cb62-8"><a href="modulo-2.html#cb62-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-9"><a href="modulo-2.html#cb62-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular la PACF con 7 retrasos</span></span>
-<span id="cb62-10"><a href="modulo-2.html#cb62-10" aria-hidden="true" tabindex="-1"></a>pacf <span class="op">=</span> plot_pacf(data, lags<span class="op">=</span><span class="dv">7</span>, method<span class="op">=</span><span class="st">&#39;ywm&#39;</span>)</span>
-<span id="cb62-11"><a href="modulo-2.html#cb62-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb62-12"><a href="modulo-2.html#cb62-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar los gráficos de la ACF y PACF</span></span>
-<span id="cb62-13"><a href="modulo-2.html#cb62-13" aria-hidden="true" tabindex="-1"></a>acf.show()</span>
-<span id="cb62-14"><a href="modulo-2.html#cb62-14" aria-hidden="true" tabindex="-1"></a>pacf.show()</span></code></pre></div>
+<div class="sourceCode" id="cb83"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb83-1"><a href="modulo-2.html#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb83-2"><a href="modulo-2.html#cb83-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.graphics.tsaplots <span class="im">import</span> plot_acf, plot_pacf</span>
+<span id="cb83-3"><a href="modulo-2.html#cb83-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib</span>
+<span id="cb83-4"><a href="modulo-2.html#cb83-4" aria-hidden="true" tabindex="-1"></a>matplotlib.use(<span class="st">&#39;QtAgg&#39;</span>)</span>
+<span id="cb83-5"><a href="modulo-2.html#cb83-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-6"><a href="modulo-2.html#cb83-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular la ACF</span></span>
+<span id="cb83-7"><a href="modulo-2.html#cb83-7" aria-hidden="true" tabindex="-1"></a>acf <span class="op">=</span> plot_acf(data)</span>
+<span id="cb83-8"><a href="modulo-2.html#cb83-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-9"><a href="modulo-2.html#cb83-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular la PACF con 7 retrasos</span></span>
+<span id="cb83-10"><a href="modulo-2.html#cb83-10" aria-hidden="true" tabindex="-1"></a>pacf <span class="op">=</span> plot_pacf(data, lags<span class="op">=</span><span class="dv">7</span>, method<span class="op">=</span><span class="st">&#39;ywm&#39;</span>)</span>
+<span id="cb83-11"><a href="modulo-2.html#cb83-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb83-12"><a href="modulo-2.html#cb83-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar los gráficos de la ACF y PACF</span></span>
+<span id="cb83-13"><a href="modulo-2.html#cb83-13" aria-hidden="true" tabindex="-1"></a>acf.show()</span>
+<span id="cb83-14"><a href="modulo-2.html#cb83-14" aria-hidden="true" tabindex="-1"></a>pacf.show()</span></code></pre></div>
 <p>Utilizamos un bucle para encontrar la mejor combinacion ARIMA, iterando sobre diferentes combinaciones para luego seleccionar el modelo con el menor valor de la metrica de evaluacion. Cabe mencionar que esto es una implementacion basica y que existen técnicas más avanzadas, como la validación cruzada, para evaluar y seleccionar modelos ARIMA. Sin embargo, este enfoque de búsqueda exhaustiva brinda un punto de partida para explorar diferentes combinaciones de órdenes y encontrar un modelo ARIMA adecuado para los datos.</p>
-<div class="sourceCode" id="cb63"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb63-1"><a href="modulo-2.html#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> itertools</span>
-<span id="cb63-2"><a href="modulo-2.html#cb63-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
-<span id="cb63-3"><a href="modulo-2.html#cb63-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.arima.model <span class="im">import</span> ARIMA</span>
-<span id="cb63-4"><a href="modulo-2.html#cb63-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb63-5"><a href="modulo-2.html#cb63-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Definir los rangos para los órdenes p, d, q</span></span>
-<span id="cb63-6"><a href="modulo-2.html#cb63-6" aria-hidden="true" tabindex="-1"></a>p_range <span class="op">=</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">3</span>)  <span class="co"># Rango para el orden AR(p)</span></span>
-<span id="cb63-7"><a href="modulo-2.html#cb63-7" aria-hidden="true" tabindex="-1"></a>d_range <span class="op">=</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">2</span>)  <span class="co"># Rango para el orden de diferenciación d</span></span>
-<span id="cb63-8"><a href="modulo-2.html#cb63-8" aria-hidden="true" tabindex="-1"></a>q_range <span class="op">=</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">3</span>)  <span class="co"># Rango para el orden MA(q)</span></span>
-<span id="cb63-9"><a href="modulo-2.html#cb63-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb63-10"><a href="modulo-2.html#cb63-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Lista para almacenar los resultados de los modelos</span></span>
-<span id="cb63-11"><a href="modulo-2.html#cb63-11" aria-hidden="true" tabindex="-1"></a>model_results <span class="op">=</span> []</span>
-<span id="cb63-12"><a href="modulo-2.html#cb63-12" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb63-13"><a href="modulo-2.html#cb63-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Ignorar los warnings para evitar la impresión repetitiva de los mismos</span></span>
-<span id="cb63-14"><a href="modulo-2.html#cb63-14" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">&quot;ignore&quot;</span>)</span>
-<span id="cb63-15"><a href="modulo-2.html#cb63-15" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb63-16"><a href="modulo-2.html#cb63-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Iterar sobre todas las combinaciones posibles de órdenes</span></span>
-<span id="cb63-17"><a href="modulo-2.html#cb63-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> p, d, q <span class="kw">in</span> itertools.product(p_range, d_range, q_range):</span>
-<span id="cb63-18"><a href="modulo-2.html#cb63-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
-<span id="cb63-19"><a href="modulo-2.html#cb63-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Ajustar el modelo ARIMA</span></span>
-<span id="cb63-20"><a href="modulo-2.html#cb63-20" aria-hidden="true" tabindex="-1"></a>        modelo <span class="op">=</span> ARIMA(data, order<span class="op">=</span>(p, d, q))</span>
-<span id="cb63-21"><a href="modulo-2.html#cb63-21" aria-hidden="true" tabindex="-1"></a>        modelo_ajustado <span class="op">=</span> modelo.fit()</span>
-<span id="cb63-22"><a href="modulo-2.html#cb63-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb63-23"><a href="modulo-2.html#cb63-23" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Calcular la métrica de evaluación (por ejemplo, AIC)</span></span>
-<span id="cb63-24"><a href="modulo-2.html#cb63-24" aria-hidden="true" tabindex="-1"></a>        aic <span class="op">=</span> modelo_ajustado.aic</span>
-<span id="cb63-25"><a href="modulo-2.html#cb63-25" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb63-26"><a href="modulo-2.html#cb63-26" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Almacenar los resultados del modelo y su orden correspondiente</span></span>
-<span id="cb63-27"><a href="modulo-2.html#cb63-27" aria-hidden="true" tabindex="-1"></a>        model_results.append((p, d, q, aic))</span>
-<span id="cb63-28"><a href="modulo-2.html#cb63-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span>:</span>
-<span id="cb63-29"><a href="modulo-2.html#cb63-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
-<span id="cb63-30"><a href="modulo-2.html#cb63-30" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb63-31"><a href="modulo-2.html#cb63-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Ordenar los resultados por la métrica de evaluación (menor AIC)</span></span>
-<span id="cb63-32"><a href="modulo-2.html#cb63-32" aria-hidden="true" tabindex="-1"></a>model_results.sort(key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">3</span>])</span>
-<span id="cb63-33"><a href="modulo-2.html#cb63-33" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb63-34"><a href="modulo-2.html#cb63-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener la mejor combinación ARIMA</span></span>
-<span id="cb63-35"><a href="modulo-2.html#cb63-35" aria-hidden="true" tabindex="-1"></a>best_order <span class="op">=</span> model_results[<span class="dv">0</span>][:<span class="dv">3</span>]</span>
-<span id="cb63-36"><a href="modulo-2.html#cb63-36" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb63-37"><a href="modulo-2.html#cb63-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajustar el modelo final con la mejor combinación de órdenes</span></span>
-<span id="cb63-38"><a href="modulo-2.html#cb63-38" aria-hidden="true" tabindex="-1"></a>best_model <span class="op">=</span> ARIMA(data, order<span class="op">=</span>best_order)</span>
-<span id="cb63-39"><a href="modulo-2.html#cb63-39" aria-hidden="true" tabindex="-1"></a>best_model_ajustado <span class="op">=</span> best_model.fit()</span>
-<span id="cb63-40"><a href="modulo-2.html#cb63-40" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb63-41"><a href="modulo-2.html#cb63-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Imprimir los resultados del mejor modelo</span></span>
-<span id="cb63-42"><a href="modulo-2.html#cb63-42" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(best_model_ajustado.summary())</span></code></pre></div>
+<div class="sourceCode" id="cb84"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb84-1"><a href="modulo-2.html#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> itertools</span>
+<span id="cb84-2"><a href="modulo-2.html#cb84-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> warnings</span>
+<span id="cb84-3"><a href="modulo-2.html#cb84-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.arima.model <span class="im">import</span> ARIMA</span>
+<span id="cb84-4"><a href="modulo-2.html#cb84-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-5"><a href="modulo-2.html#cb84-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Definir los rangos para los órdenes p, d, q</span></span>
+<span id="cb84-6"><a href="modulo-2.html#cb84-6" aria-hidden="true" tabindex="-1"></a>p_range <span class="op">=</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">3</span>)  <span class="co"># Rango para el orden AR(p)</span></span>
+<span id="cb84-7"><a href="modulo-2.html#cb84-7" aria-hidden="true" tabindex="-1"></a>d_range <span class="op">=</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">2</span>)  <span class="co"># Rango para el orden de diferenciación d</span></span>
+<span id="cb84-8"><a href="modulo-2.html#cb84-8" aria-hidden="true" tabindex="-1"></a>q_range <span class="op">=</span> <span class="bu">range</span>(<span class="dv">0</span>, <span class="dv">3</span>)  <span class="co"># Rango para el orden MA(q)</span></span>
+<span id="cb84-9"><a href="modulo-2.html#cb84-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-10"><a href="modulo-2.html#cb84-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Lista para almacenar los resultados de los modelos</span></span>
+<span id="cb84-11"><a href="modulo-2.html#cb84-11" aria-hidden="true" tabindex="-1"></a>model_results <span class="op">=</span> []</span>
+<span id="cb84-12"><a href="modulo-2.html#cb84-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-13"><a href="modulo-2.html#cb84-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Ignorar los warnings para evitar la impresión repetitiva de los mismos</span></span>
+<span id="cb84-14"><a href="modulo-2.html#cb84-14" aria-hidden="true" tabindex="-1"></a>warnings.filterwarnings(<span class="st">&quot;ignore&quot;</span>)</span>
+<span id="cb84-15"><a href="modulo-2.html#cb84-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-16"><a href="modulo-2.html#cb84-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Iterar sobre todas las combinaciones posibles de órdenes</span></span>
+<span id="cb84-17"><a href="modulo-2.html#cb84-17" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> p, d, q <span class="kw">in</span> itertools.product(p_range, d_range, q_range):</span>
+<span id="cb84-18"><a href="modulo-2.html#cb84-18" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb84-19"><a href="modulo-2.html#cb84-19" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Ajustar el modelo ARIMA</span></span>
+<span id="cb84-20"><a href="modulo-2.html#cb84-20" aria-hidden="true" tabindex="-1"></a>        modelo <span class="op">=</span> ARIMA(data, order<span class="op">=</span>(p, d, q))</span>
+<span id="cb84-21"><a href="modulo-2.html#cb84-21" aria-hidden="true" tabindex="-1"></a>        modelo_ajustado <span class="op">=</span> modelo.fit()</span>
+<span id="cb84-22"><a href="modulo-2.html#cb84-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-23"><a href="modulo-2.html#cb84-23" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Calcular la métrica de evaluación (por ejemplo, AIC)</span></span>
+<span id="cb84-24"><a href="modulo-2.html#cb84-24" aria-hidden="true" tabindex="-1"></a>        aic <span class="op">=</span> modelo_ajustado.aic</span>
+<span id="cb84-25"><a href="modulo-2.html#cb84-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-26"><a href="modulo-2.html#cb84-26" aria-hidden="true" tabindex="-1"></a>        <span class="co"># Almacenar los resultados del modelo y su orden correspondiente</span></span>
+<span id="cb84-27"><a href="modulo-2.html#cb84-27" aria-hidden="true" tabindex="-1"></a>        model_results.append((p, d, q, aic))</span>
+<span id="cb84-28"><a href="modulo-2.html#cb84-28" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span>:</span>
+<span id="cb84-29"><a href="modulo-2.html#cb84-29" aria-hidden="true" tabindex="-1"></a>        <span class="cf">continue</span></span>
+<span id="cb84-30"><a href="modulo-2.html#cb84-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-31"><a href="modulo-2.html#cb84-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Ordenar los resultados por la métrica de evaluación (menor AIC)</span></span>
+<span id="cb84-32"><a href="modulo-2.html#cb84-32" aria-hidden="true" tabindex="-1"></a>model_results.sort(key<span class="op">=</span><span class="kw">lambda</span> x: x[<span class="dv">3</span>])</span>
+<span id="cb84-33"><a href="modulo-2.html#cb84-33" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-34"><a href="modulo-2.html#cb84-34" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener la mejor combinación ARIMA</span></span>
+<span id="cb84-35"><a href="modulo-2.html#cb84-35" aria-hidden="true" tabindex="-1"></a>best_order <span class="op">=</span> model_results[<span class="dv">0</span>][:<span class="dv">3</span>]</span>
+<span id="cb84-36"><a href="modulo-2.html#cb84-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-37"><a href="modulo-2.html#cb84-37" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajustar el modelo final con la mejor combinación de órdenes</span></span>
+<span id="cb84-38"><a href="modulo-2.html#cb84-38" aria-hidden="true" tabindex="-1"></a>best_model <span class="op">=</span> ARIMA(data, order<span class="op">=</span>best_order)</span>
+<span id="cb84-39"><a href="modulo-2.html#cb84-39" aria-hidden="true" tabindex="-1"></a>best_model_ajustado <span class="op">=</span> best_model.fit()</span>
+<span id="cb84-40"><a href="modulo-2.html#cb84-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb84-41"><a href="modulo-2.html#cb84-41" aria-hidden="true" tabindex="-1"></a><span class="co"># Imprimir los resultados del mejor modelo</span></span>
+<span id="cb84-42"><a href="modulo-2.html#cb84-42" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(best_model_ajustado.summary())</span></code></pre></div>
 <pre><code>##                                SARIMAX Results                                
 ## ==============================================================================
 ## Dep. Variable:                      y   No. Observations:                   29
 ## Model:                 ARIMA(0, 1, 2)   Log Likelihood                -213.261
 ## Date:              mar., 20 jun. 2023   AIC                            432.523
-## Time:                        00:54:35   BIC                            436.519
+## Time:                        19:39:34   BIC                            436.519
 ## Sample:                    01-31-2021   HQIC                           433.745
 ##                          - 05-31-2023                                         
 ## Covariance Type:                  opg                                         
@@ -586,30 +687,30 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li><p>El valor de sigma2 es de 2.303e+05, que representa la varianza estimada del ruido blanco en el modelo.</p></li>
 <li><p>El valor p para el estadístico Ljung-Box (L1) es de 0.56, y el valor p para el estadístico de Jarque-Bera (JB) es de 0.65. Estos valores se utilizan para evaluar la autocorrelación y la normalidad de los residuos del modelo. Valores altos de p indican que los residuos no presentan autocorrelación significativa y siguen una distribución normal.</p></li>
 </ul>
-<div class="sourceCode" id="cb65"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb65-1"><a href="modulo-2.html#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb65-2"><a href="modulo-2.html#cb65-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.arima.model <span class="im">import</span> ARIMA</span>
-<span id="cb65-3"><a href="modulo-2.html#cb65-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb65-4"><a href="modulo-2.html#cb65-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajustar el modelo ARIMA</span></span>
-<span id="cb65-5"><a href="modulo-2.html#cb65-5" aria-hidden="true" tabindex="-1"></a>modelo <span class="op">=</span> ARIMA(data, order<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>))</span>
-<span id="cb65-6"><a href="modulo-2.html#cb65-6" aria-hidden="true" tabindex="-1"></a>modelo_ajustado <span class="op">=</span> modelo.fit()</span>
-<span id="cb65-7"><a href="modulo-2.html#cb65-7" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb65-8"><a href="modulo-2.html#cb65-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Realizar la predicción para los siguientes 4 meses</span></span>
-<span id="cb65-9"><a href="modulo-2.html#cb65-9" aria-hidden="true" tabindex="-1"></a>prediccion <span class="op">=</span> modelo_ajustado.get_forecast(steps<span class="op">=</span><span class="dv">4</span>)</span>
-<span id="cb65-10"><a href="modulo-2.html#cb65-10" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb65-11"><a href="modulo-2.html#cb65-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener los valores predichos y los intervalos de confianza</span></span>
-<span id="cb65-12"><a href="modulo-2.html#cb65-12" aria-hidden="true" tabindex="-1"></a>valores_predichos <span class="op">=</span> prediccion.predicted_mean</span>
-<span id="cb65-13"><a href="modulo-2.html#cb65-13" aria-hidden="true" tabindex="-1"></a>intervalos_confianza <span class="op">=</span> prediccion.conf_int()</span>
-<span id="cb65-14"><a href="modulo-2.html#cb65-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb65-15"><a href="modulo-2.html#cb65-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear un DataFrame con los resultados</span></span>
-<span id="cb65-16"><a href="modulo-2.html#cb65-16" aria-hidden="true" tabindex="-1"></a>prediccion_df <span class="op">=</span> pd.DataFrame({</span>
-<span id="cb65-17"><a href="modulo-2.html#cb65-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;Fecha&#39;</span>: valores_predichos.index,</span>
-<span id="cb65-18"><a href="modulo-2.html#cb65-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;Predicción&#39;</span>: valores_predichos.values,</span>
-<span id="cb65-19"><a href="modulo-2.html#cb65-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;Intervalo de Confianza Inferior&#39;</span>: intervalos_confianza.iloc[:, <span class="dv">0</span>].values,</span>
-<span id="cb65-20"><a href="modulo-2.html#cb65-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;Intervalo de Confianza Superior&#39;</span>: intervalos_confianza.iloc[:, <span class="dv">1</span>].values</span>
-<span id="cb65-21"><a href="modulo-2.html#cb65-21" aria-hidden="true" tabindex="-1"></a>})</span>
-<span id="cb65-22"><a href="modulo-2.html#cb65-22" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb65-23"><a href="modulo-2.html#cb65-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Imprimir los resultados</span></span>
-<span id="cb65-24"><a href="modulo-2.html#cb65-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(prediccion_df)</span></code></pre></div>
+<div class="sourceCode" id="cb86"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb86-1"><a href="modulo-2.html#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb86-2"><a href="modulo-2.html#cb86-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.arima.model <span class="im">import</span> ARIMA</span>
+<span id="cb86-3"><a href="modulo-2.html#cb86-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-4"><a href="modulo-2.html#cb86-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajustar el modelo ARIMA</span></span>
+<span id="cb86-5"><a href="modulo-2.html#cb86-5" aria-hidden="true" tabindex="-1"></a>modelo <span class="op">=</span> ARIMA(data, order<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb86-6"><a href="modulo-2.html#cb86-6" aria-hidden="true" tabindex="-1"></a>modelo_ajustado <span class="op">=</span> modelo.fit()</span>
+<span id="cb86-7"><a href="modulo-2.html#cb86-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-8"><a href="modulo-2.html#cb86-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Realizar la predicción para los siguientes 4 meses</span></span>
+<span id="cb86-9"><a href="modulo-2.html#cb86-9" aria-hidden="true" tabindex="-1"></a>prediccion <span class="op">=</span> modelo_ajustado.get_forecast(steps<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb86-10"><a href="modulo-2.html#cb86-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-11"><a href="modulo-2.html#cb86-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener los valores predichos y los intervalos de confianza</span></span>
+<span id="cb86-12"><a href="modulo-2.html#cb86-12" aria-hidden="true" tabindex="-1"></a>valores_predichos <span class="op">=</span> prediccion.predicted_mean</span>
+<span id="cb86-13"><a href="modulo-2.html#cb86-13" aria-hidden="true" tabindex="-1"></a>intervalos_confianza <span class="op">=</span> prediccion.conf_int()</span>
+<span id="cb86-14"><a href="modulo-2.html#cb86-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-15"><a href="modulo-2.html#cb86-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear un DataFrame con los resultados</span></span>
+<span id="cb86-16"><a href="modulo-2.html#cb86-16" aria-hidden="true" tabindex="-1"></a>prediccion_df <span class="op">=</span> pd.DataFrame({</span>
+<span id="cb86-17"><a href="modulo-2.html#cb86-17" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;Fecha&#39;</span>: valores_predichos.index,</span>
+<span id="cb86-18"><a href="modulo-2.html#cb86-18" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;Predicción&#39;</span>: valores_predichos.values,</span>
+<span id="cb86-19"><a href="modulo-2.html#cb86-19" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;Intervalo de Confianza Inferior&#39;</span>: intervalos_confianza.iloc[:, <span class="dv">0</span>].values,</span>
+<span id="cb86-20"><a href="modulo-2.html#cb86-20" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;Intervalo de Confianza Superior&#39;</span>: intervalos_confianza.iloc[:, <span class="dv">1</span>].values</span>
+<span id="cb86-21"><a href="modulo-2.html#cb86-21" aria-hidden="true" tabindex="-1"></a>})</span>
+<span id="cb86-22"><a href="modulo-2.html#cb86-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb86-23"><a href="modulo-2.html#cb86-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Imprimir los resultados</span></span>
+<span id="cb86-24"><a href="modulo-2.html#cb86-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(prediccion_df)</span></code></pre></div>
 <pre><code>##        Fecha  ...  Intervalo de Confianza Superior
 ## 0 2023-06-30  ...                      5003.674861
 ## 1 2023-07-31  ...                      5575.663394
@@ -617,38 +718,89 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 ## 3 2023-09-30  ...                      5737.548398
 ## 
 ## [4 rows x 4 columns]</code></pre>
+<div class="sourceCode" id="cb88"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb88-1"><a href="modulo-2.html#cb88-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb88-2"><a href="modulo-2.html#cb88-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.metrics <span class="im">import</span> mean_squared_error, mean_absolute_error, r2_score</span>
+<span id="cb88-3"><a href="modulo-2.html#cb88-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb88-4"><a href="modulo-2.html#cb88-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.arima.model <span class="im">import</span> ARIMA</span>
+<span id="cb88-5"><a href="modulo-2.html#cb88-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-6"><a href="modulo-2.html#cb88-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajustar el modelo ARIMA</span></span>
+<span id="cb88-7"><a href="modulo-2.html#cb88-7" aria-hidden="true" tabindex="-1"></a>modelo_arima <span class="op">=</span> ARIMA(log_data, order<span class="op">=</span>(<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb88-8"><a href="modulo-2.html#cb88-8" aria-hidden="true" tabindex="-1"></a>modelo_ajustado_arima <span class="op">=</span> modelo_arima.fit()</span>
+<span id="cb88-9"><a href="modulo-2.html#cb88-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-10"><a href="modulo-2.html#cb88-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Realizar la predicción de 4 periodos hacia adelante</span></span>
+<span id="cb88-11"><a href="modulo-2.html#cb88-11" aria-hidden="true" tabindex="-1"></a>prediccion_arima <span class="op">=</span> modelo_ajustado_arima.forecast(steps<span class="op">=</span><span class="dv">4</span>)</span>
+<span id="cb88-12"><a href="modulo-2.html#cb88-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-13"><a href="modulo-2.html#cb88-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Convertir los datos predichos a escala original (exponencial)</span></span>
+<span id="cb88-14"><a href="modulo-2.html#cb88-14" aria-hidden="true" tabindex="-1"></a>prediccion_escalada_arima <span class="op">=</span> np.exp(prediccion_arima)</span>
+<span id="cb88-15"><a href="modulo-2.html#cb88-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-16"><a href="modulo-2.html#cb88-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Convertir los datos observados a escala original (exponencial)</span></span>
+<span id="cb88-17"><a href="modulo-2.html#cb88-17" aria-hidden="true" tabindex="-1"></a>datos_escalados <span class="op">=</span> np.exp(log_data)</span>
+<span id="cb88-18"><a href="modulo-2.html#cb88-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-19"><a href="modulo-2.html#cb88-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener los valores observados para el período de predicción</span></span>
+<span id="cb88-20"><a href="modulo-2.html#cb88-20" aria-hidden="true" tabindex="-1"></a>valores_observados <span class="op">=</span> datos_escalados[<span class="op">-</span><span class="dv">4</span>:]</span>
+<span id="cb88-21"><a href="modulo-2.html#cb88-21" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-22"><a href="modulo-2.html#cb88-22" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular las métricas para el modelo ARIMA</span></span>
+<span id="cb88-23"><a href="modulo-2.html#cb88-23" aria-hidden="true" tabindex="-1"></a>me_arima <span class="op">=</span> np.mean(valores_observados <span class="op">-</span> prediccion_escalada_arima)</span>
+<span id="cb88-24"><a href="modulo-2.html#cb88-24" aria-hidden="true" tabindex="-1"></a>rmse_arima <span class="op">=</span> np.sqrt(mean_squared_error(valores_observados, prediccion_escalada_arima))</span>
+<span id="cb88-25"><a href="modulo-2.html#cb88-25" aria-hidden="true" tabindex="-1"></a>mae_arima <span class="op">=</span> mean_absolute_error(valores_observados, prediccion_escalada_arima)</span>
+<span id="cb88-26"><a href="modulo-2.html#cb88-26" aria-hidden="true" tabindex="-1"></a>mpe_arima <span class="op">=</span> np.mean((valores_observados <span class="op">-</span> prediccion_escalada_arima) <span class="op">/</span> valores_observados) <span class="op">*</span> <span class="dv">100</span></span>
+<span id="cb88-27"><a href="modulo-2.html#cb88-27" aria-hidden="true" tabindex="-1"></a>acf1_arima <span class="op">=</span> modelo_ajustado_arima.resid.autocorr(lag<span class="op">=</span><span class="dv">1</span>)</span>
+<span id="cb88-28"><a href="modulo-2.html#cb88-28" aria-hidden="true" tabindex="-1"></a>r2_arima <span class="op">=</span> r2_score(valores_observados, prediccion_escalada_arima)</span>
+<span id="cb88-29"><a href="modulo-2.html#cb88-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-30"><a href="modulo-2.html#cb88-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear un diccionario con las métricas del modelo ARIMA</span></span>
+<span id="cb88-31"><a href="modulo-2.html#cb88-31" aria-hidden="true" tabindex="-1"></a>metrics_arima <span class="op">=</span> {</span>
+<span id="cb88-32"><a href="modulo-2.html#cb88-32" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;Model&#39;</span>: <span class="st">&#39;ARIMA&#39;</span>,</span>
+<span id="cb88-33"><a href="modulo-2.html#cb88-33" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;Type&#39;</span>: <span class="st">&#39;Test&#39;</span>,</span>
+<span id="cb88-34"><a href="modulo-2.html#cb88-34" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;ME&#39;</span>: me_arima,</span>
+<span id="cb88-35"><a href="modulo-2.html#cb88-35" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;RMSE&#39;</span>: rmse_arima,</span>
+<span id="cb88-36"><a href="modulo-2.html#cb88-36" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;MAE&#39;</span>: mae_arima,</span>
+<span id="cb88-37"><a href="modulo-2.html#cb88-37" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;MPE&#39;</span>: mpe_arima,</span>
+<span id="cb88-38"><a href="modulo-2.html#cb88-38" aria-hidden="true" tabindex="-1"></a>    <span class="st">&#39;ACF1&#39;</span>: acf1_arima</span>
+<span id="cb88-39"><a href="modulo-2.html#cb88-39" aria-hidden="true" tabindex="-1"></a>}</span>
+<span id="cb88-40"><a href="modulo-2.html#cb88-40" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb88-41"><a href="modulo-2.html#cb88-41" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(metrics_arima)</span></code></pre></div>
+<pre><code>## {&#39;Model&#39;: &#39;ARIMA&#39;, &#39;Type&#39;: &#39;Test&#39;, &#39;ME&#39;: nan, &#39;RMSE&#39;: 622.7044926280239, &#39;MAE&#39;: 499.4572822511657, &#39;MPE&#39;: nan, &#39;ACF1&#39;: -0.09451907229486707}</code></pre>
+<div class="sourceCode" id="cb90"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb90-1"><a href="modulo-2.html#cb90-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Agregar las métricas del modelo de suavizamiento exponencial simple al DataFrame</span></span>
+<span id="cb90-2"><a href="modulo-2.html#cb90-2" aria-hidden="true" tabindex="-1"></a>df_metrics <span class="op">=</span> df_metrics.append(metrics_arima, ignore_index<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb90-3"><a href="modulo-2.html#cb90-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb90-4"><a href="modulo-2.html#cb90-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Imprimir el DataFrame completo</span></span>
+<span id="cb90-5"><a href="modulo-2.html#cb90-5" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(df_metrics)</span></code></pre></div>
+<pre><code>##           Model  Type  ME        RMSE         MAE  MPE      ACF1
+## 0  Holt-Winters  Test NaN  991.771204  810.435834  NaN -0.239248
+## 1           SES  Test NaN  528.361663  482.704167  NaN  0.040856
+## 2         ARIMA  Test NaN  622.704493  499.457282  NaN -0.094519</code></pre>
 </div>
 </div>
 <div id="unidad-3-regresión" class="section level2 hasAnchor" number="4.3">
 <h2><span class="header-section-number">4.3</span> Unidad 3: Regresión<a href="modulo-2.html#unidad-3-regresión" class="anchor-section" aria-label="Anchor link to header"></a></h2>
 <div id="modelo-propeth" class="section level3 hasAnchor" number="4.3.1">
 <h3><span class="header-section-number">4.3.1</span> Modelo Propeth<a href="modulo-2.html#modelo-propeth" class="anchor-section" aria-label="Anchor link to header"></a></h3>
-<div class="sourceCode" id="cb67"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb67-1"><a href="modulo-2.html#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="co">#from fbprophet import Prophet</span></span>
-<span id="cb67-2"><a href="modulo-2.html#cb67-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb67-3"><a href="modulo-2.html#cb67-3" aria-hidden="true" tabindex="-1"></a><span class="co">#data = data.rename(columns={&#39;fecha&#39;: &#39;ds&#39;, &#39;valor&#39;: &#39;y&#39;})</span></span>
-<span id="cb67-4"><a href="modulo-2.html#cb67-4" aria-hidden="true" tabindex="-1"></a><span class="co">#modelo = Prophet()</span></span>
-<span id="cb67-5"><a href="modulo-2.html#cb67-5" aria-hidden="true" tabindex="-1"></a><span class="co">#modelo.fit(data)</span></span>
-<span id="cb67-6"><a href="modulo-2.html#cb67-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb67-7"><a href="modulo-2.html#cb67-7" aria-hidden="true" tabindex="-1"></a><span class="co">#futuro = modelo.make_future_dataframe(periods=12)  # Predicción de 12 días futuros</span></span>
-<span id="cb67-8"><a href="modulo-2.html#cb67-8" aria-hidden="true" tabindex="-1"></a><span class="co">#prediccion = modelo.predict(futuro)</span></span>
-<span id="cb67-9"><a href="modulo-2.html#cb67-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb67-10"><a href="modulo-2.html#cb67-10" aria-hidden="true" tabindex="-1"></a><span class="co">#modelo.plot(prediccion)</span></span></code></pre></div>
+<div class="sourceCode" id="cb92"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb92-1"><a href="modulo-2.html#cb92-1" aria-hidden="true" tabindex="-1"></a><span class="co">#from fbprophet import Prophet</span></span>
+<span id="cb92-2"><a href="modulo-2.html#cb92-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-3"><a href="modulo-2.html#cb92-3" aria-hidden="true" tabindex="-1"></a><span class="co">#data = data.rename(columns={&#39;fecha&#39;: &#39;ds&#39;, &#39;valor&#39;: &#39;y&#39;})</span></span>
+<span id="cb92-4"><a href="modulo-2.html#cb92-4" aria-hidden="true" tabindex="-1"></a><span class="co">#modelo = Prophet()</span></span>
+<span id="cb92-5"><a href="modulo-2.html#cb92-5" aria-hidden="true" tabindex="-1"></a><span class="co">#modelo.fit(data)</span></span>
+<span id="cb92-6"><a href="modulo-2.html#cb92-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-7"><a href="modulo-2.html#cb92-7" aria-hidden="true" tabindex="-1"></a><span class="co">#futuro = modelo.make_future_dataframe(periods=12)  # Predicción de 12 días futuros</span></span>
+<span id="cb92-8"><a href="modulo-2.html#cb92-8" aria-hidden="true" tabindex="-1"></a><span class="co">#prediccion = modelo.predict(futuro)</span></span>
+<span id="cb92-9"><a href="modulo-2.html#cb92-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb92-10"><a href="modulo-2.html#cb92-10" aria-hidden="true" tabindex="-1"></a><span class="co">#modelo.plot(prediccion)</span></span></code></pre></div>
 <p>Por limitaciones computacionales no ha sido posible la instalacion del paquete Prophet. Se intento instalar pero no se encuentra la liibreria fbprophet para Python. (Solo esta seccion se realizara en R)</p>
-<div class="sourceCode" id="cb68"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb68-1"><a href="modulo-2.html#cb68-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cargar los datos desde un archivo CSV</span></span>
-<span id="cb68-2"><a href="modulo-2.html#cb68-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span></code></pre></div>
+<div class="sourceCode" id="cb93"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb93-1"><a href="modulo-2.html#cb93-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cargar los datos desde un archivo CSV</span></span>
+<span id="cb93-2"><a href="modulo-2.html#cb93-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(readxl)</span></code></pre></div>
 <pre><code>## Warning: package &#39;readxl&#39; was built under R version 4.2.3</code></pre>
-<div class="sourceCode" id="cb70"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb70-1"><a href="modulo-2.html#cb70-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">&quot;historico_precios_maracuya.xlsx&quot;</span>, <span class="at">sheet =</span> <span class="st">&quot;Hoja1&quot;</span>)</span>
-<span id="cb70-2"><a href="modulo-2.html#cb70-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb70-3"><a href="modulo-2.html#cb70-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Cargar el paquete &quot;lubridate&quot;</span></span>
-<span id="cb70-4"><a href="modulo-2.html#cb70-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span></code></pre></div>
+<div class="sourceCode" id="cb95"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb95-1"><a href="modulo-2.html#cb95-1" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> <span class="fu">read_excel</span>(<span class="st">&quot;historico_precios_maracuya.xlsx&quot;</span>, <span class="at">sheet =</span> <span class="st">&quot;Hoja1&quot;</span>)</span>
+<span id="cb95-2"><a href="modulo-2.html#cb95-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb95-3"><a href="modulo-2.html#cb95-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Cargar el paquete &quot;lubridate&quot;</span></span>
+<span id="cb95-4"><a href="modulo-2.html#cb95-4" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span></code></pre></div>
 <pre><code>## Warning: package &#39;lubridate&#39; was built under R version 4.2.3</code></pre>
 <pre><code>## 
 ## Attaching package: &#39;lubridate&#39;</code></pre>
 <pre><code>## The following objects are masked from &#39;package:base&#39;:
 ## 
 ##     date, intersect, setdiff, union</code></pre>
-<div class="sourceCode" id="cb74"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb74-1"><a href="modulo-2.html#cb74-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cargar el paquete &quot;dplyr&quot;</span></span>
-<span id="cb74-2"><a href="modulo-2.html#cb74-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div>
+<div class="sourceCode" id="cb99"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb99-1"><a href="modulo-2.html#cb99-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Cargar el paquete &quot;dplyr&quot;</span></span>
+<span id="cb99-2"><a href="modulo-2.html#cb99-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(dplyr)</span></code></pre></div>
 <pre><code>## 
 ## Attaching package: &#39;dplyr&#39;</code></pre>
 <pre><code>## The following objects are masked from &#39;package:stats&#39;:
@@ -657,33 +809,62 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <pre><code>## The following objects are masked from &#39;package:base&#39;:
 ## 
 ##     intersect, setdiff, setequal, union</code></pre>
-<div class="sourceCode" id="cb78"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb78-1"><a href="modulo-2.html#cb78-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convertir las columnas de fecha al formato adecuado</span></span>
-<span id="cb78-2"><a href="modulo-2.html#cb78-2" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>fecha <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(data<span class="sc">$</span>fecha)</span>
-<span id="cb78-3"><a href="modulo-2.html#cb78-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb78-4"><a href="modulo-2.html#cb78-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Desagrupar los datos</span></span>
-<span id="cb78-5"><a href="modulo-2.html#cb78-5" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">ungroup</span>()</span>
-<span id="cb78-6"><a href="modulo-2.html#cb78-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb78-7"><a href="modulo-2.html#cb78-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
-<span id="cb78-8"><a href="modulo-2.html#cb78-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Convertir el DataFrame a una serie de tiempo en R</span></span>
-<span id="cb78-9"><a href="modulo-2.html#cb78-9" aria-hidden="true" tabindex="-1"></a>ts_data <span class="ot">&lt;-</span> <span class="fu">ts</span>(data<span class="sc">$</span>prom_valle, <span class="at">start =</span> <span class="fu">c</span>(<span class="fu">year</span>(<span class="fu">min</span>(data<span class="sc">$</span>fecha)), <span class="fu">month</span>(<span class="fu">min</span>(data<span class="sc">$</span>fecha))), <span class="at">frequency =</span> <span class="dv">12</span>)</span></code></pre></div>
-<div class="sourceCode" id="cb79"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb79-1"><a href="modulo-2.html#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(prophet)</span></code></pre></div>
+<div class="sourceCode" id="cb103"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb103-1"><a href="modulo-2.html#cb103-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Convertir las columnas de fecha al formato adecuado</span></span>
+<span id="cb103-2"><a href="modulo-2.html#cb103-2" aria-hidden="true" tabindex="-1"></a>data<span class="sc">$</span>fecha <span class="ot">&lt;-</span> <span class="fu">as.Date</span>(data<span class="sc">$</span>fecha)</span>
+<span id="cb103-3"><a href="modulo-2.html#cb103-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb103-4"><a href="modulo-2.html#cb103-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Desagrupar los datos</span></span>
+<span id="cb103-5"><a href="modulo-2.html#cb103-5" aria-hidden="true" tabindex="-1"></a>data <span class="ot">&lt;-</span> data <span class="sc">%&gt;%</span> <span class="fu">ungroup</span>()</span>
+<span id="cb103-6"><a href="modulo-2.html#cb103-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb103-7"><a href="modulo-2.html#cb103-7" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(lubridate)</span>
+<span id="cb103-8"><a href="modulo-2.html#cb103-8" aria-hidden="true" tabindex="-1"></a><span class="co"># Convertir el DataFrame a una serie de tiempo en R</span></span>
+<span id="cb103-9"><a href="modulo-2.html#cb103-9" aria-hidden="true" tabindex="-1"></a>ts_data <span class="ot">&lt;-</span> <span class="fu">ts</span>(data<span class="sc">$</span>prom_valle, <span class="at">start =</span> <span class="fu">c</span>(<span class="fu">year</span>(<span class="fu">min</span>(data<span class="sc">$</span>fecha)), <span class="fu">month</span>(<span class="fu">min</span>(data<span class="sc">$</span>fecha))), <span class="at">frequency =</span> <span class="dv">12</span>)</span></code></pre></div>
+<div class="sourceCode" id="cb104"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb104-1"><a href="modulo-2.html#cb104-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(prophet)</span></code></pre></div>
 <pre><code>## Warning: package &#39;prophet&#39; was built under R version 4.2.3</code></pre>
 <pre><code>## Loading required package: Rcpp</code></pre>
 <pre><code>## Loading required package: rlang</code></pre>
 <pre><code>## Warning: package &#39;rlang&#39; was built under R version 4.2.3</code></pre>
-<div class="sourceCode" id="cb84"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb84-1"><a href="modulo-2.html#cb84-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear el dataframe para Prophet</span></span>
-<span id="cb84-2"><a href="modulo-2.html#cb84-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">ds =</span> data<span class="sc">$</span>fecha, <span class="at">y =</span> data<span class="sc">$</span>prom_valle)</span>
-<span id="cb84-3"><a href="modulo-2.html#cb84-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb84-4"><a href="modulo-2.html#cb84-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajustar el modelo Prophet</span></span>
-<span id="cb84-5"><a href="modulo-2.html#cb84-5" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">prophet</span>(df)</span></code></pre></div>
+<div class="sourceCode" id="cb109"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb109-1"><a href="modulo-2.html#cb109-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear el dataframe para Prophet</span></span>
+<span id="cb109-2"><a href="modulo-2.html#cb109-2" aria-hidden="true" tabindex="-1"></a>df <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">ds =</span> data<span class="sc">$</span>fecha, <span class="at">y =</span> data<span class="sc">$</span>prom_valle)</span>
+<span id="cb109-3"><a href="modulo-2.html#cb109-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb109-4"><a href="modulo-2.html#cb109-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajustar el modelo Prophet</span></span>
+<span id="cb109-5"><a href="modulo-2.html#cb109-5" aria-hidden="true" tabindex="-1"></a>model <span class="ot">&lt;-</span> <span class="fu">prophet</span>(df)</span></code></pre></div>
 <pre><code>## Disabling daily seasonality. Run prophet with daily.seasonality=TRUE to override this.</code></pre>
-<div class="sourceCode" id="cb86"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb86-1"><a href="modulo-2.html#cb86-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Realizar la predicción para los próximos 4 períodos</span></span>
-<span id="cb86-2"><a href="modulo-2.html#cb86-2" aria-hidden="true" tabindex="-1"></a>future <span class="ot">&lt;-</span> <span class="fu">make_future_dataframe</span>(model, <span class="at">periods =</span> <span class="dv">4</span>, <span class="at">freq =</span> <span class="st">&quot;month&quot;</span>)</span>
-<span id="cb86-3"><a href="modulo-2.html#cb86-3" aria-hidden="true" tabindex="-1"></a>forecast <span class="ot">&lt;-</span> <span class="fu">predict</span>(model, future)</span>
-<span id="cb86-4"><a href="modulo-2.html#cb86-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb86-5"><a href="modulo-2.html#cb86-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualizar los resultados</span></span>
-<span id="cb86-6"><a href="modulo-2.html#cb86-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model, forecast)</span></code></pre></div>
-<p><img src="Propuesta-Bookdown_files/figure-html/unnamed-chunk-31-1.png" width="672" /></p>
+<div class="sourceCode" id="cb111"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb111-1"><a href="modulo-2.html#cb111-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Realizar la predicción para los próximos 4 períodos</span></span>
+<span id="cb111-2"><a href="modulo-2.html#cb111-2" aria-hidden="true" tabindex="-1"></a>future <span class="ot">&lt;-</span> <span class="fu">make_future_dataframe</span>(model, <span class="at">periods =</span> <span class="dv">4</span>, <span class="at">freq =</span> <span class="st">&quot;month&quot;</span>)</span>
+<span id="cb111-3"><a href="modulo-2.html#cb111-3" aria-hidden="true" tabindex="-1"></a>forecast <span class="ot">&lt;-</span> <span class="fu">predict</span>(model, future)</span>
+<span id="cb111-4"><a href="modulo-2.html#cb111-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb111-5"><a href="modulo-2.html#cb111-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Visualizar los resultados</span></span>
+<span id="cb111-6"><a href="modulo-2.html#cb111-6" aria-hidden="true" tabindex="-1"></a><span class="fu">plot</span>(model, forecast)</span></code></pre></div>
+<p><img src="Propuesta-Bookdown_files/figure-html/unnamed-chunk-37-1.png" width="672" /></p>
+<div class="sourceCode" id="cb112"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb112-1"><a href="modulo-2.html#cb112-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener los valores observados para el período de predicción</span></span>
+<span id="cb112-2"><a href="modulo-2.html#cb112-2" aria-hidden="true" tabindex="-1"></a>valores_observados <span class="ot">&lt;-</span> <span class="fu">tail</span>(df<span class="sc">$</span>y, <span class="dv">4</span>)</span>
+<span id="cb112-3"><a href="modulo-2.html#cb112-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-4"><a href="modulo-2.html#cb112-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener los valores predichos</span></span>
+<span id="cb112-5"><a href="modulo-2.html#cb112-5" aria-hidden="true" tabindex="-1"></a>valores_predichos <span class="ot">&lt;-</span> <span class="fu">tail</span>(forecast<span class="sc">$</span>yhat, <span class="dv">4</span>)</span>
+<span id="cb112-6"><a href="modulo-2.html#cb112-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-7"><a href="modulo-2.html#cb112-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular las métricas</span></span>
+<span id="cb112-8"><a href="modulo-2.html#cb112-8" aria-hidden="true" tabindex="-1"></a>me <span class="ot">&lt;-</span> <span class="fu">mean</span>(valores_observados <span class="sc">-</span> valores_predichos)</span>
+<span id="cb112-9"><a href="modulo-2.html#cb112-9" aria-hidden="true" tabindex="-1"></a>rmse <span class="ot">&lt;-</span> <span class="fu">sqrt</span>(<span class="fu">mean</span>((valores_observados <span class="sc">-</span> valores_predichos)<span class="sc">^</span><span class="dv">2</span>))</span>
+<span id="cb112-10"><a href="modulo-2.html#cb112-10" aria-hidden="true" tabindex="-1"></a>mae <span class="ot">&lt;-</span> <span class="fu">mean</span>(<span class="fu">abs</span>(valores_observados <span class="sc">-</span> valores_predichos))</span>
+<span id="cb112-11"><a href="modulo-2.html#cb112-11" aria-hidden="true" tabindex="-1"></a>mpe <span class="ot">&lt;-</span> <span class="fu">mean</span>((valores_observados <span class="sc">-</span> valores_predichos) <span class="sc">/</span> valores_observados) <span class="sc">*</span> <span class="dv">100</span></span>
+<span id="cb112-12"><a href="modulo-2.html#cb112-12" aria-hidden="true" tabindex="-1"></a><span class="co">#acf1 &lt;- acf(residuals(model))$acf[2]</span></span>
+<span id="cb112-13"><a href="modulo-2.html#cb112-13" aria-hidden="true" tabindex="-1"></a>r2 <span class="ot">&lt;-</span> <span class="dv">1</span> <span class="sc">-</span> <span class="fu">sum</span>((valores_observados <span class="sc">-</span> valores_predichos)<span class="sc">^</span><span class="dv">2</span>) <span class="sc">/</span> <span class="fu">sum</span>((valores_observados <span class="sc">-</span> <span class="fu">mean</span>(valores_observados))<span class="sc">^</span><span class="dv">2</span>)</span>
+<span id="cb112-14"><a href="modulo-2.html#cb112-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-15"><a href="modulo-2.html#cb112-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear un data.frame con las métricas</span></span>
+<span id="cb112-16"><a href="modulo-2.html#cb112-16" aria-hidden="true" tabindex="-1"></a>metrics_prophet <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(</span>
+<span id="cb112-17"><a href="modulo-2.html#cb112-17" aria-hidden="true" tabindex="-1"></a>  <span class="at">Model =</span> <span class="st">&quot;Prophet&quot;</span>,</span>
+<span id="cb112-18"><a href="modulo-2.html#cb112-18" aria-hidden="true" tabindex="-1"></a>  <span class="at">Type =</span> <span class="st">&quot;Test&quot;</span>,</span>
+<span id="cb112-19"><a href="modulo-2.html#cb112-19" aria-hidden="true" tabindex="-1"></a>  <span class="at">ME =</span> me,</span>
+<span id="cb112-20"><a href="modulo-2.html#cb112-20" aria-hidden="true" tabindex="-1"></a>  <span class="at">RMSE =</span> rmse,</span>
+<span id="cb112-21"><a href="modulo-2.html#cb112-21" aria-hidden="true" tabindex="-1"></a>  <span class="at">MAE =</span> mae,</span>
+<span id="cb112-22"><a href="modulo-2.html#cb112-22" aria-hidden="true" tabindex="-1"></a>  <span class="at">MPE =</span> mpe,</span>
+<span id="cb112-23"><a href="modulo-2.html#cb112-23" aria-hidden="true" tabindex="-1"></a><span class="co">#  ACF1 = acf1,</span></span>
+<span id="cb112-24"><a href="modulo-2.html#cb112-24" aria-hidden="true" tabindex="-1"></a>  <span class="at">stringsAsFactors =</span> <span class="cn">FALSE</span></span>
+<span id="cb112-25"><a href="modulo-2.html#cb112-25" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb112-26"><a href="modulo-2.html#cb112-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb112-27"><a href="modulo-2.html#cb112-27" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(metrics_prophet)</span></code></pre></div>
+<pre><code>##     Model Type        ME     RMSE      MAE       MPE
+## 1 Prophet Test -211.1896 866.8507 642.4646 -7.390366</code></pre>
 <p>Basándonos en lo que hemos hecho anteriormente, podemos llegar a las siguientes conclusiones:</p>
 <ol style="list-style-type: decimal">
 <li><p>Los modelos ARIMA y SARIMAX proporcionaron ajustes razonables a los datos de la serie de tiempo de precios del maracuyá. Estos modelos tuvieron en cuenta la autocorrelación y la estacionalidad de los datos, lo que les permitió capturar los patrones y realizar pronósticos.</p></li>

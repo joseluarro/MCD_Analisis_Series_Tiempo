@@ -182,6 +182,7 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <li class="chapter" data-level="5.1.2" data-path="modulo-3.html"><a href="modulo-3.html#rn-jordan"><i class="fa fa-check"></i><b>5.1.2</b> RN Jordan</a></li>
 </ul></li>
 </ul></li>
+<li class="chapter" data-level="6" data-path="conclusiones.html"><a href="conclusiones.html"><i class="fa fa-check"></i><b>6</b> CONCLUSIONES</a></li>
 </ul>
 
       </nav>
@@ -362,14 +363,38 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <span id="cb23-26"><a href="modulo-1.html#cb23-26" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb23-27"><a href="modulo-1.html#cb23-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar la gráfica</span></span>
 <span id="cb23-28"><a href="modulo-1.html#cb23-28" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<pre><code>## Traceback (most recent call last):
+##   File &quot;C:\PROGRA~3\ANACON~1\lib\site-packages\matplotlib\backends\backend_qt.py&quot;, line 477, in _draw_idle
+##     self.draw()
+##   File &quot;C:\PROGRA~3\ANACON~1\lib\site-packages\matplotlib\backends\backend_agg.py&quot;, line 436, in draw
+##     self.figure.draw(self.renderer)
+##   File &quot;C:\PROGRA~3\ANACON~1\lib\site-packages\matplotlib\artist.py&quot;, line 73, in draw_wrapper
+##     result = draw(artist, renderer, *args, **kwargs)
+##   File &quot;C:\PROGRA~3\ANACON~1\lib\site-packages\matplotlib\artist.py&quot;, line 50, in draw_wrapper
+##     return draw(artist, renderer)
+##   File &quot;C:\PROGRA~3\ANACON~1\lib\site-packages\matplotlib\figure.py&quot;, line 2837, in draw
+##     mimage._draw_list_compositing_images(
+##   File &quot;C:\PROGRA~3\ANACON~1\lib\site-packages\matplotlib\image.py&quot;, line 132, in _draw_list_compositing_images
+##     a.draw(renderer)
+##   File &quot;C:\PROGRA~3\ANACON~1\lib\site-packages\matplotlib\artist.py&quot;, line 50, in draw_wrapper
+##     return draw(artist, renderer)
+##   File &quot;C:\PROGRA~3\ANACON~1\lib\site-packages\matplotlib\axes\_base.py&quot;, line 3055, in draw
+##     self._update_title_position(renderer)
+##   File &quot;C:\PROGRA~3\ANACON~1\lib\site-packages\matplotlib\axes\_base.py&quot;, line 2989, in _update_title_position
+##     if (ax.xaxis.get_ticks_position() in [&#39;top&#39;, &#39;unknown&#39;]
+##   File &quot;C:\PROGRA~3\ANACON~1\lib\site-packages\matplotlib\axis.py&quot;, line 2229, in get_ticks_position
+##     self._get_ticks_position()]
+##   File &quot;C:\PROGRA~3\ANACON~1\lib\site-packages\matplotlib\axis.py&quot;, line 1936, in _get_ticks_position
+##     major = self.majorTicks[0]
+## IndexError: list index out of range</code></pre>
 <p><img src="Propuesta-Bookdown_files/figure-html/unnamed-chunk-8-5.png" width="1152" /></p>
-<div class="sourceCode" id="cb24"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb24-1"><a href="modulo-1.html#cb24-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener la serie de tiempo</span></span>
-<span id="cb24-2"><a href="modulo-1.html#cb24-2" aria-hidden="true" tabindex="-1"></a>serie <span class="op">=</span> df_precios_historicos[<span class="st">&#39;prom_valle&#39;</span>]</span>
-<span id="cb24-3"><a href="modulo-1.html#cb24-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb24-4"><a href="modulo-1.html#cb24-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico de autocorrelación</span></span>
-<span id="cb24-5"><a href="modulo-1.html#cb24-5" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
-<span id="cb24-6"><a href="modulo-1.html#cb24-6" aria-hidden="true" tabindex="-1"></a>plot_acf(serie, ax<span class="op">=</span>ax, lags<span class="op">=</span><span class="dv">50</span>)</span>
-<span id="cb24-7"><a href="modulo-1.html#cb24-7" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<div class="sourceCode" id="cb25"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="modulo-1.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener la serie de tiempo</span></span>
+<span id="cb25-2"><a href="modulo-1.html#cb25-2" aria-hidden="true" tabindex="-1"></a>serie <span class="op">=</span> df_precios_historicos[<span class="st">&#39;prom_valle&#39;</span>]</span>
+<span id="cb25-3"><a href="modulo-1.html#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="modulo-1.html#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico de autocorrelación</span></span>
+<span id="cb25-5"><a href="modulo-1.html#cb25-5" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb25-6"><a href="modulo-1.html#cb25-6" aria-hidden="true" tabindex="-1"></a>plot_acf(serie, ax<span class="op">=</span>ax, lags<span class="op">=</span><span class="dv">50</span>)</span>
+<span id="cb25-7"><a href="modulo-1.html#cb25-7" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
 <p><img src="Propuesta-Bookdown_files/figure-html/unnamed-chunk-9-7.png" width="960" /></p>
 </div>
 </div>
@@ -377,66 +402,66 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">3.2.2</span> Estructura de los datos en series de tiempo (precios Passion)<a href="modulo-1.html#estructura-de-los-datos-en-series-de-tiempo-precios-passion" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="medias-moviles-1" class="section level4 hasAnchor" number="3.2.2.1">
 <h4><span class="header-section-number">3.2.2.1</span> Medias Moviles<a href="modulo-1.html#medias-moviles-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<div class="sourceCode" id="cb25"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb25-1"><a href="modulo-1.html#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb25-2"><a href="modulo-1.html#cb25-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.seasonal <span class="im">import</span> seasonal_decompose</span>
-<span id="cb25-3"><a href="modulo-1.html#cb25-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
-<span id="cb25-4"><a href="modulo-1.html#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.graphics.tsaplots <span class="im">import</span> plot_acf</span>
-<span id="cb25-5"><a href="modulo-1.html#cb25-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-6"><a href="modulo-1.html#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-7"><a href="modulo-1.html#cb25-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Eliminar valores faltantes</span></span>
-<span id="cb25-8"><a href="modulo-1.html#cb25-8" aria-hidden="true" tabindex="-1"></a>df_precios_passion.fillna(df_precios_passion.mean(), inplace<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb25-9"><a href="modulo-1.html#cb25-9" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb25-10"><a href="modulo-1.html#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular promedio móvil</span></span></code></pre></div>
+<div class="sourceCode" id="cb26"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb26-1"><a href="modulo-1.html#cb26-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb26-2"><a href="modulo-1.html#cb26-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.seasonal <span class="im">import</span> seasonal_decompose</span>
+<span id="cb26-3"><a href="modulo-1.html#cb26-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> statsmodels.api <span class="im">as</span> sm</span>
+<span id="cb26-4"><a href="modulo-1.html#cb26-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.graphics.tsaplots <span class="im">import</span> plot_acf</span>
+<span id="cb26-5"><a href="modulo-1.html#cb26-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-6"><a href="modulo-1.html#cb26-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-7"><a href="modulo-1.html#cb26-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Eliminar valores faltantes</span></span>
+<span id="cb26-8"><a href="modulo-1.html#cb26-8" aria-hidden="true" tabindex="-1"></a>df_precios_passion.fillna(df_precios_passion.mean(), inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb26-9"><a href="modulo-1.html#cb26-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb26-10"><a href="modulo-1.html#cb26-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular promedio móvil</span></span></code></pre></div>
 <pre><code>## &lt;string&gt;:1: FutureWarning: DataFrame.mean and DataFrame.median with numeric_only=None will include datetime64 and datetime64tz columns in a future version.
 ## &lt;string&gt;:1: FutureWarning: Dropping of nuisance columns in DataFrame reductions (with &#39;numeric_only=None&#39;) is deprecated; in a future version this will raise TypeError.  Select only valid columns before calling the reduction.</code></pre>
-<div class="sourceCode" id="cb27"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb27-1"><a href="modulo-1.html#cb27-1" aria-hidden="true" tabindex="-1"></a>df_precios_passion[<span class="st">&#39;promedio_movil&#39;</span>] <span class="op">=</span> df_precios_passion[<span class="st">&#39;VALOR KILO&#39;</span>].rolling(window<span class="op">=</span><span class="dv">3</span>).mean()</span>
-<span id="cb27-2"><a href="modulo-1.html#cb27-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb27-3"><a href="modulo-1.html#cb27-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico de la serie de tiempo con el promedio móvil</span></span>
-<span id="cb27-4"><a href="modulo-1.html#cb27-4" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
-<span id="cb27-5"><a href="modulo-1.html#cb27-5" aria-hidden="true" tabindex="-1"></a>sns.lineplot(data<span class="op">=</span>df_precios_passion, x<span class="op">=</span><span class="st">&#39;FECHA&#39;</span>, y<span class="op">=</span><span class="st">&#39;VALOR KILO&#39;</span>, color<span class="op">=</span><span class="st">&#39;blue&#39;</span>, ax<span class="op">=</span>ax)</span>
-<span id="cb27-6"><a href="modulo-1.html#cb27-6" aria-hidden="true" tabindex="-1"></a>sns.lineplot(data<span class="op">=</span>df_precios_passion, x<span class="op">=</span><span class="st">&#39;FECHA&#39;</span>, y<span class="op">=</span><span class="st">&#39;promedio_movil&#39;</span>, color<span class="op">=</span><span class="st">&#39;red&#39;</span>, ax<span class="op">=</span>ax)</span>
-<span id="cb27-7"><a href="modulo-1.html#cb27-7" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(title<span class="op">=</span><span class="st">&#39;Precio promedio de la Maracuya&#39;</span>, xlabel<span class="op">=</span><span class="st">&#39;Fecha&#39;</span>, ylabel<span class="op">=</span><span class="st">&#39;Precio promedio&#39;</span>)</span>
-<span id="cb27-8"><a href="modulo-1.html#cb27-8" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<div class="sourceCode" id="cb28"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a href="modulo-1.html#cb28-1" aria-hidden="true" tabindex="-1"></a>df_precios_passion[<span class="st">&#39;promedio_movil&#39;</span>] <span class="op">=</span> df_precios_passion[<span class="st">&#39;VALOR KILO&#39;</span>].rolling(window<span class="op">=</span><span class="dv">3</span>).mean()</span>
+<span id="cb28-2"><a href="modulo-1.html#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb28-3"><a href="modulo-1.html#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico de la serie de tiempo con el promedio móvil</span></span>
+<span id="cb28-4"><a href="modulo-1.html#cb28-4" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb28-5"><a href="modulo-1.html#cb28-5" aria-hidden="true" tabindex="-1"></a>sns.lineplot(data<span class="op">=</span>df_precios_passion, x<span class="op">=</span><span class="st">&#39;FECHA&#39;</span>, y<span class="op">=</span><span class="st">&#39;VALOR KILO&#39;</span>, color<span class="op">=</span><span class="st">&#39;blue&#39;</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb28-6"><a href="modulo-1.html#cb28-6" aria-hidden="true" tabindex="-1"></a>sns.lineplot(data<span class="op">=</span>df_precios_passion, x<span class="op">=</span><span class="st">&#39;FECHA&#39;</span>, y<span class="op">=</span><span class="st">&#39;promedio_movil&#39;</span>, color<span class="op">=</span><span class="st">&#39;red&#39;</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb28-7"><a href="modulo-1.html#cb28-7" aria-hidden="true" tabindex="-1"></a>ax.<span class="bu">set</span>(title<span class="op">=</span><span class="st">&#39;Precio promedio de la Maracuya&#39;</span>, xlabel<span class="op">=</span><span class="st">&#39;Fecha&#39;</span>, ylabel<span class="op">=</span><span class="st">&#39;Precio promedio&#39;</span>)</span>
+<span id="cb28-8"><a href="modulo-1.html#cb28-8" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
 <p><img src="Propuesta-Bookdown_files/figure-html/unnamed-chunk-10-9.png" width="960" /></p>
 </div>
 <div id="rezago-y-estacionalidad-1" class="section level4 hasAnchor" number="3.2.2.2">
 <h4><span class="header-section-number">3.2.2.2</span> Rezago y Estacionalidad<a href="modulo-1.html#rezago-y-estacionalidad-1" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<div class="sourceCode" id="cb28"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb28-1"><a href="modulo-1.html#cb28-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
-<span id="cb28-2"><a href="modulo-1.html#cb28-2" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-3"><a href="modulo-1.html#cb28-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear una figura con subplots de 3 por 3</span></span>
-<span id="cb28-4"><a href="modulo-1.html#cb28-4" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(nrows<span class="op">=</span><span class="dv">3</span>, ncols<span class="op">=</span><span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">12</span>))</span>
-<span id="cb28-5"><a href="modulo-1.html#cb28-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-6"><a href="modulo-1.html#cb28-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Realizar un bucle para crear una gráfica separada para cada rezago</span></span>
-<span id="cb28-7"><a href="modulo-1.html#cb28-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">10</span>):</span>
-<span id="cb28-8"><a href="modulo-1.html#cb28-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calcular las coordenadas del subplot actual</span></span>
-<span id="cb28-9"><a href="modulo-1.html#cb28-9" aria-hidden="true" tabindex="-1"></a>    row <span class="op">=</span> (i <span class="op">-</span> <span class="dv">1</span>) <span class="op">//</span> <span class="dv">3</span></span>
-<span id="cb28-10"><a href="modulo-1.html#cb28-10" aria-hidden="true" tabindex="-1"></a>    col <span class="op">=</span> (i <span class="op">-</span> <span class="dv">1</span>) <span class="op">%</span> <span class="dv">3</span></span>
-<span id="cb28-11"><a href="modulo-1.html#cb28-11" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb28-12"><a href="modulo-1.html#cb28-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Obtener el eje correspondiente al subplot actual</span></span>
-<span id="cb28-13"><a href="modulo-1.html#cb28-13" aria-hidden="true" tabindex="-1"></a>    ax <span class="op">=</span> axes[row, col]</span>
-<span id="cb28-14"><a href="modulo-1.html#cb28-14" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb28-15"><a href="modulo-1.html#cb28-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Graficar el scatterplot del rezago actual</span></span>
-<span id="cb28-16"><a href="modulo-1.html#cb28-16" aria-hidden="true" tabindex="-1"></a>    sns.scatterplot(data<span class="op">=</span>df_precios_passion, x<span class="op">=</span><span class="st">&#39;VALOR KILO&#39;</span>, y<span class="op">=</span>df_precios_passion[<span class="st">&#39;VALOR KILO&#39;</span>].shift(i), color<span class="op">=</span><span class="st">&#39;blue&#39;</span>, ax<span class="op">=</span>ax)</span>
-<span id="cb28-17"><a href="modulo-1.html#cb28-17" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb28-18"><a href="modulo-1.html#cb28-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Agregar línea diagonal</span></span>
-<span id="cb28-19"><a href="modulo-1.html#cb28-19" aria-hidden="true" tabindex="-1"></a>    ax.plot(ax.get_xlim(), ax.get_ylim(), ls<span class="op">=</span><span class="st">&quot;--&quot;</span>, c<span class="op">=</span><span class="st">&quot;.3&quot;</span>)</span>
-<span id="cb28-20"><a href="modulo-1.html#cb28-20" aria-hidden="true" tabindex="-1"></a>    </span>
-<span id="cb28-21"><a href="modulo-1.html#cb28-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Configurar título y etiquetas de los ejes</span></span>
-<span id="cb28-22"><a href="modulo-1.html#cb28-22" aria-hidden="true" tabindex="-1"></a>    ax.<span class="bu">set</span>(title<span class="op">=</span><span class="ss">f&#39;Rezago t-</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">&#39;</span>, xlabel<span class="op">=</span><span class="st">&#39;Valor en t&#39;</span>, ylabel<span class="op">=</span><span class="ss">f&#39;Valor en t-</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">&#39;</span>)</span>
-<span id="cb28-23"><a href="modulo-1.html#cb28-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-24"><a href="modulo-1.html#cb28-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajustar los subplots</span></span>
-<span id="cb28-25"><a href="modulo-1.html#cb28-25" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
-<span id="cb28-26"><a href="modulo-1.html#cb28-26" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb28-27"><a href="modulo-1.html#cb28-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar la gráfica</span></span>
-<span id="cb28-28"><a href="modulo-1.html#cb28-28" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<div class="sourceCode" id="cb29"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb29-1"><a href="modulo-1.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> seaborn <span class="im">as</span> sns</span>
+<span id="cb29-2"><a href="modulo-1.html#cb29-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-3"><a href="modulo-1.html#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="co"># Crear una figura con subplots de 3 por 3</span></span>
+<span id="cb29-4"><a href="modulo-1.html#cb29-4" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(nrows<span class="op">=</span><span class="dv">3</span>, ncols<span class="op">=</span><span class="dv">3</span>, figsize<span class="op">=</span>(<span class="dv">12</span>, <span class="dv">12</span>))</span>
+<span id="cb29-5"><a href="modulo-1.html#cb29-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-6"><a href="modulo-1.html#cb29-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Realizar un bucle para crear una gráfica separada para cada rezago</span></span>
+<span id="cb29-7"><a href="modulo-1.html#cb29-7" aria-hidden="true" tabindex="-1"></a><span class="cf">for</span> i <span class="kw">in</span> <span class="bu">range</span>(<span class="dv">1</span>, <span class="dv">10</span>):</span>
+<span id="cb29-8"><a href="modulo-1.html#cb29-8" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Calcular las coordenadas del subplot actual</span></span>
+<span id="cb29-9"><a href="modulo-1.html#cb29-9" aria-hidden="true" tabindex="-1"></a>    row <span class="op">=</span> (i <span class="op">-</span> <span class="dv">1</span>) <span class="op">//</span> <span class="dv">3</span></span>
+<span id="cb29-10"><a href="modulo-1.html#cb29-10" aria-hidden="true" tabindex="-1"></a>    col <span class="op">=</span> (i <span class="op">-</span> <span class="dv">1</span>) <span class="op">%</span> <span class="dv">3</span></span>
+<span id="cb29-11"><a href="modulo-1.html#cb29-11" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb29-12"><a href="modulo-1.html#cb29-12" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Obtener el eje correspondiente al subplot actual</span></span>
+<span id="cb29-13"><a href="modulo-1.html#cb29-13" aria-hidden="true" tabindex="-1"></a>    ax <span class="op">=</span> axes[row, col]</span>
+<span id="cb29-14"><a href="modulo-1.html#cb29-14" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb29-15"><a href="modulo-1.html#cb29-15" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Graficar el scatterplot del rezago actual</span></span>
+<span id="cb29-16"><a href="modulo-1.html#cb29-16" aria-hidden="true" tabindex="-1"></a>    sns.scatterplot(data<span class="op">=</span>df_precios_passion, x<span class="op">=</span><span class="st">&#39;VALOR KILO&#39;</span>, y<span class="op">=</span>df_precios_passion[<span class="st">&#39;VALOR KILO&#39;</span>].shift(i), color<span class="op">=</span><span class="st">&#39;blue&#39;</span>, ax<span class="op">=</span>ax)</span>
+<span id="cb29-17"><a href="modulo-1.html#cb29-17" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb29-18"><a href="modulo-1.html#cb29-18" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Agregar línea diagonal</span></span>
+<span id="cb29-19"><a href="modulo-1.html#cb29-19" aria-hidden="true" tabindex="-1"></a>    ax.plot(ax.get_xlim(), ax.get_ylim(), ls<span class="op">=</span><span class="st">&quot;--&quot;</span>, c<span class="op">=</span><span class="st">&quot;.3&quot;</span>)</span>
+<span id="cb29-20"><a href="modulo-1.html#cb29-20" aria-hidden="true" tabindex="-1"></a>    </span>
+<span id="cb29-21"><a href="modulo-1.html#cb29-21" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Configurar título y etiquetas de los ejes</span></span>
+<span id="cb29-22"><a href="modulo-1.html#cb29-22" aria-hidden="true" tabindex="-1"></a>    ax.<span class="bu">set</span>(title<span class="op">=</span><span class="ss">f&#39;Rezago t-</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">&#39;</span>, xlabel<span class="op">=</span><span class="st">&#39;Valor en t&#39;</span>, ylabel<span class="op">=</span><span class="ss">f&#39;Valor en t-</span><span class="sc">{</span>i<span class="sc">}</span><span class="ss">&#39;</span>)</span>
+<span id="cb29-23"><a href="modulo-1.html#cb29-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-24"><a href="modulo-1.html#cb29-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Ajustar los subplots</span></span>
+<span id="cb29-25"><a href="modulo-1.html#cb29-25" aria-hidden="true" tabindex="-1"></a>plt.tight_layout()</span>
+<span id="cb29-26"><a href="modulo-1.html#cb29-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-27"><a href="modulo-1.html#cb29-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar la gráfica</span></span>
+<span id="cb29-28"><a href="modulo-1.html#cb29-28" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
 <p><img src="Propuesta-Bookdown_files/figure-html/unnamed-chunk-11-11.png" width="1152" /></p>
-<div class="sourceCode" id="cb29"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb29-1"><a href="modulo-1.html#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener la serie de tiempo</span></span>
-<span id="cb29-2"><a href="modulo-1.html#cb29-2" aria-hidden="true" tabindex="-1"></a>serie <span class="op">=</span> df_precios_passion[<span class="st">&#39;VALOR KILO&#39;</span>]</span>
-<span id="cb29-3"><a href="modulo-1.html#cb29-3" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb29-4"><a href="modulo-1.html#cb29-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico de autocorrelación</span></span>
-<span id="cb29-5"><a href="modulo-1.html#cb29-5" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
-<span id="cb29-6"><a href="modulo-1.html#cb29-6" aria-hidden="true" tabindex="-1"></a>plot_acf(serie, ax<span class="op">=</span>ax, lags<span class="op">=</span><span class="dv">50</span>)</span>
-<span id="cb29-7"><a href="modulo-1.html#cb29-7" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
+<div class="sourceCode" id="cb30"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb30-1"><a href="modulo-1.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Obtener la serie de tiempo</span></span>
+<span id="cb30-2"><a href="modulo-1.html#cb30-2" aria-hidden="true" tabindex="-1"></a>serie <span class="op">=</span> df_precios_passion[<span class="st">&#39;VALOR KILO&#39;</span>]</span>
+<span id="cb30-3"><a href="modulo-1.html#cb30-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb30-4"><a href="modulo-1.html#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Gráfico de autocorrelación</span></span>
+<span id="cb30-5"><a href="modulo-1.html#cb30-5" aria-hidden="true" tabindex="-1"></a>fig, ax <span class="op">=</span> plt.subplots(figsize<span class="op">=</span>(<span class="dv">10</span>, <span class="dv">6</span>))</span>
+<span id="cb30-6"><a href="modulo-1.html#cb30-6" aria-hidden="true" tabindex="-1"></a>plot_acf(serie, ax<span class="op">=</span>ax, lags<span class="op">=</span><span class="dv">50</span>)</span>
+<span id="cb30-7"><a href="modulo-1.html#cb30-7" aria-hidden="true" tabindex="-1"></a>plt.show()</span></code></pre></div>
 <p><img src="Propuesta-Bookdown_files/figure-html/unnamed-chunk-12-13.png" width="960" /></p>
 </div>
 </div>
@@ -447,47 +472,47 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 <h3><span class="header-section-number">3.3.1</span> Preprocesamiento y visualización<a href="modulo-1.html#preprocesamiento-y-visualización" class="anchor-section" aria-label="Anchor link to header"></a></h3>
 <div id="descomposicion" class="section level4 hasAnchor" number="3.3.1.1">
 <h4><span class="header-section-number">3.3.1.1</span> Descomposicion<a href="modulo-1.html#descomposicion" class="anchor-section" aria-label="Anchor link to header"></a></h4>
-<div class="sourceCode" id="cb30"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb30-1"><a href="modulo-1.html#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
-<span id="cb30-2"><a href="modulo-1.html#cb30-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
-<span id="cb30-3"><a href="modulo-1.html#cb30-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.seasonal <span class="im">import</span> seasonal_decompose</span>
-<span id="cb30-4"><a href="modulo-1.html#cb30-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.stattools <span class="im">import</span> adfuller</span>
-<span id="cb30-5"><a href="modulo-1.html#cb30-5" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-6"><a href="modulo-1.html#cb30-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Cargar los datos de la serie de tiempo en un DataFrame de pandas</span></span>
-<span id="cb30-7"><a href="modulo-1.html#cb30-7" aria-hidden="true" tabindex="-1"></a>df_precios_historicos <span class="op">=</span> pd.read_excel(<span class="st">&quot;historico_precios_maracuya.xlsx&quot;</span>, sheet_name<span class="op">=</span><span class="st">&quot;Hoja1&quot;</span>)</span>
-<span id="cb30-8"><a href="modulo-1.html#cb30-8" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-9"><a href="modulo-1.html#cb30-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Convertir la columna &#39;fecha&#39; a tipo datetime</span></span>
-<span id="cb30-10"><a href="modulo-1.html#cb30-10" aria-hidden="true" tabindex="-1"></a>df_precios_historicos[<span class="st">&#39;fecha&#39;</span>] <span class="op">=</span> pd.to_datetime(df_precios_historicos[<span class="st">&#39;fecha&#39;</span>], <span class="bu">format</span><span class="op">=</span><span class="st">&#39;%Y-%m-</span><span class="sc">%d</span><span class="st">&#39;</span>)</span>
-<span id="cb30-11"><a href="modulo-1.html#cb30-11" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-12"><a href="modulo-1.html#cb30-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Establecer la columna &#39;fecha&#39; como el índice del DataFrame</span></span>
-<span id="cb30-13"><a href="modulo-1.html#cb30-13" aria-hidden="true" tabindex="-1"></a>df_precios_historicos.set_index(<span class="st">&#39;fecha&#39;</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb30-14"><a href="modulo-1.html#cb30-14" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-15"><a href="modulo-1.html#cb30-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular el promedio mensual de los precios</span></span>
-<span id="cb30-16"><a href="modulo-1.html#cb30-16" aria-hidden="true" tabindex="-1"></a>df_precios_mensuales <span class="op">=</span> df_precios_historicos.resample(<span class="st">&#39;M&#39;</span>).mean()</span>
-<span id="cb30-17"><a href="modulo-1.html#cb30-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-18"><a href="modulo-1.html#cb30-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Convertir el DataFrame a un objeto de series de tiempo</span></span>
-<span id="cb30-19"><a href="modulo-1.html#cb30-19" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.Series(df_precios_mensuales[<span class="st">&#39;prom_valle&#39;</span>].values, index<span class="op">=</span>df_precios_mensuales.index)</span>
-<span id="cb30-20"><a href="modulo-1.html#cb30-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-21"><a href="modulo-1.html#cb30-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Hacer la descomposición</span></span>
-<span id="cb30-22"><a href="modulo-1.html#cb30-22" aria-hidden="true" tabindex="-1"></a>decomposition <span class="op">=</span> seasonal_decompose(data)</span>
-<span id="cb30-23"><a href="modulo-1.html#cb30-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-24"><a href="modulo-1.html#cb30-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar las componentes</span></span>
-<span id="cb30-25"><a href="modulo-1.html#cb30-25" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(nrows<span class="op">=</span><span class="dv">4</span>, ncols<span class="op">=</span><span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">10</span>), sharex<span class="op">=</span><span class="va">True</span>)</span>
-<span id="cb30-26"><a href="modulo-1.html#cb30-26" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">&#39;Serie de tiempo original&#39;</span>)</span>
-<span id="cb30-27"><a href="modulo-1.html#cb30-27" aria-hidden="true" tabindex="-1"></a>data.plot(ax<span class="op">=</span>axes[<span class="dv">0</span>])</span>
-<span id="cb30-28"><a href="modulo-1.html#cb30-28" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">&#39;Tendencia&#39;</span>)</span>
-<span id="cb30-29"><a href="modulo-1.html#cb30-29" aria-hidden="true" tabindex="-1"></a>decomposition.trend.plot(ax<span class="op">=</span>axes[<span class="dv">1</span>])</span>
-<span id="cb30-30"><a href="modulo-1.html#cb30-30" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">&#39;Estacionalidad&#39;</span>)</span>
-<span id="cb30-31"><a href="modulo-1.html#cb30-31" aria-hidden="true" tabindex="-1"></a>decomposition.seasonal.plot(ax<span class="op">=</span>axes[<span class="dv">2</span>])</span>
-<span id="cb30-32"><a href="modulo-1.html#cb30-32" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">3</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">&#39;Residuos&#39;</span>)</span>
-<span id="cb30-33"><a href="modulo-1.html#cb30-33" aria-hidden="true" tabindex="-1"></a>decomposition.resid.plot(ax<span class="op">=</span>axes[<span class="dv">3</span>])</span>
-<span id="cb30-34"><a href="modulo-1.html#cb30-34" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
-<span id="cb30-35"><a href="modulo-1.html#cb30-35" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb30-36"><a href="modulo-1.html#cb30-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Realizar el test de Dickey-Fuller en los residuos</span></span></code></pre></div>
+<div class="sourceCode" id="cb31"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb31-1"><a href="modulo-1.html#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb31-2"><a href="modulo-1.html#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> matplotlib.pyplot <span class="im">as</span> plt</span>
+<span id="cb31-3"><a href="modulo-1.html#cb31-3" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.seasonal <span class="im">import</span> seasonal_decompose</span>
+<span id="cb31-4"><a href="modulo-1.html#cb31-4" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> statsmodels.tsa.stattools <span class="im">import</span> adfuller</span>
+<span id="cb31-5"><a href="modulo-1.html#cb31-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-6"><a href="modulo-1.html#cb31-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Cargar los datos de la serie de tiempo en un DataFrame de pandas</span></span>
+<span id="cb31-7"><a href="modulo-1.html#cb31-7" aria-hidden="true" tabindex="-1"></a>df_precios_historicos <span class="op">=</span> pd.read_excel(<span class="st">&quot;historico_precios_maracuya.xlsx&quot;</span>, sheet_name<span class="op">=</span><span class="st">&quot;Hoja1&quot;</span>)</span>
+<span id="cb31-8"><a href="modulo-1.html#cb31-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-9"><a href="modulo-1.html#cb31-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Convertir la columna &#39;fecha&#39; a tipo datetime</span></span>
+<span id="cb31-10"><a href="modulo-1.html#cb31-10" aria-hidden="true" tabindex="-1"></a>df_precios_historicos[<span class="st">&#39;fecha&#39;</span>] <span class="op">=</span> pd.to_datetime(df_precios_historicos[<span class="st">&#39;fecha&#39;</span>], <span class="bu">format</span><span class="op">=</span><span class="st">&#39;%Y-%m-</span><span class="sc">%d</span><span class="st">&#39;</span>)</span>
+<span id="cb31-11"><a href="modulo-1.html#cb31-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-12"><a href="modulo-1.html#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Establecer la columna &#39;fecha&#39; como el índice del DataFrame</span></span>
+<span id="cb31-13"><a href="modulo-1.html#cb31-13" aria-hidden="true" tabindex="-1"></a>df_precios_historicos.set_index(<span class="st">&#39;fecha&#39;</span>, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb31-14"><a href="modulo-1.html#cb31-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-15"><a href="modulo-1.html#cb31-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Calcular el promedio mensual de los precios</span></span>
+<span id="cb31-16"><a href="modulo-1.html#cb31-16" aria-hidden="true" tabindex="-1"></a>df_precios_mensuales <span class="op">=</span> df_precios_historicos.resample(<span class="st">&#39;M&#39;</span>).mean()</span>
+<span id="cb31-17"><a href="modulo-1.html#cb31-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-18"><a href="modulo-1.html#cb31-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Convertir el DataFrame a un objeto de series de tiempo</span></span>
+<span id="cb31-19"><a href="modulo-1.html#cb31-19" aria-hidden="true" tabindex="-1"></a>data <span class="op">=</span> pd.Series(df_precios_mensuales[<span class="st">&#39;prom_valle&#39;</span>].values, index<span class="op">=</span>df_precios_mensuales.index)</span>
+<span id="cb31-20"><a href="modulo-1.html#cb31-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-21"><a href="modulo-1.html#cb31-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Hacer la descomposición</span></span>
+<span id="cb31-22"><a href="modulo-1.html#cb31-22" aria-hidden="true" tabindex="-1"></a>decomposition <span class="op">=</span> seasonal_decompose(data)</span>
+<span id="cb31-23"><a href="modulo-1.html#cb31-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-24"><a href="modulo-1.html#cb31-24" aria-hidden="true" tabindex="-1"></a><span class="co"># Mostrar las componentes</span></span>
+<span id="cb31-25"><a href="modulo-1.html#cb31-25" aria-hidden="true" tabindex="-1"></a>fig, axes <span class="op">=</span> plt.subplots(nrows<span class="op">=</span><span class="dv">4</span>, ncols<span class="op">=</span><span class="dv">1</span>, figsize<span class="op">=</span>(<span class="dv">8</span>, <span class="dv">10</span>), sharex<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb31-26"><a href="modulo-1.html#cb31-26" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">0</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">&#39;Serie de tiempo original&#39;</span>)</span>
+<span id="cb31-27"><a href="modulo-1.html#cb31-27" aria-hidden="true" tabindex="-1"></a>data.plot(ax<span class="op">=</span>axes[<span class="dv">0</span>])</span>
+<span id="cb31-28"><a href="modulo-1.html#cb31-28" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">1</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">&#39;Tendencia&#39;</span>)</span>
+<span id="cb31-29"><a href="modulo-1.html#cb31-29" aria-hidden="true" tabindex="-1"></a>decomposition.trend.plot(ax<span class="op">=</span>axes[<span class="dv">1</span>])</span>
+<span id="cb31-30"><a href="modulo-1.html#cb31-30" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">2</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">&#39;Estacionalidad&#39;</span>)</span>
+<span id="cb31-31"><a href="modulo-1.html#cb31-31" aria-hidden="true" tabindex="-1"></a>decomposition.seasonal.plot(ax<span class="op">=</span>axes[<span class="dv">2</span>])</span>
+<span id="cb31-32"><a href="modulo-1.html#cb31-32" aria-hidden="true" tabindex="-1"></a>axes[<span class="dv">3</span>].<span class="bu">set</span>(title<span class="op">=</span><span class="st">&#39;Residuos&#39;</span>)</span>
+<span id="cb31-33"><a href="modulo-1.html#cb31-33" aria-hidden="true" tabindex="-1"></a>decomposition.resid.plot(ax<span class="op">=</span>axes[<span class="dv">3</span>])</span>
+<span id="cb31-34"><a href="modulo-1.html#cb31-34" aria-hidden="true" tabindex="-1"></a>plt.show()</span>
+<span id="cb31-35"><a href="modulo-1.html#cb31-35" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-36"><a href="modulo-1.html#cb31-36" aria-hidden="true" tabindex="-1"></a><span class="co"># Realizar el test de Dickey-Fuller en los residuos</span></span></code></pre></div>
 <p><img src="Propuesta-Bookdown_files/figure-html/unnamed-chunk-13-15.png" width="768" /></p>
-<div class="sourceCode" id="cb31"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb31-1"><a href="modulo-1.html#cb31-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> adfuller(decomposition.resid.dropna())</span>
-<span id="cb31-2"><a href="modulo-1.html#cb31-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;ADF Statistic:&quot;</span>, result[<span class="dv">0</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb32"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb32-1"><a href="modulo-1.html#cb32-1" aria-hidden="true" tabindex="-1"></a>result <span class="op">=</span> adfuller(decomposition.resid.dropna())</span>
+<span id="cb32-2"><a href="modulo-1.html#cb32-2" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;ADF Statistic:&quot;</span>, result[<span class="dv">0</span>])</span></code></pre></div>
 <pre><code>## ADF Statistic: -4.414089293690155</code></pre>
-<div class="sourceCode" id="cb33"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb33-1"><a href="modulo-1.html#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;p-value:&quot;</span>, result[<span class="dv">1</span>])</span></code></pre></div>
+<div class="sourceCode" id="cb34"><pre class="sourceCode python"><code class="sourceCode python"><span id="cb34-1"><a href="modulo-1.html#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">&quot;p-value:&quot;</span>, result[<span class="dv">1</span>])</span></code></pre></div>
 <pre><code>## p-value: 0.00028024630721353635</code></pre>
 <ul>
 <li><p>ADF Statistic: El valor de -4.41408929369015 es el estadístico Dickey-Fuller Aumentado obtenido en la prueba indica un rechazo a la hipotesis nula de no estacionaridad.</p></li>

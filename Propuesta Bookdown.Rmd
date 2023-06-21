@@ -528,6 +528,47 @@ for fecha_pred, valor_pred in zip(fechas_prediccion, valores_predichos):
     print(fecha_pred.strftime('%Y-%m-%d'), valor_pred)
 ```
 
+```{python}
+import numpy as np
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+
+# Convertir los datos predichos a escala original (exponencial)
+prediccion_escalada = np.exp(prediccion)
+
+# Convertir los datos observados a escala original (exponencial)
+datos_escalados = np.exp(log_data)
+
+# Obtener los valores observados para el período de predicción
+valores_observados = datos_escalados[-4:]
+
+# Calcular las métricas
+me = np.mean(valores_observados - prediccion_escalada)
+rmse = np.sqrt(mean_squared_error(valores_observados, prediccion_escalada))
+mae = mean_absolute_error(valores_observados, prediccion_escalada)
+mpe = np.mean((valores_observados - prediccion_escalada) / valores_observados) * 100
+acf1 = modelo_ajustado.resid.autocorr(lag=1)
+r2 = r2_score(valores_observados, prediccion_escalada)
+
+# Imprimir las métricas
+print("Mean Error (ME):", me)
+print("Root Mean Squared Error (RMSE):", rmse)
+print("Mean Absolute Error (MAE):", mae)
+print("Mean Percentage Error (MPE):", mpe)
+print("Autocorrelation of First Order (ACF1):", acf1)
+print("Coefficient of Determination (R2):", r2)
+```
+
+```{python}
+# Crear un DataFrame para almacenar las métricas
+df_metrics = pd.DataFrame(columns=['Model', 'Type', 'ME', 'RMSE', 'MAE', 'MPE', 'ACF1'])
+
+# Agregar las métricas del modelo Holt-Winters
+df_metrics.loc[0] = ['Holt-Winters', 'Test', me, rmse, mae, mpe, acf1]
+
+# Imprimir el DataFrame
+print(df_metrics)
+```
+
 ### Metodoligia de Suavizamiento a la variable Tiempo
 
 ```{python}
@@ -581,6 +622,64 @@ valores_predichos = np.exp(prediccion)
 # Imprimir los valores predichos en formato fecha y valor
 for fecha_pred, valor_pred in zip(fechas_prediccion, valores_predichos):
     print(fecha_pred.strftime('%Y-%m-%d'), valor_pred)
+```
+
+```{python}
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+
+# Crear el modelo de suavizamiento exponencial simple
+modelo_ses = SimpleExpSmoothing(log_data)
+
+# Ajustar el modelo
+modelo_ajustado = modelo_ses.fit()
+
+# Realizar la predicción de 4 periodos hacia adelante
+prediccion = modelo_ajustado.forecast(steps=4)
+
+# Convertir los datos predichos a escala original (exponencial)
+prediccion_escalada = np.exp(prediccion)
+
+# Convertir los datos observados a escala original (exponencial)
+datos_escalados = np.exp(log_data)
+
+# Obtener los valores observados para el período de predicción
+valores_observados = datos_escalados[-4:]
+
+# Calcular las métricas
+me = np.mean(valores_observados - prediccion_escalada)
+rmse = np.sqrt(mean_squared_error(valores_observados, prediccion_escalada))
+mae = mean_absolute_error(valores_observados, prediccion_escalada)
+mpe = np.mean((valores_observados - prediccion_escalada) / valores_observados) * 100
+acf1 = modelo_ajustado.resid.autocorr(lag=1)
+r2 = r2_score(valores_observados, prediccion_escalada)
+
+# Crear un diccionario con las métricas del modelo de suavizamiento exponencial simple
+metrics_ses = {
+    'Model': 'SES',
+    'Type': 'Test',
+    'ME': me,
+    'RMSE': rmse,
+    'MAE': mae,
+    'MPE': mpe,
+    'ACF1': acf1
+}
+
+print(metrics_ses)
+```
+
+```{python}
+import pandas as pd
+import numpy as np
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+
+# Agregar las métricas del modelo de suavizamiento exponencial simple al DataFrame
+df_metrics = df_metrics.append(metrics_ses, ignore_index=True)
+
+# Imprimir el DataFrame completo
+print(df_metrics)
 ```
 
 ### Conclusiones de Aplicacion de Metodos
@@ -695,6 +794,58 @@ print(prediccion_df)
 
 ```
 
+```{python}
+import numpy as np
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score
+import pandas as pd
+from statsmodels.tsa.arima.model import ARIMA
+
+# Ajustar el modelo ARIMA
+modelo_arima = ARIMA(log_data, order=(0, 1, 2))
+modelo_ajustado_arima = modelo_arima.fit()
+
+# Realizar la predicción de 4 periodos hacia adelante
+prediccion_arima = modelo_ajustado_arima.forecast(steps=4)
+
+# Convertir los datos predichos a escala original (exponencial)
+prediccion_escalada_arima = np.exp(prediccion_arima)
+
+# Convertir los datos observados a escala original (exponencial)
+datos_escalados = np.exp(log_data)
+
+# Obtener los valores observados para el período de predicción
+valores_observados = datos_escalados[-4:]
+
+# Calcular las métricas para el modelo ARIMA
+me_arima = np.mean(valores_observados - prediccion_escalada_arima)
+rmse_arima = np.sqrt(mean_squared_error(valores_observados, prediccion_escalada_arima))
+mae_arima = mean_absolute_error(valores_observados, prediccion_escalada_arima)
+mpe_arima = np.mean((valores_observados - prediccion_escalada_arima) / valores_observados) * 100
+acf1_arima = modelo_ajustado_arima.resid.autocorr(lag=1)
+r2_arima = r2_score(valores_observados, prediccion_escalada_arima)
+
+# Crear un diccionario con las métricas del modelo ARIMA
+metrics_arima = {
+    'Model': 'ARIMA',
+    'Type': 'Test',
+    'ME': me_arima,
+    'RMSE': rmse_arima,
+    'MAE': mae_arima,
+    'MPE': mpe_arima,
+    'ACF1': acf1_arima
+}
+
+print(metrics_arima)
+```
+
+```{python}
+# Agregar las métricas del modelo de suavizamiento exponencial simple al DataFrame
+df_metrics = df_metrics.append(metrics_arima, ignore_index=True)
+
+# Imprimir el DataFrame completo
+print(df_metrics)
+```
+
 ## Unidad 3: Regresión
 
 ### Modelo Propeth
@@ -751,6 +902,36 @@ forecast <- predict(model, future)
 
 # Visualizar los resultados
 plot(model, forecast)
+```
+
+```{r}
+# Obtener los valores observados para el período de predicción
+valores_observados <- tail(df$y, 4)
+
+# Obtener los valores predichos
+valores_predichos <- tail(forecast$yhat, 4)
+
+# Calcular las métricas
+me <- mean(valores_observados - valores_predichos)
+rmse <- sqrt(mean((valores_observados - valores_predichos)^2))
+mae <- mean(abs(valores_observados - valores_predichos))
+mpe <- mean((valores_observados - valores_predichos) / valores_observados) * 100
+#acf1 <- acf(residuals(model))$acf[2]
+r2 <- 1 - sum((valores_observados - valores_predichos)^2) / sum((valores_observados - mean(valores_observados))^2)
+
+# Crear un data.frame con las métricas
+metrics_prophet <- data.frame(
+  Model = "Prophet",
+  Type = "Test",
+  ME = me,
+  RMSE = rmse,
+  MAE = mae,
+  MPE = mpe,
+#  ACF1 = acf1,
+  stringsAsFactors = FALSE
+)
+
+print(metrics_prophet)
 ```
 
 Basándonos en lo que hemos hecho anteriormente, podemos llegar a las siguientes conclusiones:
@@ -893,3 +1074,23 @@ RN_Jordan_prediction = predictions
 ```{python}
 print(predictions)
 ```
+
+# CONCLUSIONES
+
+```{python}
+print(df_metrics)
+```
+
+```{r}
+print(metrics_prophet)
+```
+
+En términos de las métricas de evaluación presentadas:
+
+-   El modelo SES (Simple Exponential Smoothing) tiene el valor más bajo de RMSE (528.361663) y MAE (482.704167), lo que indica que tiene un ajuste relativamente bueno en comparación con los otros modelos.
+
+-   El modelo Prophet también tiene un RMSE (866.8507) y un MAE (642.4646) más bajos que los modelos Holt-Winters y ARIMA, aunque no tan bajos como el modelo SES.
+
+Es importante tener en cuenta que la elección del mejor modelo depende del contexto y los requisitos específicos del problema. Además, los resultados proporcionados pueden no ser suficientes para llegar a una conclusión definitiva. Sería beneficioso considerar otros factores, como el rendimiento del modelo en el conjunto de datos de entrenamiento, la estabilidad del modelo a lo largo del tiempo y la interpretación de los resultados en relación con el dominio del problema.
+
+En resumen, según los resultados presentados, el modelo SES parece tener un rendimiento ligeramente mejor que los otros modelos evaluados.
